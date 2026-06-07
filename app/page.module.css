@@ -469,14 +469,18 @@
     grid-row: 6;
     text-align: right;
     justify-self: end;
-    white-space: nowrap;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
   }
   .posAvailable {
     grid-column: 1;
     grid-row: 6;
     text-align: left;
     justify-self: start;
-    white-space: nowrap;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
   }
   .workSection {
     grid-template-columns: minmax(0, 1fr);
