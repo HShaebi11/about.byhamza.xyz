@@ -41,6 +41,9 @@
   width: 100%;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  border-top: 1px dashed var(--color-text-primary);
+  border-bottom: 1px dashed var(--color-text-primary);
+  margin-top: -1px;
 }
 
 /* Intro Wrapper (Header + Nav + Hero = 100vh) */
@@ -50,6 +53,8 @@
   flex-direction: column;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  border-top: 1px dashed var(--color-text-primary);
+  border-bottom: 1px dashed var(--color-text-primary);
 }
 
 .header {
@@ -303,6 +308,9 @@
   justify-content: center;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  border-top: 1px dashed var(--color-text-primary);
+  border-bottom: 1px dashed var(--color-text-primary);
+  margin-top: -1px;
 }
 
 .ctaText {

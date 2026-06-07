@@ -256,8 +256,6 @@ export default function Home() {
         </div>
       </section>
 
-      <Divider />
-
       {/* About Section */}
       <section className={`${styles.section} ${styles.aboutSection} about-section snap-section`}>
         <div className={`${styles.aboutCenterBlock} about-rect`} />
@@ -299,8 +297,6 @@ export default function Home() {
         />
       </section>
 
-      <Divider />
-
       {/* Location Section */}
       <section className={`${styles.section} ${styles.locationSection} location-section snap-section`}>
         <StaggerText 
@@ -338,8 +334,6 @@ export default function Home() {
         />
       </section>
 
-      <Divider />
-
       {/* Work Section */}
       <section className={`${styles.section} ${styles.workSection} work-section snap-section`}>
         <StaggerText 
@@ -364,8 +358,6 @@ export default function Home() {
           <ProjectCard title="design engineering" />
         </div>
       </section>
-
-      <Divider />
 
       {/* Process Section */}
       <section className={`${styles.section} ${styles.processSection} process-section snap-section`}>
@@ -395,8 +387,6 @@ export default function Home() {
           charClass="process-text-char" 
         />
       </section>
-
-      <Divider />
 
       {/* Footer CTA */}
       <section className={`${styles.footerSection} footer-section snap-section`}>
