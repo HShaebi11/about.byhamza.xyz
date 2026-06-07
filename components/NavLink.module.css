@@ -36,6 +36,7 @@
 @media (max-width: 768px) {
   .navLink {
     padding: 20px;
+    width: 100%;
   }
   .fill {
     width: 100%;

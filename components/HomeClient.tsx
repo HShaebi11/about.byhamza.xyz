@@ -107,8 +107,8 @@ export default function HomeClient() {
 
           <div className={styles.navSection}>
             <nav className={styles.navGrid}>
-              <NavLink text="work" variant="fill" />
-              <NavLink text="process" />
+              <NavLink text="work" variant="fill" href="#work" />
+              <NavLink text="process" href="#process" />
               <NavLink text="say   hello" href="https://hello.byhamza.xyz/" />
             </nav>
           </div>
@@ -158,8 +158,12 @@ export default function HomeClient() {
         {/* Location Section */}
         <section className={`${styles.section} ${styles.locationSection} snap-section`}>
           <StaggerText 
-            text="located in" 
+            text="located" 
             className={`${styles.displayText} ${styles.posLocated}`} 
+          />
+          <StaggerText 
+            text="in" 
+            className={`${styles.displayText} ${styles.posIn}`} 
           />
           <StaggerText 
             text="bhx" 
@@ -183,7 +187,7 @@ export default function HomeClient() {
         </section>
 
         {/* Work Section */}
-        <section className={`${styles.section} ${styles.workSection} snap-section`}>
+        <section id="work" className={`${styles.section} ${styles.workSection} snap-section`}>
           <div className={styles.workHeader}>
             <StaggerText 
               text="work" 
@@ -205,7 +209,7 @@ export default function HomeClient() {
         </section>
 
         {/* Process Section */}
-        <section className={`${styles.section} ${styles.processSection} snap-section`}>
+        <section id="process" className={`${styles.section} ${styles.processSection} snap-section`}>
           <StaggerText 
             text="process:" 
             className={`${styles.displayText} ${styles.posProcess}`} 
