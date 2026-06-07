@@ -67,15 +67,20 @@
   margin: 0;
 }
 
-html,
+html {
+  height: 100%;
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
 body {
   max-width: 100vw;
   overflow-x: hidden;
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
   font-family: 'PP Mondwest', sans-serif; /* Fallback to sans-serif */
-  scroll-snap-type: y mandatory;
-  height: 100%;
+  min-height: 100%;
 }
 
 a {

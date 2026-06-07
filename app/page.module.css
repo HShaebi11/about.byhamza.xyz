@@ -39,6 +39,7 @@
 .section {
   padding: var(--padding-desktop);
   width: 100%;
+  height: 100dvh;
   scroll-snap-align: start;
   scroll-snap-stop: always;
   border-top: 1px dashed var(--color-text-primary);
