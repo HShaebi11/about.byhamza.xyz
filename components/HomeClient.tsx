@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { Observer } from 'gsap/Observer';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Divider from '@/components/Divider';
 import NavLink from '@/components/NavLink';
@@ -11,7 +10,7 @@ import ProjectCard from '@/components/ProjectCard';
 import ProjectSheet from '@/components/ProjectSheet';
 import styles from '../app/page.module.css';
 
-gsap.registerPlugin(ScrollToPlugin, Observer, ScrollTrigger);
+gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
 
 // Safari/Mobile Optimizations
 if (typeof window !== "undefined") {
@@ -102,6 +101,7 @@ export default function HomeClient() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const openProject = (project: any) => {
+    console.log('Opening project:', project.title);
     setSelectedProject(project);
     setIsSheetOpen(true);
   };
@@ -431,10 +431,14 @@ export default function HomeClient() {
           </div>
 
           {MOCK_PROJECTS.map((project, index) => (
-            <div key={project.id} className={`${styles[`card${index + 1}`] || styles.card1} project-card-anim`}>
+            <div 
+              key={project.id} 
+              className={`${styles[`card${index + 1}`] || styles.card1} project-card-anim`}
+              onClick={() => openProject(project)}
+              style={{ cursor: 'pointer' }}
+            >
               <ProjectCard 
                 title={project.title} 
-                onClick={() => openProject(project)}
               />
             </div>
           ))}

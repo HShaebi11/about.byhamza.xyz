@@ -1,6 +1,6 @@
 'use client';
 
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import styles from './ProjectSheet.module.css';
 
@@ -15,7 +15,7 @@ export default function ProjectSheet({ isOpen, onClose, project }: ProjectSheetP
   const sheetRef = useRef<HTMLDivElement>(null);
   const isInitialMount = useRef(true);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     // Initial state: Hidden
     if (isInitialMount.current) {
       gsap.set(overlayRef.current, { visibility: 'hidden', opacity: 0 });
