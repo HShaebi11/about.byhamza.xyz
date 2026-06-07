@@ -1,0 +1,19 @@
+app/page.module.css
+  s_3dbddcf0f87370::t_802b00ef4a4898 491,493-494,501-503
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "6ac76b7a6d7a76a6929dbdabdd66b7e94dba8b54",
+  "prompts": {},
+  "sessions": {
+    "s_3dbddcf0f87370": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "b111d0c9-9332-46f3-87e3-aa78145bc219",
+        "model": "gemini-3.1-pro-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
