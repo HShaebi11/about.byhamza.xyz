@@ -337,37 +337,37 @@ export default function HomeClient() {
           
           <StaggerText 
             text={"anti-\ndisciplinary"} 
-            className={`${styles.displayText} ${styles.posAnti}`} 
+            className={`${styles.displayText} ${styles.posAnti} posAnti`} 
             charClass="about-text-char" 
           />
           
           <StaggerText 
             text={"& design\nengineer"} 
-            className={`${styles.displayText} ${styles.posDesign}`} 
+            className={`${styles.displayText} ${styles.posDesign} posDesign`} 
             charClass="about-text-char" 
           />
 
           <StaggerText 
             text="for" 
-            className={`${styles.displayText} ${styles.posFor}`} 
+            className={`${styles.displayText} ${styles.posFor} posFor`} 
             charClass="about-text-char" 
           />
 
           <StaggerText 
             text="→ →" 
-            className={`${styles.displayText} ${styles.posArrows}`} 
+            className={`${styles.displayText} ${styles.posArrows} posArrows`} 
             charClass="about-text-char" 
           />
 
           <StaggerText 
             text={"cultural\n& creative"} 
-            className={`${styles.displayText} ${styles.posCultural}`} 
+            className={`${styles.displayText} ${styles.posCultural} posCultural`} 
             charClass="about-text-char" 
           />
 
           <StaggerText 
             text={"based\npractices"} 
-            className={`${styles.displayText} ${styles.posPractices}`} 
+            className={`${styles.displayText} ${styles.posPractices} posPractices`} 
             charClass="about-text-char" 
           />
         </section>
@@ -376,22 +376,22 @@ export default function HomeClient() {
         <section className={`${styles.section} ${styles.locationSection} location-section snap-section`}>
           <StaggerText 
             text="located" 
-            className={`${styles.displayText} ${styles.posLocated}`} 
+            className={`${styles.displayText} ${styles.posLocated} posLocated`} 
             charClass="location-text-char" 
           />
           <StaggerText 
             text="in" 
-            className={`${styles.displayText} ${styles.posIn}`} 
+            className={`${styles.displayText} ${styles.posIn} posIn`} 
             charClass="location-text-char" 
           />
           <StaggerText 
             text="bhx" 
-            className={`${styles.displayText} ${styles.posBHX}`} 
+            className={`${styles.displayText} ${styles.posBHX} posBHX`} 
             charClass="location-text-char" 
           />
           <StaggerText 
             text="lon" 
-            className={`${styles.displayText} ${styles.posLON}`} 
+            className={`${styles.displayText} ${styles.posLON} posLON`} 
             charClass="location-text-char" 
           />
           
@@ -399,12 +399,12 @@ export default function HomeClient() {
 
           <StaggerText 
             text="available" 
-            className={`${styles.displayText} ${styles.posAvailable}`} 
+            className={`${styles.displayText} ${styles.posAvailable} posAvailable`} 
             charClass="location-text-char" 
           />
           <StaggerText 
             text={"world\nwide"} 
-            className={`${styles.displayText} ${styles.posWorld}`} 
+            className={`${styles.displayText} ${styles.posWorld} posWorld`} 
             charClass="location-text-char" 
           />
         </section>
@@ -413,7 +413,7 @@ export default function HomeClient() {
         <section className={`${styles.section} ${styles.workSection} work-section snap-section`}>
           <StaggerText 
             text="work" 
-            className={`${styles.displayText} ${styles.posWork}`} 
+            className={`${styles.displayText} ${styles.posWork} posWork`} 
             charClass="work-text-char" 
           />
           <div className={`${styles.displayText} ${styles.posCount} work-count`}>
@@ -434,12 +434,12 @@ export default function HomeClient() {
         <section className={`${styles.section} ${styles.processSection} process-section snap-section`}>
           <StaggerText 
             text="process:" 
-            className={`${styles.displayText} ${styles.posProcess}`} 
+            className={`${styles.displayText} ${styles.posProcess} posProcess`} 
             charClass="process-text-char" 
           />
           <StaggerText 
             text="concept" 
-            className={`${styles.displayText} ${styles.posConcept}`} 
+            className={`${styles.displayText} ${styles.posConcept} posConcept`} 
             charClass="process-text-char" 
           />
 
@@ -449,12 +449,12 @@ export default function HomeClient() {
 
           <StaggerText 
             text="build" 
-            className={`${styles.displayText} ${styles.posBuild}`} 
+            className={`${styles.displayText} ${styles.posBuild} posBuild`} 
             charClass="process-text-char" 
           />
           <StaggerText 
             text="ship" 
-            className={`${styles.displayText} ${styles.posShip}`} 
+            className={`${styles.displayText} ${styles.posShip} posShip`} 
             charClass="process-text-char" 
           />
         </section>
