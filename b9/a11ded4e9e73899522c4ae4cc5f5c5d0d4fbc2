@@ -1,0 +1,90 @@
+components/NavLink.tsx
+  s_603beaf029ca13::t_bf8516a6c48f42 6,9,11
+components/HomeClient.tsx
+  s_cdc83860cf8c45::t_a608af6a14891a 200
+  s_d3826512a897d2::t_37daef6282831b 17-18,21,53-62,64,94-98
+  s_d3826512a897d2::t_af105d27edbd5b 186,192,208,219,233
+  s_cdc83860cf8c45::t_8b7a4e34ead88e 197-199,201-203
+  s_603beaf029ca13::t_7957da6493014a 180
+  s_603beaf029ca13::t_861f3bca5de14d 110
+  s_603beaf029ca13::t_24f938dcf5a7c5 161
+  s_d3826512a897d2::t_c015e7eebfe6d7 159,173
+  s_d3826512a897d2::t_ddf805ad880df2 119
+  s_d3826512a897d2::t_a950cebcc5a41e 124-125
+  s_cdc83860cf8c45::t_44db04025dc8d9 187-191,193-194
+components/ProjectCard.tsx
+  s_cdc83860cf8c45::t_2616f468b72327 1-3,13-14,16-64,67,71
+  s_cdc83860cf8c45::t_a55088fd449ebe 9,15,69,72
+  s_cdc83860cf8c45::t_9f3ce72e25e967 75,77
+  s_cdc83860cf8c45::t_cb71602d4f6916 66,68,70,79
+components/NavLink.module.css
+  s_603beaf029ca13::t_8a406eb4a216a7 40-42
+  s_603beaf029ca13::t_dbdca178462a39 11-14
+components/ProjectSheet.tsx
+  s_d3826512a897d2::t_b691d1ff64aebc 3,17,19-21,33-37,42-44
+app/page.module.css
+  s_603beaf029ca13::t_28693e4477c0d3 432,435,456
+  s_cdc83860cf8c45::t_00518870bc982f 190-191,198
+  s_603beaf029ca13::t_cddf7c0a294d12 206-208
+  s_cdc83860cf8c45::t_8bf5cc909ff7ca 463-464
+  s_cdc83860cf8c45::t_e49b31c8d9a89d 194,197,199-202,205,210,213-217
+  s_603beaf029ca13::t_f13b9f28893ef9 458-459
+  s_6433b73a9789fc::t_3d55618054c118 359
+  s_603beaf029ca13::t_3bdb7732dd99da 144
+  s_603beaf029ca13::t_a7f85a973ea16e 327
+  s_6433b73a9789fc::t_8499552a37f466 427,465,467
+  s_cdc83860cf8c45::t_6f331df7df4950 470-471,473-475
+  s_603beaf029ca13::t_43aaa02ec44018 348
+  s_603beaf029ca13::t_5382e92e745bdb 397
+  s_603beaf029ca13::t_530de5c101e6fd 173-177
+  s_6433b73a9789fc::t_b79410afd845b0 2-6,12-18
+components/ProjectCard.module.css
+  s_cdc83860cf8c45::t_ebc661ba07036b 9
+  s_cdc83860cf8c45::t_c983f4b72a5c2e 2-4,18,20,22-27
+  s_cdc83860cf8c45::t_7a072fad6a87ee 19,21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "b9a11ded4e9e73899522c4ae4cc5f5c5d0d4fbc2",
+  "prompts": {},
+  "humans": {
+    "h_c628d8a6509c22": {
+      "author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_603beaf029ca13": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "8352273b-57a7-4e12-82ea-cbd91a01283e",
+        "model": "gemini-3-flash-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_6433b73a9789fc": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "21df0d2e-b64e-487a-8299-4287eede5af9",
+        "model": "gemini-3-flash-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_cdc83860cf8c45": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "b59a7b05-c3fb-4adb-8a7b-ccf9589480da",
+        "model": "composer-2.5"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_d3826512a897d2": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "59654568-1d3e-4076-a212-2c07e90317a1",
+        "model": "gemini-3-flash-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
