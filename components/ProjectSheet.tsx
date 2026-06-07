@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import styles from './ProjectSheet.module.css';
 
@@ -13,41 +13,67 @@ interface ProjectSheetProps {
 export default function ProjectSheet({ isOpen, onClose, project }: ProjectSheetProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
+  const isInitialMount = useRef(true);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    // Initial state: Hidden
+    if (isInitialMount.current) {
+      gsap.set(overlayRef.current, { visibility: 'hidden', opacity: 0 });
+      gsap.set(sheetRef.current, { yPercent: 100 });
+      isInitialMount.current = false;
+      return;
+    }
+
     if (isOpen) {
+      // Lock scroll
+      const scrollY = window.scrollY;
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
+
+      // Animate In
       const tl = gsap.timeline();
-      tl.to(overlayRef.current, {
-        opacity: 1,
-        duration: 0.4,
-        ease: 'power2.out',
-      })
-      .to(sheetRef.current, {
-        y: 0,
-        duration: 0.6,
-        ease: 'power3.out',
-      }, '-=0.2');
+      tl.set(overlayRef.current, { visibility: 'visible' })
+        .to(overlayRef.current, { 
+          opacity: 1, 
+          duration: 0.3, 
+          ease: 'power2.out' 
+        })
+        .to(sheetRef.current, { 
+          yPercent: 0, 
+          duration: 0.6, 
+          ease: 'power3.out' 
+        }, '-=0.2');
     } else {
+      // Animate Out
       const tl = gsap.timeline({
         onComplete: () => {
+          // Unlock scroll
+          const scrollY = document.body.style.top;
+          document.body.style.position = '';
+          document.body.style.top = '';
+          document.body.style.width = '';
           document.body.style.overflow = '';
+          if (scrollY) {
+            window.scrollTo(0, parseInt(scrollY || '0') * -1);
+          }
+          gsap.set(overlayRef.current, { visibility: 'hidden' });
         }
       });
-      tl.to(sheetRef.current, {
-        y: '100%',
-        duration: 0.5,
-        ease: 'power3.in',
+
+      tl.to(sheetRef.current, { 
+        yPercent: 100, 
+        duration: 0.5, 
+        ease: 'power3.in' 
       })
-      .to(overlayRef.current, {
-        opacity: 0,
-        duration: 0.3,
-        ease: 'power2.in',
-      }, '-=0.2');
+      .to(overlayRef.current, { 
+        opacity: 0, 
+        duration: 0.3, 
+        ease: 'power2.in' 
+      }, '-=0.3');
     }
   }, [isOpen]);
-
-  if (!project && !isOpen) return null;
 
   const title = project?.title || 'Untitled Project';
   const description = project?.description || 'Something light about this project, like one sentence: the problem, the domains, all that kind of thing. So just one problem to be shared.';
@@ -57,13 +83,12 @@ export default function ProjectSheet({ isOpen, onClose, project }: ProjectSheetP
       ref={overlayRef} 
       className={styles.overlay} 
       onClick={onClose}
-      style={{ opacity: 0, pointerEvents: isOpen ? 'all' : 'none' }}
+      style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
     >
       <div 
         ref={sheetRef} 
         className={styles.sheet} 
         onClick={(e) => e.stopPropagation()}
-        style={{ transform: 'translateY(100%)' }}
       >
         <div className={styles.content}>
           <header className={styles.header}>
@@ -107,7 +132,7 @@ export default function ProjectSheet({ isOpen, onClose, project }: ProjectSheetP
           </div>
           
           <footer className={styles.footer}>
-            <button className={styles.footerButton}>Back / Close</button>
+            <button className={styles.footerButton} onClick={onClose}>Back / Close</button>
             <button className={styles.footerButton} onClick={onClose}>Next Project</button>
           </footer>
         </div>

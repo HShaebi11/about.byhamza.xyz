@@ -8,18 +8,24 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ color, title, onClick }: ProjectCardProps) {
   return (
-    <div 
+    <button 
       className={styles.projectCard} 
-      style={color ? { backgroundColor: color } : {}}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
+      type="button"
+      style={{ 
+        backgroundColor: color || 'var(--color-brand-yellow)', 
+        width: '100%',
+        height: '100%'
+      }}
+      onClick={(e) => {
+        // Simple click handler
+        if (onClick) onClick();
+      }}
     >
       {title && (
         <div className={styles.label}>
           <span className={styles.labelText}>{title}</span>
         </div>
       )}
-    </div>
+    </button>
   );
 }

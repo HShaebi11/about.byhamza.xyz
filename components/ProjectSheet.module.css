@@ -4,23 +4,36 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 1000;
+  background-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  visibility: hidden;
+  opacity: 0;
 }
 
 .sheet {
   background-color: #ffffff;
-  width: calc(100% - 120px);
-  height: calc(100% - 40px);
-  margin-bottom: 0;
+  width: calc(100% - 80px); /* 40px left + 40px right = 80px */
+  height: calc(100% - 40px); /* 40px top gap */
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
+  border: 1px solid var(--color-text-primary);
+  border-bottom: none;
   overflow-y: auto;
+  overscroll-behavior: contain;
   position: relative;
-  box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.1);
+  will-change: transform;
+  /* Hide scrollbar */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.sheet::-webkit-scrollbar {
+  display: none;
 }
 
 .content {
@@ -32,7 +45,7 @@
 
 .header {
   display: grid;
-  grid-template-cols: 1fr 2fr 1fr;
+  grid-template-columns: 1fr 2fr 1fr;
   align-items: flex-start;
   font-family: 'PP Neue Montreal Mono', monospace;
   font-size: 11px;
@@ -97,16 +110,16 @@
   padding: 0;
 }
 
-.mediaSection {
+.mediaSection, .mediaSectionLarge {
   width: 100%;
   height: 600px;
   background-color: #000;
-  border-radius: 12px;
+  border-radius: 0;
 }
 
 .highlightsGrid {
   display: grid;
-  grid-template-cols: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 40px;
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
@@ -123,32 +136,6 @@
   font-family: 'PP Neue Montreal Mono', monospace;
   font-size: 11px;
   line-height: 1.2;
-}
-
-.mainContent {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.paragraph {
-  font-family: 'PP Neue Montreal Mono', monospace;
-  font-size: 14px;
-  line-height: 1.6;
-  text-transform: none; /* Keep original casing for paragraphs */
-}
-
-.blockImage {
-  width: 100%;
-  border-radius: 12px;
-  height: auto;
-}
-
-.loading {
-  font-family: 'PP Neue Montreal Mono', monospace;
-  font-size: 11px;
-  text-align: center;
-  padding: 100px 0;
 }
 
 .footer {
@@ -172,10 +159,8 @@
 
 @media (max-width: 768px) {
   .sheet {
-    width: 100%;
-    height: calc(100% - 60px); /* 40px top + 20px bottom */
-    margin-bottom: 20px;
-    border-radius: 20px;
+    width: calc(100% - 40px); /* 20px left + 20px right = 40px */
+    height: calc(100% - 20px); /* 20px top gap */
   }
   
   .content {
@@ -183,7 +168,7 @@
   }
   
   .header {
-    grid-template-cols: 1fr;
+    grid-template-columns: 1fr;
     gap: 20px;
   }
   
@@ -194,6 +179,6 @@
   }
   
   .highlightsGrid {
-    grid-template-cols: 1fr;
+    grid-template-columns: 1fr;
   }
 }
