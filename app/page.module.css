@@ -488,16 +488,19 @@
   .workSection {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto;
-    grid-auto-rows: minmax(100px, 1fr); /* Allow cards to shrink slightly to fit */
+    grid-auto-rows: auto;
     gap: var(--gap-mobile);
-    height: 100dvh;
+    height: auto;
+    min-height: 100dvh;
     padding: 20px;
   }
   .workHeader {
     gap: var(--gap-mobile);
   }
   .projectCardWrap {
-    min-height: 172px;
+    width: 100%;
+    height: auto;
+    min-height: auto;
     aspect-ratio: 350 / 172;
   }
   .processSection {
