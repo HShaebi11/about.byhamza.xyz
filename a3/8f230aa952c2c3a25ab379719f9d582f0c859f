@@ -1,0 +1,30 @@
+components/ProjectCard.tsx
+  s_d8de3521a6ed73::t_5b408608704802 8,10,23
+next.config.ts
+  s_d8de3521a6ed73::t_467f258310626c 7-19
+components/ProjectCard.module.css
+  s_d8de3521a6ed73::t_2c67f3f18a364f 25-29
+components/ProjectSheet.tsx
+  s_d8de3521a6ed73::t_d0db1e83e987aa 3,18
+components/HomeClient.tsx
+  s_d8de3521a6ed73::t_69c995874fb315 104
+  s_d8de3521a6ed73::t_9d2f3442874abf 434-436,438-439
+  s_d8de3521a6ed73::t_767cbecc667c05 437
+  s_d8de3521a6ed73::t_325c9c77074fdd 13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "a38f230aa952c2c3a25ab379719f9d582f0c859f",
+  "prompts": {},
+  "sessions": {
+    "s_d8de3521a6ed73": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "7f028954-f256-4876-9cda-2ed4abcfef9c",
+        "model": "gemini-3-flash-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
