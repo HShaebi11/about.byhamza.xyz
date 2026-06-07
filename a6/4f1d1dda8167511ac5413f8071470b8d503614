@@ -1,0 +1,55 @@
+app/api/blocks/[id]/route.ts
+  s_2fdead0becdc1a::t_753161d44e674b 1-21
+app/page.tsx
+  s_2fdead0becdc1a::t_671a835f9cf22f 1-12
+app/page.module.css
+  s_d6a50f43a0c06d::t_238679dcd88379 439-440,443-444,451-457
+  s_d6a50f43a0c06d::t_82747a06e94d88 331-340,343-344
+  s_d6a50f43a0c06d::t_080bd141a64e3e 345
+  s_d6a50f43a0c06d::t_40be04feea0be4 341-342
+  s_d6a50f43a0c06d::t_5e5f2437b72f9a 316-322
+components/HomeClient.tsx
+  s_d6a50f43a0c06d::t_8aa9662a0ea542 426
+  s_2fdead0becdc1a::t_ad81d51022313f 1-24,49,248-422,432-442
+  s_d6a50f43a0c06d::t_93cbeb7a7b5a67 51-247
+  s_d6a50f43a0c06d::t_5d346eaffe8e8e 423,431
+  s_d6a50f43a0c06d::t_7c1a8492e66d9b 424-425,427-430
+  s_d6a50f43a0c06d::t_9d5514493136c0 25-48,50
+components/ProjectSheet.tsx
+  s_2fdead0becdc1a::t_41cbe47ed3755c 3,16-17,20-32,45,49,63,69-86,108,123-128,133
+  s_2fdead0becdc1a::t_9c36121464c0a0 1-2,4-15,18-19,33-44,46-48,50-62,64-68,87-107,109-122,129-132,134-139
+lib/notion.ts
+  s_2fdead0becdc1a::t_d753e79dc7d979 1-50
+next.config.ts
+  s_2fdead0becdc1a::t_6d0c8261c82d0a 4-6
+components/ProjectSheet.module.css
+  s_2fdead0becdc1a::t_8849ed1c21202b 128-153
+  s_2fdead0becdc1a::t_744a6fe70f5dda 1-127,154-175,178-199
+  s_2fdead0becdc1a::t_b451982c766559 176-177
+components/ProjectCard.tsx
+  s_2fdead0becdc1a::t_ed40c31c6d426d 6,9,14-16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "a64f1d1dda8167511ac5413f8071470b8d503614",
+  "prompts": {},
+  "sessions": {
+    "s_2fdead0becdc1a": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "a790fcfe-b4b7-4c09-b2e8-69b3831da85c",
+        "model": "gemini-3-flash-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_d6a50f43a0c06d": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "f3e3a59a-3712-4be2-8f59-860234178b30",
+        "model": "gemini-3-flash-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
