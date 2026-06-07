@@ -313,12 +313,36 @@
   margin-top: -1px;
 }
 
+.footerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+}
+
 .ctaText {
   font-size: var(--text-desktop-lg);
   letter-spacing: -5.04px;
   line-height: var(--leading-snug);
   text-align: center;
   max-width: 800px;
+}
+
+.ctaLink {
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.3s ease;
+}
+
+.ctaLink:hover {
+  opacity: 0.8;
+}
+
+/* Underline only the last line of the CTA (Say Hello) */
+.ctaText > span:last-child {
+  text-decoration: underline;
+  text-underline-offset: 10px;
+  margin-top: 40px;
 }
 
 /* Tablet Overrides */
@@ -412,19 +436,24 @@
     letter-spacing: var(--tracking-mobile);
   }
   .footerSection {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 20px;
-    padding: 20px;
-    height: 100dvh;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 20px;
+    height: 100dvh;
   }
   .ctaText {
-    grid-column: 1 / 7;
     text-align: center;
     width: 100%;
     white-space: nowrap;
+  }
+  .footerContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    width: 100%;
   }
   .locationSection {
     grid-template-columns: 1fr 1fr;

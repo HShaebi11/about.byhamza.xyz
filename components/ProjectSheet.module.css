@@ -1,0 +1,199 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.sheet {
+  background-color: #ffffff;
+  width: calc(100% - 120px);
+  height: calc(100% - 40px);
+  margin-bottom: 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.header {
+  display: grid;
+  grid-template-cols: 1fr 2fr 1fr;
+  align-items: flex-start;
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+}
+
+.headerLeft {
+  text-align: left;
+}
+
+.headerCenter {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.projectInfo {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.projectLabel {
+  display: flex;
+  gap: 4px;
+}
+
+.projectName {
+  font-size: 11px;
+  font-weight: normal;
+  margin: 0;
+}
+
+.descriptionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+}
+
+.label {
+  opacity: 0.6;
+}
+
+.descriptionText {
+  margin: 0;
+  line-height: 1.2;
+}
+
+.headerRight {
+  text-align: right;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mediaSection {
+  width: 100%;
+  height: 600px;
+  background-color: #000;
+  border-radius: 12px;
+}
+
+.highlightsGrid {
+  display: grid;
+  grid-template-cols: repeat(4, 1fr);
+  gap: 40px;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  padding: 40px 0;
+}
+
+.highlightItem {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.highlightText {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.paragraph {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  text-transform: none; /* Keep original casing for paragraphs */
+}
+
+.blockImage {
+  width: 100%;
+  border-radius: 12px;
+  height: auto;
+}
+
+.loading {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 11px;
+  text-align: center;
+  padding: 100px 0;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-top: 1px solid #000;
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.footerButton {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .sheet {
+    width: 100%;
+    height: calc(100% - 60px); /* 40px top + 20px bottom */
+    margin-bottom: 20px;
+    border-radius: 20px;
+  }
+  
+  .content {
+    padding: 20px;
+  }
+  
+  .header {
+    grid-template-cols: 1fr;
+    gap: 20px;
+  }
+  
+  .headerRight {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  
+  .highlightsGrid {
+    grid-template-cols: 1fr;
+  }
+}
