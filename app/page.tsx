@@ -15,13 +15,10 @@ gsap.registerPlugin(ScrollToPlugin, Observer, ScrollTrigger);
 // Safari/Mobile Optimizations
 if (typeof window !== "undefined") {
   ScrollTrigger.config({ ignoreMobileResize: true });
-  ScrollTrigger.normalizeScroll(true);
 }
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const currentIndex = useRef(0);
-  const animating = useRef(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -203,40 +200,6 @@ export default function Home() {
         ease: "power3.out",
       });
 
-      // Snapping Logic (Existing)
-      const sections = gsap.utils.toArray('.snap-section') as HTMLElement[];
-      sections.forEach((section, i) => {
-        ScrollTrigger.create({
-          trigger: section,
-          start: "top center",
-          end: "bottom center",
-          onEnter: () => { if (!animating.current) currentIndex.current = i; },
-          onEnterBack: () => { if (!animating.current) currentIndex.current = i; }
-        });
-      });
-
-      const gotoSection = (index: number) => {
-        index = gsap.utils.clamp(0, sections.length - 1, index);
-        if (animating.current || index === currentIndex.current) return;
-        animating.current = true;
-        gsap.to(window, {
-          scrollTo: { y: sections[index], autoKill: false },
-          duration: 1,
-          ease: "power2.inOut",
-          onComplete: () => {
-            currentIndex.current = index;
-            setTimeout(() => { animating.current = false; }, 100);
-          }
-        });
-      };
-
-      const scrollObserver = Observer.create({
-        type: "wheel,touch,keyboard",
-        onDown: () => !animating.current && gotoSection(currentIndex.current + 1),
-        onUp: () => !animating.current && gotoSection(currentIndex.current - 1),
-        tolerance: 20,
-        preventDefault: true
-      });
     }, containerRef);
 
     return () => ctx.revert();
