@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
+import { useEffect } from 'react';
 import styles from './ProjectSheet.module.css';
 
 interface ProjectSheetProps {
@@ -11,40 +10,15 @@ interface ProjectSheetProps {
 }
 
 export default function ProjectSheet({ isOpen, onClose, project }: ProjectSheetProps) {
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const sheetRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-      const tl = gsap.timeline();
-      tl.to(overlayRef.current, {
-        opacity: 1,
-        duration: 0.4,
-        ease: 'power2.out',
-      })
-      .to(sheetRef.current, {
-        y: 0,
-        duration: 0.6,
-        ease: 'power3.out',
-      }, '-=0.2');
     } else {
-      const tl = gsap.timeline({
-        onComplete: () => {
-          document.body.style.overflow = '';
-        }
-      });
-      tl.to(sheetRef.current, {
-        y: '100%',
-        duration: 0.5,
-        ease: 'power3.in',
-      })
-      .to(overlayRef.current, {
-        opacity: 0,
-        duration: 0.3,
-        ease: 'power2.in',
-      }, '-=0.2');
+      document.body.style.overflow = '';
     }
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isOpen]);
 
   if (!project && !isOpen) return null;
@@ -54,16 +28,20 @@ export default function ProjectSheet({ isOpen, onClose, project }: ProjectSheetP
 
   return (
     <div 
-      ref={overlayRef} 
       className={styles.overlay} 
       onClick={onClose}
-      style={{ opacity: 0, pointerEvents: isOpen ? 'all' : 'none' }}
+      style={{ 
+        opacity: isOpen ? 1 : 0, 
+        pointerEvents: isOpen ? 'all' : 'none',
+        display: isOpen ? 'flex' : 'none'
+      }}
     >
       <div 
-        ref={sheetRef} 
         className={styles.sheet} 
         onClick={(e) => e.stopPropagation()}
-        style={{ transform: 'translateY(100%)' }}
+        style={{ 
+          transform: isOpen ? 'translateY(0)' : 'translateY(100%)'
+        }}
       >
         <div className={styles.content}>
           <header className={styles.header}>

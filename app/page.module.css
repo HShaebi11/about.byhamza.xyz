@@ -1,46 +1,26 @@
-/* Animation Initial States */
-.nameText span,
-.navLinkText span,
-.heroBlock,
-.aboutCenterBlock,
-.displayText,
-.locationBlock,
-.projectCard,
-.purpleSquare,
-.ctaText {
-  /* We don't hide them here with opacity 0 because we want them 
-     to be visible if JS is disabled. GSAP will handle the 
-     "from" states which will immediately set them to 0 on load.
-     However, to be safe, we can use a small trick: */
-}
-
-/* Global classes for GSAP targeting */
-:global(.name-char),
-:global(.nav-link-bg),
-:global(.nav-link-text .char),
-:global(.hero-rect),
-:global(.about-rect),
-:global(.about-text),
-:global(.location-rect),
-:global(.location-text),
-:global(.project-card-anim),
-:global(.process-rect),
-:global(.process-text),
-:global(.cta-text-anim) {
-  will-change: transform, opacity;
-}
-
 .main {
+  height: 100dvh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
+:global(.snap-section) {
+  height: 100dvh;
+  min-height: 100dvh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  flex-shrink: 0;
+  width: 100%;
+}
+
 .section {
   padding: var(--padding-desktop);
   width: 100%;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
   border-top: 1px dashed var(--color-text-primary);
   border-bottom: 1px dashed var(--color-text-primary);
   margin-top: -1px;
@@ -51,8 +31,6 @@
   height: 100dvh;
   display: flex;
   flex-direction: column;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
   border-top: 1px dashed var(--color-text-primary);
   border-bottom: 1px dashed var(--color-text-primary);
 }
@@ -163,7 +141,7 @@
 /* Location */
 .locationSection {
   display: grid;
-  grid-template-columns: auto auto 1fr 1fr 1fr;
+  grid-template-columns: auto 1fr 1fr 1fr 1fr;
   grid-template-rows: auto 1fr 1fr 1fr auto;
   gap: var(--gap-desktop);
   height: 100dvh;
@@ -171,11 +149,6 @@
 
 .posLocated {
   grid-column: 1;
-  grid-row: 1;
-}
-
-.posIn {
-  grid-column: 2;
   grid-row: 1;
 }
 
@@ -191,15 +164,15 @@
   text-align: right;
 }
 
-.posAvailable {
-  grid-column: 1;
-  grid-row: 5;
-}
-
 .posWorld {
   grid-column: 3 / span 3;
   grid-row: 5;
   text-align: right;
+}
+
+.posAvailable {
+  grid-column: 1 / span 2;
+  grid-row: 5;
 }
 
 .locationBlock {
@@ -214,41 +187,34 @@
 /* Work */
 .workSection {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: fit-content(100%) 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto repeat(2, minmax(0, 1fr));
   gap: var(--gap-desktop);
   height: 100dvh;
+  min-height: 100dvh;
 }
 
-.posWork {
-  grid-column: 1 / span 2;
-  grid-row: 1;
+.workHeader {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gap-desktop);
 }
 
-.posCount {
-  grid-column: 6;
-  grid-row: 1;
+.workCount {
+  font-size: var(--text-desktop-md);
+  letter-spacing: var(--tracking-desktop);
+  line-height: var(--leading-snug);
   text-align: right;
+  white-space: nowrap;
 }
 
-.card1 {
-  grid-column: 1 / span 3;
-  grid-row: 2 / span 2;
-}
-
-.card2 {
-  grid-column: 4 / span 3;
-  grid-row: 2 / span 2;
-}
-
-.card3 {
-  grid-column: 1 / span 3;
-  grid-row: 4 / span 2;
-}
-
-.card4 {
-  grid-column: 4 / span 3;
-  grid-row: 4 / span 2;
+.projectCardWrap {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  isolation: isolate;
 }
 
 /* Process */
@@ -306,8 +272,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
   border-top: 1px dashed var(--color-text-primary);
   border-bottom: 1px dashed var(--color-text-primary);
   margin-top: -1px;
@@ -360,7 +324,7 @@
     width: 800px;
     height: 931px;
   }
-  .displayText, .ctaText {
+  .displayText, .ctaText, .workCount {
     font-size: var(--text-tablet-md);
     letter-spacing: var(--tracking-tablet);
   }
@@ -381,6 +345,7 @@
   }
   .navGrid {
     flex-direction: column;
+    align-items: flex-start;
     gap: 10px;
   }
   .aboutCenterBlock {
@@ -391,8 +356,7 @@
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, auto);
     gap: var(--gap-mobile);
-    height: auto;
-    min-height: 100dvh;
+    height: 100dvh;
     padding-top: 40px;
     padding-bottom: 40px;
   }
@@ -430,7 +394,7 @@
     justify-self: end;
     align-self: end;
   }
-  .displayText, .ctaText {
+  .displayText, .ctaText, .workCount {
     font-size: var(--text-mobile-md);
     letter-spacing: var(--tracking-mobile);
   }
@@ -460,23 +424,16 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto 1fr 1fr 1fr auto;
     gap: var(--gap-mobile);
-    height: auto;
-    min-height: 100dvh;
+    height: 100dvh;
     padding-top: 40px;
     padding-bottom: 40px;
   }
   .posLocated {
-    grid-column: 1;
+    grid-column: 1 / span 2;
     grid-row: 1;
     text-align: left;
-    width: max-content;
+    width: 100%;
     white-space: nowrap;
-  }
-  .posIn {
-    grid-column: 2;
-    grid-row: 1;
-    text-align: right;
-    justify-self: end;
   }
   .posBHX {
     grid-column: 1;
@@ -495,51 +452,27 @@
     width: 100%;
     height: 100%;
   }
-  .posAvailable {
-    grid-column: 1;
+  .posWorld {
+    grid-column: 1 / span 2;
     grid-row: 6;
     text-align: left;
-  }
-  .posWorld {
-    grid-column: 2;
-    grid-row: 6;
-    text-align: right;
-    justify-self: end;
+    justify-self: start;
     white-space: nowrap;
-  }
-  .posWork {
-    white-space: nowrap;
-    grid-column: 1;
-    grid-row: 1;
-  }
-  .posCount {
-    grid-column: 2;
-    grid-row: 1;
-    text-align: right;
   }
   .workSection {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto repeat(8, 1fr);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-auto-rows: minmax(100px, 1fr); /* Allow cards to shrink slightly to fit */
     gap: var(--gap-mobile);
-    height: auto;
-    min-height: 100dvh;
+    height: 100dvh;
     padding: 20px;
   }
-  .card1 {
-    grid-column: 1 / span 2;
-    grid-row: 2 / span 2;
+  .workHeader {
+    gap: var(--gap-mobile);
   }
-  .card2 {
-    grid-column: 1 / span 2;
-    grid-row: 4 / span 2;
-  }
-  .card3 {
-    grid-column: 1 / span 2;
-    grid-row: 6 / span 2;
-  }
-  .card4 {
-    grid-column: 1 / span 2;
-    grid-row: 8 / span 2;
+  .projectCardWrap {
+    min-height: 172px;
+    aspect-ratio: 350 / 172;
   }
   .processSection {
     display: grid;

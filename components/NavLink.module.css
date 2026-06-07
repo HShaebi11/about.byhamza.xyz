@@ -5,8 +5,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 1;
   transition: opacity 0.2s ease;
+}
+
+.fill {
+  flex: 1;
 }
 
 .navLink:hover {
@@ -32,8 +35,10 @@
 
 @media (max-width: 768px) {
   .navLink {
-    width: 100%;
     padding: 20px;
+  }
+  .fill {
+    width: 100%;
   }
   .navLinkText {
     font-size: var(--text-mobile-sm);
