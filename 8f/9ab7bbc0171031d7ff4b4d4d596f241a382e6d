@@ -1,0 +1,22 @@
+test_click.js
+  s_0b4ed91ff0911c::t_e941a0829b72de 19,29
+  s_0b4ed91ff0911c::t_79356215b6001b 33-41,44,46
+  s_0b4ed91ff0911c::t_a2c4d922668054 42-43
+  s_0b4ed91ff0911c::t_5a4307dbc8abff 1-18,20-28,30-32,45,47-50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "8f9ab7bbc0171031d7ff4b4d4d596f241a382e6d",
+  "prompts": {},
+  "sessions": {
+    "s_0b4ed91ff0911c": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "1e6a9e62-9c88-42ea-af80-099bfebbe0ea",
+        "model": "gemini-3.1-pro-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
