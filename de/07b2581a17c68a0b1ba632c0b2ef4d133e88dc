@@ -1,0 +1,22 @@
+app/page.module.css
+  s_a835756082e242::t_2a7c972774139b 311-313
+  s_a835756082e242::t_dcf33db677fd06 44-46,56-57
+components/Divider.module.css
+  s_a835756082e242::t_9675ed6e1baeda 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "de07b2581a17c68a0b1ba632c0b2ef4d133e88dc",
+  "prompts": {},
+  "sessions": {
+    "s_a835756082e242": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "fdda3c8d-2825-47cb-8be9-075032e80d3e",
+        "model": "gemini-3-flash-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
