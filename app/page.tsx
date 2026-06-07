@@ -12,6 +12,12 @@ import styles from './page.module.css';
 
 gsap.registerPlugin(ScrollToPlugin, Observer, ScrollTrigger);
 
+// Safari/Mobile Optimizations
+if (typeof window !== "undefined") {
+  ScrollTrigger.config({ ignoreMobileResize: true });
+  ScrollTrigger.normalizeScroll(true);
+}
+
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const currentIndex = useRef(0);
@@ -147,7 +153,7 @@ export default function Home() {
         .from(".project-card-anim", {
           opacity: 0,
           y: 40,
-          stagger: 0.1,
+          stagger: window.innerWidth <= 768 ? 0.3 : 0.1,
           duration: 0.8,
           ease: "power2.out"
         }, "-=0.4")
