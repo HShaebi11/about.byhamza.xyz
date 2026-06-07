@@ -147,6 +147,35 @@ export default function HomeClient() {
         }, "-=0.6");
 
       // 2. Section Timelines with ScrollTrigger
+
+      // Global Section Snapping
+      ScrollTrigger.create({
+        trigger: document.documentElement,
+        start: "top top",
+        end: "bottom bottom",
+        snap: {
+          snapTo: (progress: number, self?: any) => {
+            if (!self || self.maxScroll === 0) return progress;
+            const sections = gsap.utils.toArray(".snap-section") as HTMLElement[];
+            if (!sections.length) return progress;
+            const scrollTops = sections.map(s => s.offsetTop);
+            const currentScroll = progress * self.maxScroll;
+            let closestIndex = 0;
+            let minDiff = Infinity;
+            scrollTops.forEach((top, i) => {
+              const diff = Math.abs(top - currentScroll);
+              if (diff < minDiff) {
+                minDiff = diff;
+                closestIndex = i;
+              }
+            });
+            return scrollTops[closestIndex] / self.maxScroll;
+          },
+          duration: { min: 0.2, max: 0.5 },
+          delay: 0.1,
+          ease: "power2.inOut"
+        }
+      });
       
       // About Section
       const aboutTl = gsap.timeline({
