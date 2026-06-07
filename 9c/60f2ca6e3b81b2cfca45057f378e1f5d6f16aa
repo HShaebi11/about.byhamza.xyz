@@ -1,0 +1,23 @@
+app/page.tsx
+  s_a78da18c26dd70::t_28dc12b4fd244c 156
+  s_a78da18c26dd70::t_06771def0defda 15-20
+app/page.module.css
+  s_a78da18c26dd70::t_10483d1a0a1f19 46,96,160,211,252,296,405,505
+  s_a78da18c26dd70::t_67edfbbcdac6fa 358,420,481
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "9c60f2ca6e3b81b2cfca45057f378e1f5d6f16aa",
+  "prompts": {},
+  "sessions": {
+    "s_a78da18c26dd70": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "5c3be0c4-0901-4ec3-8d49-95a58a6431f8",
+        "model": "gemini-3-flash-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
