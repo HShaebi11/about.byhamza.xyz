@@ -245,7 +245,7 @@ export default function Home() {
           <nav className={styles.navGrid}>
             <NavLink text="work" />
             <NavLink text="process" />
-            <NavLink text="contact" />
+            <NavLink text="say   hello" href="https://hello.byhamza.xyz/" />
           </nav>
         </div>
 
