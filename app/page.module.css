@@ -332,17 +332,16 @@
   text-decoration: none;
   color: inherit;
   transition: opacity 0.3s ease;
+  display: block;
 }
 
 .ctaLink:hover {
   opacity: 0.8;
 }
 
-/* Underline only the last line of the CTA (Say Hello) */
-.ctaText > span:last-child {
-  text-decoration: underline;
-  text-underline-offset: 10px;
-  margin-top: 40px;
+.orangeHighlight {
+  background-color: #ff5c00;
+  border-radius: 4px;
 }
 
 /* Tablet Overrides */
@@ -432,7 +431,7 @@
     align-self: end;
   }
   .displayText, .ctaText {
-    font-size: var(--text-mobile-lg);
+    font-size: var(--text-mobile-md);
     letter-spacing: var(--tracking-mobile);
   }
   .footerSection {
@@ -442,18 +441,20 @@
     justify-content: center;
     padding: 20px;
     height: 100dvh;
+    overflow: hidden;
   }
   .ctaText {
     text-align: center;
     width: 100%;
-    white-space: nowrap;
+    font-size: var(--text-mobile-md); /* Slightly smaller to fit */
   }
   .footerContent {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
+    gap: 20px; /* Tighter gap for mobile */
     width: 100%;
+    max-width: 100%;
   }
   .locationSection {
     grid-template-columns: 1fr 1fr;

@@ -18,9 +18,12 @@ if (typeof window !== "undefined") {
   ScrollTrigger.config({ ignoreMobileResize: true });
 }
 
-interface HomeClientProps {
-  projects: any[];
-}
+const MOCK_PROJECTS = [
+  { id: '01', title: 'Project One', description: 'A creative exploration of interactive design systems.' },
+  { id: '02', title: 'Dynamic Interface', description: 'Building fluid components for modern web applications.' },
+  { id: '03', title: 'Visual Identity', description: 'Defining brand language through minimal aesthetic.' },
+  { id: '04', title: 'Design Engineering', description: 'Bridging the gap between design and technical implementation.' }
+];
 
 const splitText = (text: string, charClass: string = "name-char") => {
   return text.split('').map((char, i) => (
@@ -30,24 +33,70 @@ const splitText = (text: string, charClass: string = "name-char") => {
   ));
 };
 
-const StaggerText = ({ text, className, charClass }: { text: string, className?: string, charClass: string }) => {
+const StaggerText = ({ text, className, charClass, highlightWord, highlightClass }: { text: string, className?: string, charClass: string, highlightWord?: string, highlightClass?: string }) => {
   const lines = text.split('\n');
   return (
     <div className={className}>
-      {lines.map((line, lineIndex) => (
-        <span key={lineIndex} style={{ display: 'block', textAlign: 'inherit' }}>
-          {line.split('').map((char, charIndex) => (
-            <span key={charIndex} className={charClass} style={{ display: 'inline-block' }}>
-              {char === ' ' ? '\u00A0' : char}
-            </span>
-          ))}
-        </span>
-      ))}
+      {lines.map((line, lineIndex) => {
+        const words = line.split(' ');
+        return (
+          <span key={lineIndex} style={{ display: 'block', textAlign: 'inherit' }}>
+            {words.map((word, wordIndex) => {
+              const isHighlight = highlightWord && word.toLowerCase().includes(highlightWord.toLowerCase());
+              const chars = word.split('');
+              return (
+                <span 
+                  key={wordIndex} 
+                  style={{ 
+                    display: 'inline-block', 
+                    whiteSpace: 'nowrap',
+                    position: 'relative'
+                  }}
+                >
+                  {isHighlight && (
+                    <span 
+                      className={`${highlightClass} highlight-bg`} 
+                      style={{ 
+                        position: 'absolute', 
+                        top: '5%', 
+                        left: '-4px', 
+                        right: '-4px', 
+                        bottom: '5%', 
+                        zIndex: 0,
+                        transformOrigin: 'left'
+                      }} 
+                    />
+                  )}
+                  {chars.map((char, charIndex) => (
+                    <span 
+                      key={charIndex} 
+                      className={charClass} 
+                      style={{ 
+                        display: 'inline-block',
+                        position: 'relative',
+                        zIndex: 1,
+                        color: isHighlight ? '#000000' : 'inherit'
+                      }}
+                    >
+                      {char}
+                    </span>
+                  ))}
+                  {wordIndex < words.length - 1 && (
+                    <span className={charClass} style={{ display: 'inline-block' }}>
+                      {'\u00A0'}
+                    </span>
+                  )}
+                </span>
+              );
+            })}
+          </span>
+        );
+      })}
     </div>
   );
 };
 
-export default function HomeClient({ projects }: HomeClientProps) {
+export default function HomeClient() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -196,7 +245,7 @@ export default function HomeClient({ projects }: HomeClientProps) {
           ease: "power2.out"
         }, "-=0.4")
         .to(workCount, {
-          val: projects.length || 4,
+          val: MOCK_PROJECTS.length,
           duration: 2,
           ease: "power2.inOut",
           onUpdate: () => {
@@ -228,23 +277,32 @@ export default function HomeClient({ projects }: HomeClientProps) {
         }, "-=0.8");
 
       // Footer Section
-      gsap.from(".cta-text-char", {
+      const footerTl = gsap.timeline({
         scrollTrigger: {
           trigger: ".footer-section",
           start: "top 70%",
           toggleActions: "restart none none none",
-        },
-        opacity: 0,
-        y: 20,
-        stagger: 0.02,
-        duration: 0.8,
-        ease: "power3.out",
+        }
       });
+
+      footerTl
+        .from(".cta-text-char", {
+          opacity: 0,
+          y: 20,
+          stagger: 0.02,
+          duration: 0.8,
+          ease: "power3.out",
+        })
+        .from(".highlight-bg", {
+          scaleX: 0,
+          duration: 0.6,
+          ease: "power3.inOut"
+        }, "-=0.2");
 
     }, containerRef);
 
     return () => ctx.revert();
-  }, [projects.length]);
+  }, []);
 
   return (
     <>
@@ -359,34 +417,17 @@ export default function HomeClient({ projects }: HomeClientProps) {
             charClass="work-text-char" 
           />
           <div className={`${styles.displayText} ${styles.posCount} work-count`}>
-            [{projects.length || 4}]
+            [{MOCK_PROJECTS.length}]
           </div>
 
-          {projects.length > 0 ? (
-            projects.map((project, index) => (
-              <div key={project.id} className={`${styles[`card${index + 1}`] || styles.card1} project-card-anim`}>
-                <ProjectCard 
-                  title={project.properties.Name.title[0]?.plain_text} 
-                  onClick={() => openProject(project)}
-                />
-              </div>
-            ))
-          ) : (
-            <>
-              <div className={`${styles.card1} project-card-anim`}>
-                <ProjectCard title="project name here" />
-              </div>
-              <div className={`${styles.card2} project-card-anim`}>
-                <ProjectCard title="another project" />
-              </div>
-              <div className={`${styles.card3} project-card-anim`}>
-                <ProjectCard title="creative work" />
-              </div>
-              <div className={`${styles.card4} project-card-anim`}>
-                <ProjectCard title="design engineering" />
-              </div>
-            </>
-          )}
+          {MOCK_PROJECTS.map((project, index) => (
+            <div key={project.id} className={`${styles[`card${index + 1}`] || styles.card1} project-card-anim`}>
+              <ProjectCard 
+                title={project.title} 
+                onClick={() => openProject(project)}
+              />
+            </div>
+          ))}
         </section>
 
         {/* Process Section */}
@@ -423,9 +464,11 @@ export default function HomeClient({ projects }: HomeClientProps) {
           <div className={styles.footerContent}>
             <a href="https://hello.byhamza.xyz/" className={styles.ctaLink}>
               <StaggerText 
-                text={"let’s build\nor chat\nabout\nsomething\n[Say Hello]"} 
+                text={"let’s build\nor chat\nabout\nsomething"} 
                 className={styles.ctaText} 
                 charClass="cta-text-char" 
+                highlightWord="chat"
+                highlightClass={styles.orangeHighlight}
               />
             </a>
           </div>
