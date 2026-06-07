@@ -176,14 +176,14 @@ export default function HomeClient() {
           
           <div className={styles.locationBlock} />
 
-          <StaggerText 
-            text="available" 
-            className={`${styles.displayText} ${styles.posAvailable}`} 
-          />
-          <StaggerText 
-            text="worldwide" 
-            className={`${styles.displayText} ${styles.posWorld}`} 
-          />
+          <div className={styles.posAvailable}>
+            <StaggerText text="avail" className={styles.displayText} />
+            <StaggerText text="able" className={styles.displayText} />
+          </div>
+          <div className={styles.posWorld}>
+            <StaggerText text="world" className={styles.displayText} />
+            <StaggerText text="wide" className={styles.displayText} />
+          </div>
         </section>
 
         {/* Work Section */}

@@ -173,11 +173,14 @@
   grid-column: 3 / span 3;
   grid-row: 5;
   text-align: right;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .posAvailable {
   grid-column: 1 / span 2;
   grid-row: 5;
+  display: flex;
 }
 
 .locationBlock {
@@ -469,18 +472,18 @@
     grid-row: 6;
     text-align: right;
     justify-self: end;
-    overflow-wrap: break-word;
-    word-break: break-word;
-    hyphens: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
   }
   .posAvailable {
     grid-column: 1;
     grid-row: 6;
     text-align: left;
     justify-self: start;
-    overflow-wrap: break-word;
-    word-break: break-word;
-    hyphens: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
   .workSection {
     grid-template-columns: minmax(0, 1fr);
