@@ -1,142 +1,552 @@
-.page {
-  --background: #fafafa;
-  --foreground: #fff;
+/* Animation Initial States */
+.nameText span,
+.navLinkText span,
+.heroBlock,
+.aboutCenterBlock,
+.displayText,
+.locationBlock,
+.projectCard,
+.purpleSquare,
+.ctaText {
+  /* We don't hide them here with opacity 0 because we want them 
+     to be visible if JS is disabled. GSAP will handle the 
+     "from" states which will immediately set them to 0 on load.
+     However, to be safe, we can use a small trick: */
+}
 
-  --text-primary: #000;
-  --text-secondary: #666;
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
-
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-geist-sans);
-  background-color: var(--background);
+/* Global classes for GSAP targeting */
+:global(.name-char),
+:global(.nav-link-bg),
+:global(.nav-link-text .char),
+:global(.hero-rect),
+:global(.about-rect),
+:global(.about-text),
+:global(.location-rect),
+:global(.location-text),
+:global(.project-card-anim),
+:global(.process-rect),
+:global(.process-text),
+:global(.cta-text-anim) {
+  will-change: transform, opacity;
 }
 
 .main {
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
+}
+
+.section {
+  padding: var(--padding-desktop);
+  width: 100%;
+}
+
+/* Intro Wrapper (Header + Nav + Hero = 100vh) */
+.introSection {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 33.86px var(--padding-desktop);
+  flex-shrink: 0;
+}
+
+.nameText {
+  font-size: var(--text-desktop-sm);
+  letter-spacing: var(--tracking-desktop);
+  line-height: var(--leading-tight);
+}
+
+.navSection {
+  padding: 33.86px var(--padding-desktop);
+  flex-shrink: 0;
+}
+
+.navGrid {
+  display: flex;
+  gap: 16.93px;
+}
+
+.heroSection {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  min-height: 0; /* Important for flex-shrink/grow behavior */
+}
+
+.heroBlock {
+  background-color: var(--color-brand-blue);
+  border-radius: var(--radius-md);
   flex: 1;
   width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
 }
 
-.intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 24px;
+/* Anti-Disciplinarity (Complex Section) */
+.aboutSection {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: auto 1fr auto 1fr auto;
+  gap: var(--gap-desktop);
+  height: 100vh;
 }
 
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
+.aboutCenterBlock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1200px;
+  height: 728px;
+  background-color: var(--color-brand-yellow);
+  border-radius: var(--radius-lg);
+  padding: 80px;
+  z-index: -1;
 }
 
-.intro p {
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
-  color: var(--text-secondary);
+.displayText {
+  font-size: var(--text-desktop-md);
+  letter-spacing: var(--tracking-desktop);
+  line-height: var(--leading-snug);
+  z-index: 1;
+  text-transform: uppercase;
 }
 
-.intro a {
-  font-weight: 500;
-  color: var(--text-primary);
+/* Grid Positioning for Anti-Disciplinarity */
+.posAnti {
+  grid-column: 1 / span 3;
+  grid-row: 1;
 }
 
-.ctas {
-  display: flex;
-  flex-direction: row;
+.posDesign {
+  grid-column: 4 / span 2;
+  grid-row: 1;
+  text-align: right;
+}
+
+.posFor {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.posArrows {
+  grid-column: 3 / span 2;
+  grid-row: 3;
+  text-align: center;
+}
+
+.posCultural {
+  grid-column: 1 / span 2;
+  grid-row: 5;
+}
+
+.posPractices {
+  grid-column: 4 / span 2;
+  grid-row: 5;
+  text-align: right;
+}
+
+/* Location */
+.locationSection {
+  display: grid;
+  grid-template-columns: auto auto 1fr 1fr 1fr;
+  grid-template-rows: auto 1fr 1fr 1fr auto;
+  gap: var(--gap-desktop);
+  height: 100vh;
+}
+
+.posLocated {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.posIn {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.posBHX {
+  grid-column: 4;
+  grid-row: 1;
+  text-align: right;
+}
+
+.posLON {
+  grid-column: 5;
+  grid-row: 1;
+  text-align: right;
+}
+
+.posAvailable {
+  grid-column: 1;
+  grid-row: 5;
+}
+
+.posWorld {
+  grid-column: 3 / span 3;
+  grid-row: 5;
+  text-align: right;
+}
+
+.locationBlock {
+  grid-column: 1 / span 5;
+  grid-row: 2 / span 3;
+  background-color: var(--color-brand-yellow);
+  border-radius: var(--radius-xl);
   width: 100%;
-  max-width: 440px;
-  gap: 16px;
-  font-size: 14px;
+  height: 100%;
 }
 
-.ctas a {
+/* Work */
+.workSection {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: fit-content(100%) 1fr 1fr 1fr 1fr;
+  gap: var(--gap-desktop);
+  height: 100vh;
+}
+
+.posWork {
+  grid-column: 1 / span 2;
+  grid-row: 1;
+}
+
+.posCount {
+  grid-column: 6;
+  grid-row: 1;
+  text-align: right;
+}
+
+.card1 {
+  grid-column: 1 / span 3;
+  grid-row: 2 / span 2;
+}
+
+.card2 {
+  grid-column: 4 / span 3;
+  grid-row: 2 / span 2;
+}
+
+.card3 {
+  grid-column: 1 / span 3;
+  grid-row: 4 / span 2;
+}
+
+.card4 {
+  grid-column: 4 / span 3;
+  grid-row: 4 / span 2;
+}
+
+/* Process */
+.processSection {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: auto 1fr 1fr 1fr auto;
+  gap: var(--gap-desktop);
+  height: 100vh;
+}
+
+.posProcess {
+  grid-column: 1 / span 2;
+  grid-row: 1;
+}
+
+.posConcept {
+  grid-column: 4 / span 2;
+  grid-row: 1;
+  text-align: right;
+}
+
+.posBuild {
+  grid-column: 1;
+  grid-row: 5;
+}
+
+.posShip {
+  grid-column: 4 / span 2;
+  grid-row: 5;
+  text-align: right;
+}
+
+.processContent {
+  grid-column: 1 / span 5;
+  grid-row: 2 / span 3;
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
-  cursor: pointer;
-  width: fit-content;
-  font-weight: 500;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
-  gap: 8px;
+.purpleSquare {
+  background-color: var(--color-brand-purple);
+  border-radius: var(--radius-2xl);
+  width: 275px; /* Based on mobile design context for this specific element */
+  height: 275px;
 }
 
-a.secondary {
-  border-color: var(--button-secondary-border);
+/* Footer */
+.footerSection {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
+.ctaText {
+  font-size: var(--text-desktop-lg);
+  letter-spacing: -5.04px;
+  line-height: var(--leading-snug);
+  text-align: center;
+  max-width: 800px;
+}
 
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
+/* Tablet Overrides */
+@media (max-width: 1024px) {
+  .section {
+    padding: var(--padding-mobile);
+  }
+  .header, .navSection {
+    padding: 33.86px var(--padding-mobile);
+  }
+  .nameText {
+    font-size: var(--text-tablet-sm);
+    letter-spacing: var(--tracking-tablet);
+  }
+  .aboutCenterBlock {
+    width: 800px;
+    height: 931px;
+  }
+  .displayText, .ctaText {
+    font-size: var(--text-tablet-md);
+    letter-spacing: var(--tracking-tablet);
   }
 }
 
-@media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
+/* Mobile Overrides */
+@media (max-width: 768px) {
+  .header {
+    padding: 20px;
+    font-size: var(--text-mobile-md);
   }
-
-  .intro {
-    gap: 16px;
+  .nameText {
+    font-size: var(--text-mobile-md);
+    letter-spacing: var(--tracking-mobile);
   }
-
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
+  .navSection {
+    padding: 20px;
   }
-}
-
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
+  .navGrid {
+    flex-direction: column;
+    gap: 10px;
   }
-
-  .page {
-    --background: #000;
-    --foreground: #000;
-
-    --text-primary: #ededed;
-    --text-secondary: #999;
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
+  .aboutCenterBlock {
+    width: 375px;
+    height: 453px;
+  }
+  .aboutSection {
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, auto);
+    gap: var(--gap-mobile);
+    height: auto;
+    min-height: 100vh;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  .posAnti {
+    grid-column: 1 / 6;
+    grid-row: 1;
+    text-align: left;
+  }
+  .posDesign {
+    grid-column: 1 / 6;
+    grid-row: 2;
+    text-align: right;
+    justify-self: end;
+  }
+  .posFor {
+    grid-column: 1 / 3;
+    grid-row: 3;
+    text-align: left;
+  }
+  .posArrows {
+    grid-column: 3 / 5;
+    grid-row: 3;
+    text-align: center;
+    justify-self: center;
+  }
+  .posCultural {
+    grid-column: 1 / 6;
+    grid-row: 4;
+    text-align: left;
+  }
+  .posPractices {
+    grid-column: 1 / 6;
+    grid-row: 5;
+    text-align: right;
+    justify-self: end;
+    align-self: end;
+  }
+  .displayText, .ctaText {
+    font-size: var(--text-mobile-lg);
+    letter-spacing: var(--tracking-mobile);
+  }
+  .footerSection {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+    padding: 20px;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+  }
+  .ctaText {
+    grid-column: 1 / 7;
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;
+  }
+  .locationSection {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto 1fr 1fr 1fr auto;
+    gap: var(--gap-mobile);
+    height: auto;
+    min-height: 100vh;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  .posLocated {
+    grid-column: 1;
+    grid-row: 1;
+    text-align: left;
+    width: max-content;
+    white-space: nowrap;
+  }
+  .posIn {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: right;
+    justify-self: end;
+  }
+  .posBHX {
+    grid-column: 1;
+    grid-row: 2;
+    text-align: left;
+  }
+  .posLON {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: right;
+    justify-self: end;
+  }
+  .locationBlock {
+    grid-column: 1 / span 2;
+    grid-row: 3 / span 3;
+    width: 100%;
+    height: 100%;
+  }
+  .posAvailable {
+    grid-column: 1;
+    grid-row: 6;
+    text-align: left;
+  }
+  .posWorld {
+    grid-column: 2;
+    grid-row: 6;
+    text-align: right;
+    justify-self: end;
+    white-space: nowrap;
+  }
+  .posWork {
+    white-space: nowrap;
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .posCount {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: right;
+  }
+  .workSection {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto repeat(8, 1fr);
+    gap: var(--gap-mobile);
+    height: auto;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .card1 {
+    grid-column: 1 / span 2;
+    grid-row: 2 / span 2;
+  }
+  .card2 {
+    grid-column: 1 / span 2;
+    grid-row: 4 / span 2;
+  }
+  .card3 {
+    grid-column: 1 / span 2;
+    grid-row: 6 / span 2;
+  }
+  .card4 {
+    grid-column: 1 / span 2;
+    grid-row: 8 / span 2;
+  }
+  .processSection {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: var(--gap-mobile);
+    height: 100vh;
+    padding: 20px;
+    position: relative;
+  }
+  .posProcess {
+    grid-column: 1 / 4;
+    grid-row: 1;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .posConcept {
+    grid-column: 3 / 6;
+    grid-row: 2;
+    text-align: right;
+    justify-self: end;
+    align-self: start;
+    width: fit-content;
+    white-space: nowrap;
+  }
+  .processContent {
+    grid-column: 1 / 6;
+    grid-row: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .purpleSquare {
+    width: 200px;
+    height: 200px;
+    background-color: var(--color-brand-purple);
+    border-radius: var(--radius-2xl);
+  }
+  .posBuild {
+    grid-column: 1 / 4;
+    grid-row: 4;
+    text-align: left;
+    align-self: end;
+    white-space: nowrap;
+  }
+  .posShip {
+    grid-column: 4 / 6;
+    grid-row: 4;
+    text-align: right;
+    justify-self: end;
+    align-self: end;
+    white-space: nowrap;
   }
 }

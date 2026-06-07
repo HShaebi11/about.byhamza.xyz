@@ -1,0 +1,53 @@
+.projectCard {
+  background-color: var(--color-brand-yellow);
+  border-radius: var(--radius-2xl);
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.label {
+  background-color: white;
+  padding: 12px 20px 10px; /* Slightly less at bottom to balance visual center */
+  border-radius: var(--radius-2xl);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.projectCard:hover .label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .label {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.labelText {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 16px;
+  color: black;
+  letter-spacing: -1.6px;
+  white-space: nowrap;
+  line-height: 0.85; /* Pulls text up slightly */
+  text-transform: uppercase;
+  display: block;
+  /* Vertical Trim */
+  text-box-trim: both;
+  text-box-edge: cap alphabetic;
+}
