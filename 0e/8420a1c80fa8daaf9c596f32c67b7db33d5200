@@ -1,0 +1,31 @@
+app/page.module.css
+  s_3dbddcf0f87370::t_207b2d5ecb308b 438,441-446
+  s_3dbddcf0f87370::t_ee582eb79159ff 340
+  s_3dbddcf0f87370::t_9e5a99ab44feb8 355,357
+  s_3dbddcf0f87370::t_e0d2182c75e9cf 435
+  s_3dbddcf0f87370::t_9cc49efef7fba2 466-473
+  s_3dbddcf0f87370::t_8c99221e848a6e 155-158
+  s_3dbddcf0f87370::t_b0ae9be00f1f54 368
+  s_3dbddcf0f87370::t_5c70a7c5d66dbf 339,341
+components/HomeClient.tsx
+  s_3dbddcf0f87370::t_3b59521ee0a1d5 161,164-166
+  s_3dbddcf0f87370::t_4e5ac3f871a262 110-111,190,212
+components/NavLink.module.css
+  s_3dbddcf0f87370::t_5529b95e4920c3 39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "0e8420a1c80fa8daaf9c596f32c67b7db33d5200",
+  "prompts": {},
+  "sessions": {
+    "s_3dbddcf0f87370": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "b111d0c9-9332-46f3-87e3-aa78145bc219",
+        "model": "gemini-3.1-pro-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
