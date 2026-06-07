@@ -152,8 +152,8 @@ export default function HomeClient() {
       const aboutTl = gsap.timeline({
         scrollTrigger: {
           trigger: ".about-section",
-          start: "top 70%",
-          toggleActions: "restart none none none",
+          start: "top 85%",
+          toggleActions: "play none none none",
         }
       });
       aboutTl
@@ -174,8 +174,8 @@ export default function HomeClient() {
       const locationTl = gsap.timeline({
         scrollTrigger: {
           trigger: ".location-section",
-          start: "top 70%",
-          toggleActions: "restart none none none",
+          start: "top 85%",
+          toggleActions: "play none none none",
         }
       });
       locationTl
@@ -224,8 +224,8 @@ export default function HomeClient() {
       const workTl = gsap.timeline({
         scrollTrigger: {
           trigger: ".work-section",
-          start: "top 70%",
-          toggleActions: "restart none none none",
+          start: "top 85%",
+          toggleActions: "play none none none",
         }
       });
 
@@ -258,8 +258,8 @@ export default function HomeClient() {
       const processTl = gsap.timeline({
         scrollTrigger: {
           trigger: ".process-section",
-          start: "top 70%",
-          toggleActions: "restart none none none",
+          start: "top 85%",
+          toggleActions: "play none none none",
         }
       });
       processTl
@@ -280,8 +280,8 @@ export default function HomeClient() {
       const footerTl = gsap.timeline({
         scrollTrigger: {
           trigger: ".footer-section",
-          start: "top 70%",
-          toggleActions: "restart none none none",
+          start: "top 85%",
+          toggleActions: "play none none none",
         }
       });
 
@@ -298,6 +298,16 @@ export default function HomeClient() {
           duration: 0.6,
           ease: "power3.inOut"
         }, "-=0.2");
+
+      // Force a refresh after a small delay to ensure calculations are correct 
+      // after fonts load and initial layout is complete, especially on mobile.
+      const timeoutId = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 500);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
 
     }, containerRef);
 
