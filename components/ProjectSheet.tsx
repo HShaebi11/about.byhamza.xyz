@@ -37,7 +37,7 @@ export default function ProjectSheet({ isOpen, onClose, project }: ProjectSheetP
         className={styles.sheet} 
         onClick={(e) => e.stopPropagation()}
         style={{ 
-          transform: isOpen ? 'translateY(0)' : 'translateY(calc(100% + env(safe-area-inset-bottom) + 72px))'
+          transform: isOpen ? 'translateY(0)' : 'translateY(calc(100% + 72px))'
         }}
       >
         <div className={styles.content}>

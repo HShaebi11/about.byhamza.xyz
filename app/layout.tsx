@@ -3,7 +3,6 @@ import "./globals.css";
 
 export const viewport: Viewport = {
   viewportFit: 'cover',
-  themeColor: '#ebebeb',
 };
 
 export const metadata: Metadata = {
@@ -18,11 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        <div className="safari-safearea-shim top" aria-hidden="true" />
-        <div className="safari-safearea-shim bottom" aria-hidden="true" />
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

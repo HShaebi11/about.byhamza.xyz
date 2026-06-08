@@ -9,7 +9,6 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .overlayBackdrop {
@@ -17,7 +16,7 @@
   top: 0;
   left: 0;
   right: 0;
-  bottom: env(safe-area-inset-bottom, 0px);
+  bottom: 0;
   background-color: rgba(0, 0, 0, 0.4);
   z-index: -1;
 }
@@ -29,7 +28,6 @@
   margin: 40px 40px 0;
   margin-bottom: 0;
   border-radius: 20px 20px 0 0;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
   overflow-y: auto;
   position: relative;
   border: 1px solid #000;
@@ -190,7 +188,6 @@
     margin: 60px 20px 0;
     margin-bottom: 0;          /* CHANGED from 20px */
     border-radius: 20px 20px 0 0; /* CHANGED — flat bottom */
-    padding-bottom: env(safe-area-inset-bottom, 0px); /* NEW */
     background-color: #ffffff;
   }
   
