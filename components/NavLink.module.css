@@ -6,11 +6,9 @@
   align-items: center;
   justify-content: center;
   transition: opacity 0.2s ease;
+  flex: 1 1 auto;
 }
 
-.fill {
-  flex: 1;
-}
 
 .navLink:hover {
   opacity: 0.8;
@@ -36,9 +34,6 @@
 @media (max-width: 768px) {
   .navLink {
     padding: 20px;
-    width: 100%;
-  }
-  .fill {
     width: 100%;
   }
   .navLinkText {

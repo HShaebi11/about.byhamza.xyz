@@ -143,6 +143,7 @@ export default function HomeClient() {
             <nav className={`${styles.navGrid} intro-nav`}>
               <NavLink text="work" variant="fill" href="#work" />
               <NavLink text="process" href="#process" />
+              <NavLink text="socials" href="#" />
               <NavLink text="say   hello" href="https://hello.byhamza.xyz/" />
             </nav>
           </div>

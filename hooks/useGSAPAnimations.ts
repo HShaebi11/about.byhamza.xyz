@@ -33,32 +33,44 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       }, i === 0 ? 0 : '-=0.4');
     });
 
-    // Nav links — background scaleX wipe left→right, sequential per link
-    const navLinks = gsap.utils.toArray<HTMLElement>('.intro-nav .nav-link-bg');
-    navLinks.forEach((link, i) => {
-      introTl.from(link, {
-        scaleX: 0,
-        transformOrigin: 'left center',
-        duration: 0.5,
+    // Dividers — clip-path wipe left→right mask effect
+    const dividers = gsap.utils.toArray<HTMLElement>('.divider-anim');
+    if (dividers.length) {
+      introTl.from(dividers, {
+        clipPath: 'inset(0% 100% 0% 0%)',
+        duration: 0.8,
+        stagger: 0.2,
         ease: EASE_IN_OUT,
-      }, `-=${i === 0 ? 0.2 : -0.1}`);
-      const chars = link.querySelectorAll<HTMLElement>('.char');
-      if (chars.length) {
-        introTl.from(chars, {
-          y: 20,
-          opacity: 0,
-          duration: 0.35,
-          stagger: 0.03,
-          ease: EASE_OUT,
-        }, '-=0.2');
-      }
-    });
+      }, '-=0.6');
+    }
 
-    // Hero blue block — clip-path wipe upward
-    introTl.from('.intro-hero-block', {
-      clipPath: 'inset(100% 0% 0% 0% round 15px)',
-      duration: 1.0,
+    // Nav links — background scaleX wipe left→right, uniform stagger
+    const navLinks = gsap.utils.toArray<HTMLElement>('.intro-nav .nav-link-bg');
+    introTl.from(navLinks, {
+      scaleX: 0,
+      transformOrigin: 'left center',
+      duration: 0.5,
+      stagger: 0.1,
       ease: EASE_IN_OUT,
+    }, '-=0.2');
+
+    const chars = gsap.utils.toArray<HTMLElement>('.intro-nav .char');
+    if (chars.length) {
+      introTl.from(chars, {
+        y: 20,
+        opacity: 0,
+        duration: 0.35,
+        stagger: 0.02,
+        ease: EASE_OUT,
+      }, '-=0.4');
+    }
+
+    // Hero blue block — smooth scale up
+    introTl.from('.intro-hero-block', {
+      scale: 0,
+      transformOrigin: 'center center',
+      duration: 1.0,
+      ease: 'power3.inOut',
     }, '-=0.4');
 
     introTl.play();
@@ -67,34 +79,32 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
     const aboutTl = gsap.timeline({ paused: true });
 
     aboutTl.from('.about-bg-block', {
-      scale: 0.7,
-      opacity: 0,
-      duration: 0.6,
-      ease: EASE_OUT,
+      scale: 0,
+      transformOrigin: 'center center',
+      duration: 1.0,
+      ease: 'power3.inOut',
     });
 
-    const aboutGroups: Array<{ selector: string; fromX?: number; fromY?: number }> = [
-      { selector: '.about-anti',      fromX: -80 },
-      { selector: '.about-design',    fromX: 80 },
-      { selector: '.about-for',       fromY: 60 },
-      { selector: '.about-arrows',    fromY: -60 },
-      { selector: '.about-cultural',  fromX: -80 },
-      { selector: '.about-practices', fromX: 80 },
+    const aboutGroups = [
+      '.about-anti',
+      '.about-design',
+      '.about-for',
+      '.about-arrows',
+      '.about-cultural',
+      '.about-practices',
     ];
 
-    aboutGroups.forEach(({ selector, fromX, fromY }, i) => {
+    aboutGroups.forEach((selector, i) => {
       const el = document.querySelector<HTMLElement>(selector);
       if (!el) return;
       const split = SplitText.create(el, { type: 'chars' });
       aboutTl.from(split.chars, {
-        x: fromX ? gsap.utils.wrap([fromX, fromX * 0.5, fromX * 1.5]) : 0,
-        y: fromY ? gsap.utils.wrap([fromY, fromY * 0.5, fromY * 1.5]) : gsap.utils.wrap([-30, 30]),
+        y: 60,
         opacity: 0,
-        rotation: gsap.utils.wrap([-12, 12, -6, 6]),
-        duration: 0.55,
-        stagger: 0.035,
+        duration: DUR,
+        stagger: 0.04,
         ease: EASE_OUT,
-      }, i === 0 ? '-=0.2' : '-=0.3');
+      }, i === 0 ? '-=0.2' : '-=0.4');
     });
 
     ScrollTrigger.create({
@@ -109,10 +119,9 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
 
     locationTl.from('.location-block', {
       scale: 0,
-      opacity: 0,
       transformOrigin: 'center center',
-      duration: 0.8,
-      ease: 'back.out(1.2)',
+      duration: 1.0,
+      ease: 'power3.inOut',
     });
 
     locationTl.from('.location-located', {
@@ -218,35 +227,29 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
 
     processTl.from('.process-square', {
       scale: 0,
-      opacity: 0,
-      duration: 0.7,
-      ease: 'back.out(1.7)',
-    });
-    processTl.to('.process-square', {
-      scale: 1,
-      duration: 0.15,
-      ease: 'power2.inOut',
+      transformOrigin: 'center center',
+      duration: 1.0,
+      ease: 'power3.inOut',
     });
 
     const processGroups = [
-      { selector: '.process-label',   fromY: -60 },
-      { selector: '.process-concept', fromX: 80 },
-      { selector: '.process-build',   fromX: -80, fromY: 30 },
-      { selector: '.process-ship',    fromX: 80,  fromY: 30 },
+      '.process-label',
+      '.process-concept',
+      '.process-build',
+      '.process-ship',
     ];
 
-    processGroups.forEach(({ selector, fromX, fromY }, i) => {
+    processGroups.forEach((selector, i) => {
       const el = document.querySelector<HTMLElement>(selector);
       if (!el) return;
       const split = SplitText.create(el, { type: 'chars' });
       processTl.from(split.chars, {
-        x: fromX ?? 0,
-        y: fromY ?? 0,
+        y: 60,
         opacity: 0,
-        duration: 0.5,
-        stagger: 0.05,
+        duration: DUR,
+        stagger: 0.04,
         ease: EASE_OUT,
-      }, i === 0 ? '-=0.1' : '-=0.3');
+      }, i === 0 ? '-=0.2' : '-=0.4');
     });
 
     ScrollTrigger.create({
