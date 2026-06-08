@@ -1,0 +1,36 @@
+hooks/useGSAPAnimations.ts
+  s_20bd13322759d3::t_128d7f9b69f353 3
+lib/gsap.ts
+  s_20bd13322759d3::t_672d7545814fe2 1-3,5-8
+components/HomeClient.tsx
+  s_20bd13322759d3::t_f84e491e5ac095 161-162,166,171,176
+  s_20bd13322759d3::t_f21259fb40a1cd 145
+  s_20bd13322759d3::t_d5b60a90aeb353 186,191
+  s_20bd13322759d3::t_9111f4619a1140 88-89
+  s_20bd13322759d3::t_1cbf47795f144a 8
+  s_20bd13322759d3::t_df02985d96bf6f 196,199
+  s_20bd13322759d3::t_8acfe861133075 138-139
+  s_20bd13322759d3::t_a6a479005e3390 252,255,259,263,268,272
+  s_20bd13322759d3::t_32950a71585b5f 207,211,214,216
+  s_20bd13322759d3::t_c4effb9f2a8c11 156
+  s_20bd13322759d3::t_bd609922ac140b 47
+  s_20bd13322759d3::t_3d3a0e73e8bba6 220
+  s_20bd13322759d3::t_2e94afc5aea1b1 227,231,233-236,244
+  s_20bd13322759d3::t_1e7bcac8b2620e 277,282
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "7bcee4122543d043febda51cbde13bc48e942993",
+  "prompts": {},
+  "sessions": {
+    "s_20bd13322759d3": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "67a2c98d-b9d1-41cb-9015-6f6bc3f03f39",
+        "model": "unknown"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
