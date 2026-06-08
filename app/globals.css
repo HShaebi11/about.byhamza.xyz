@@ -68,7 +68,7 @@
 }
 
 html {
-  background-color: var(--color-bg-primary);
+  background: transparent;
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
 }
@@ -81,6 +81,7 @@ body {
   font-family: 'PP Mondwest', sans-serif; /* Fallback to sans-serif */
   min-height: 100vh;
   position: relative; /* ADD THIS LINE */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 a {
@@ -92,10 +93,3 @@ a {
 p, div, span, a {
   text-transform: uppercase;
 }
-
-@supports (padding: env(safe-area-inset-bottom)) {
-  body {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-}
-
