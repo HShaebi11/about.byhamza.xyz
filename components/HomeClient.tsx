@@ -34,6 +34,7 @@ const StaggerText = ({ text, className, highlightWord, highlightClass }: { text:
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
+        scroller: '#scroll-container',
         start: 'top 85%',
         toggleActions: 'play none none none'
       }
@@ -130,6 +131,7 @@ export default function HomeClient() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: el,
+          scroller: '#scroll-container',
           start: 'top 90%',
         }
       });
@@ -157,6 +159,7 @@ export default function HomeClient() {
           scale: 1, duration: 1, ease: 'power3.out',
           scrollTrigger: {
             trigger: rect,
+            scroller: '#scroll-container',
             start: 'top 85%',
           }
         }
@@ -176,6 +179,7 @@ export default function HomeClient() {
   return (
     <>
       <main 
+        id="scroll-container"
         className={styles.main} 
         ref={containerRef}
         style={{ overflowY: isSheetOpen ? 'hidden' : 'auto' }}
