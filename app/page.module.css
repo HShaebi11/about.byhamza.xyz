@@ -1,11 +1,11 @@
 .main {
-  background-color: var(--color-bg-primary);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
 :global(.snap-section) {
+  background-color: var(--color-bg-primary);
   height: 100vh;
   min-height: 100vh;
   scroll-snap-align: start;
