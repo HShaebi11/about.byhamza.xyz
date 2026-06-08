@@ -1,0 +1,25 @@
+components/HomeClient.tsx
+  s_06dfa8cad1fc5f::t_4ce3e98141f698 106,116
+components/ProjectSheet.module.css
+  s_06dfa8cad1fc5f::t_6996fdca7eae73 15-17
+components/Divider.module.css
+  s_06dfa8cad1fc5f::t_224e3eaefb27fb 7-10
+components/Divider.tsx
+  s_06dfa8cad1fc5f::t_9ac8e9ffd5affd 3-8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "3b6453d10374a7c9b82709ab1f092fece1500db2",
+  "prompts": {},
+  "sessions": {
+    "s_06dfa8cad1fc5f": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "d0d4e12e-ae12-4b9b-9bb6-a7348d538ef7",
+        "model": "gemini-3.1-flash-lite"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
