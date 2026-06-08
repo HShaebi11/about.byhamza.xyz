@@ -83,25 +83,31 @@ export default function HomeClient() {
   const openProject = (project: any) => {
     setSelectedProject(project);
     setIsSheetOpen(true);
-    window.history.pushState({ sheet: 'open' }, '');
+    window.history.pushState({ project }, '', '');
   };
 
   const closeProject = () => {
-    setIsSheetOpen(false);
-    if (window.history.state && window.history.state.sheet === 'open') {
+    if (window.history.state && window.history.state.project) {
       window.history.back();
+    } else {
+      setIsSheetOpen(false);
     }
   };
 
   useEffect(() => {
-    const handlePopState = () => {
-      if (isSheetOpen) {
+    const handlePopState = (e: PopStateEvent) => {
+      const state = e.state;
+      if (state && state.project) {
+        setSelectedProject(state.project);
+        setIsSheetOpen(true);
+      } else {
         setIsSheetOpen(false);
       }
     };
+    
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [isSheetOpen]);
+  }, []);
 
   return (
     <>
