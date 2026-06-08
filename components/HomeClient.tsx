@@ -31,10 +31,11 @@ const StaggerText = ({ text, className, highlightWord, highlightClass }: { text:
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
+    const scrollerEl = document.getElementById('scroll-container');
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-        scroller: '#scroll-container',
+        scroller: scrollerEl,
         start: 'top 85%',
         toggleActions: 'play none none none'
       }
@@ -120,6 +121,8 @@ export default function HomeClient() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   useGSAP(() => {
+    const scrollerEl = containerRef.current;
+
     // Name staggering
     gsap.fromTo('.name-char-anim',
       { opacity: 0, y: 30 },
@@ -131,7 +134,7 @@ export default function HomeClient() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: el,
-          scroller: '#scroll-container',
+          scroller: scrollerEl,
           start: 'top 90%',
         }
       });
@@ -159,7 +162,7 @@ export default function HomeClient() {
           scale: 1, duration: 1, ease: 'power3.out',
           scrollTrigger: {
             trigger: rect,
-            scroller: '#scroll-container',
+            scroller: scrollerEl,
             start: 'top 85%',
           }
         }
