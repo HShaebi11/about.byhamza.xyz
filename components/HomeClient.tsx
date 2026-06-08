@@ -95,6 +95,11 @@ export default function HomeClient() {
   };
 
   useEffect(() => {
+    // Clear any leftover history state from before the page reloaded
+    if (typeof window !== 'undefined' && window.history.state) {
+      window.history.replaceState(null, '', window.location.href);
+    }
+
     const handlePopState = (e: PopStateEvent) => {
       const state = e.state;
       if (state && state.project) {
