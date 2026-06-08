@@ -83,11 +83,12 @@ export default function HomeClient() {
   const openProject = (project: any) => {
     setSelectedProject(project);
     setIsSheetOpen(true);
-    window.history.pushState({ project }, '', '');
+    // Use URL hash so Next.js doesn't strip our custom state object
+    window.history.pushState(null, '', `#project-${project.id}`);
   };
 
   const closeProject = () => {
-    if (window.history.state && window.history.state.project) {
+    if (window.location.hash.startsWith('#project-')) {
       window.history.back();
     } else {
       setIsSheetOpen(false);
@@ -95,23 +96,31 @@ export default function HomeClient() {
   };
 
   useEffect(() => {
-    // Clear any leftover history state from before the page reloaded
-    if (typeof window !== 'undefined' && window.history.state) {
-      window.history.replaceState(null, '', window.location.href);
+    // Clear project hash on initial load to ensure a blank canvas
+    if (typeof window !== 'undefined' && window.location.hash.startsWith('#project-')) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
     }
 
-    const handlePopState = (e: PopStateEvent) => {
-      const state = e.state;
-      if (state && state.project) {
-        setSelectedProject(state.project);
-        setIsSheetOpen(true);
-      } else {
-        setIsSheetOpen(false);
+    const handlePopState = () => {
+      const hash = window.location.hash;
+      if (hash.startsWith('#project-')) {
+        const projectId = hash.replace('#project-', '');
+        const project = MOCK_PROJECTS.find((p) => p.id === projectId);
+        if (project) {
+          setSelectedProject(project);
+          setIsSheetOpen(true);
+          return;
+        }
       }
+      setIsSheetOpen(false);
     };
     
     window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener('hashchange', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', handlePopState);
+    };
   }, []);
 
   return (
