@@ -18,6 +18,10 @@ const splitText = (text: string) => {
   return text;
 };
 
+const getSlug = (title: string) => {
+  return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+};
+
 const StaggerText = ({ text, className, highlightWord, highlightClass }: { text: string, className?: string, charClass?: string, highlightWord?: string, highlightClass?: string }) => {
   const lines = text.split('\n');
   return (
@@ -83,12 +87,12 @@ export default function HomeClient() {
   const openProject = (project: any) => {
     setSelectedProject(project);
     setIsSheetOpen(true);
-    // Use URL hash so Next.js doesn't strip our custom state object
-    window.history.pushState(null, '', `#project-${project.id}`);
+    // Use clean pathnames like /project/project-one
+    window.history.pushState(null, '', `/project/${getSlug(project.title)}`);
   };
 
   const closeProject = () => {
-    if (window.location.hash.startsWith('#project-')) {
+    if (window.location.pathname.startsWith('/project/')) {
       window.history.back();
     } else {
       setIsSheetOpen(false);
@@ -97,10 +101,10 @@ export default function HomeClient() {
 
   useEffect(() => {
     const handlePopState = () => {
-      const hash = window.location.hash;
-      if (hash.startsWith('#project-')) {
-        const projectId = hash.replace('#project-', '');
-        const project = MOCK_PROJECTS.find((p) => p.id === projectId);
+      const pathname = window.location.pathname;
+      if (pathname.startsWith('/project/')) {
+        const slug = pathname.replace('/project/', '');
+        const project = MOCK_PROJECTS.find((p) => getSlug(p.title) === slug);
         if (project) {
           setSelectedProject(project);
           setIsSheetOpen(true);
@@ -114,10 +118,8 @@ export default function HomeClient() {
     handlePopState();
     
     window.addEventListener('popstate', handlePopState);
-    window.addEventListener('hashchange', handlePopState);
     return () => {
       window.removeEventListener('popstate', handlePopState);
-      window.removeEventListener('hashchange', handlePopState);
     };
   }, []);
 
