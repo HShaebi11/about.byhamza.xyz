@@ -142,6 +142,7 @@ export default function HomeClient() {
             <nav className={styles.navGrid}>
               <NavLink text="work" variant="fill" href="#work" />
               <NavLink text="process" href="#process" />
+              <NavLink text="socials" href="#" />
               <NavLink text="say   hello" href="https://hello.byhamza.xyz/" />
             </nav>
           </div>
@@ -174,7 +175,7 @@ export default function HomeClient() {
 
           <StaggerText 
             text="→ →" 
-            className={`${styles.displayText} ${styles.posArrows}`} 
+            className={`${styles.displayText} ${styles.posArrows} about-arrows`} 
           />
 
           <StaggerText 

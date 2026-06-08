@@ -81,10 +81,10 @@
 
 .aboutCenterBlock {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  top: 80px;
+  bottom: 80px;
+  left: 80px;
+  right: 80px;
   background-color: var(--color-brand-yellow);
   border-radius: var(--radius-lg);
   z-index: -1;
@@ -321,6 +321,7 @@
     font-size: var(--text-tablet-sm);
     letter-spacing: var(--tracking-tablet);
   }
+
   .aboutCenterBlock {
     top: 20px;
     bottom: 20px;
@@ -349,12 +350,7 @@
   .navSection {
     padding: 20px;
   }
-  .navGrid {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    width: 100%;
-  }
+
   .aboutCenterBlock {
     top: 20px;
     bottom: 20px;
@@ -548,5 +544,48 @@
     justify-self: end;
     align-self: end;
     white-space: nowrap;
+  }
+}
+
+/* --- Orientation Specific NavGrid Overrides --- */
+
+/* Tablet Portrait (e.g. iPad standing up) -> 2x2 Grid */
+@media (max-width: 1024px) and (orientation: portrait) {
+  .navGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+}
+
+/* Tablet Landscape (e.g. iPad sideways) -> Normal Row */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .navGrid {
+    display: flex;
+    flex-direction: row;
+    gap: 16.93px;
+    width: auto;
+  }
+}
+
+/* Mobile Landscape (e.g. iPhone sideways) -> 2x2 Grid to save vertical space */
+@media (max-width: 932px) and (max-height: 500px) and (orientation: landscape) {
+  .navGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+}
+
+/* Mobile Portrait (e.g. iPhone standing up) -> Stack Downwards */
+@media (max-width: 768px) and (orientation: portrait) {
+  .navGrid {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
   }
 }
