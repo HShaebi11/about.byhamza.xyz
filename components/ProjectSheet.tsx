@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
 import styles from './ProjectSheet.module.css';
 
 interface ProjectSheetProps {
@@ -10,6 +12,8 @@ interface ProjectSheetProps {
 }
 
 export default function ProjectSheet({ isOpen, onClose, project }: ProjectSheetProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -21,6 +25,15 @@ export default function ProjectSheet({ isOpen, onClose, project }: ProjectSheetP
     };
   }, [isOpen]);
 
+  useGSAP(() => {
+    if (isOpen) {
+      gsap.fromTo('.stagger-item',
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, stagger: 0.1, duration: 0.6, ease: 'power3.out', delay: 0.3 }
+      );
+    }
+  }, { dependencies: [isOpen], scope: containerRef });
+
   if (!project && !isOpen) return null;
 
   const title = project?.title || 'Untitled Project';
@@ -28,6 +41,7 @@ export default function ProjectSheet({ isOpen, onClose, project }: ProjectSheetP
 
   return (
     <div 
+      ref={containerRef}
       className={styles.overlay} 
       onClick={onClose}
       style={{ 
@@ -40,11 +54,12 @@ export default function ProjectSheet({ isOpen, onClose, project }: ProjectSheetP
         className={styles.sheet} 
         onClick={(e) => e.stopPropagation()}
         style={{ 
-          transform: isOpen ? 'translateY(0)' : 'translateY(100%)'
+          transform: isOpen ? 'translateY(0)' : 'translateY(100%)',
+          transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
         }}
       >
         <div className={styles.content}>
-          <header className={styles.header}>
+          <header className={`${styles.header} stagger-item`}>
             <div className={styles.headerLeft}>
               <span>Hamza Shaebi</span>
             </div>
@@ -65,11 +80,11 @@ export default function ProjectSheet({ isOpen, onClose, project }: ProjectSheetP
             </div>
           </header>
 
-          <div className={styles.mediaSection}>
+          <div className={`${styles.mediaSection} stagger-item`}>
             <div className={styles.mediaPlaceholder} />
           </div>
 
-          <div className={styles.highlightsGrid}>
+          <div className={`${styles.highlightsGrid} stagger-item`}>
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className={styles.highlightItem}>
                 <span className={styles.label}>Description:</span>
@@ -80,11 +95,11 @@ export default function ProjectSheet({ isOpen, onClose, project }: ProjectSheetP
             ))}
           </div>
 
-          <div className={styles.mediaSectionLarge}>
+          <div className={`${styles.mediaSectionLarge} stagger-item`}>
              <div className={styles.mediaPlaceholder} />
           </div>
           
-          <footer className={styles.footer}>
+          <footer className={`${styles.footer} stagger-item`}>
             <button className={styles.footerButton}>Back / Close</button>
             <button className={styles.footerButton} onClick={onClose}>Next Project</button>
           </footer>
@@ -93,3 +108,4 @@ export default function ProjectSheet({ isOpen, onClose, project }: ProjectSheetP
     </div>
   );
 }
+

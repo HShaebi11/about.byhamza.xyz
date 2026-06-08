@@ -73,9 +73,16 @@ export default function ProjectCard({ color, title, className, onClick }: Projec
     >
       {title && (
         <span className={styles.label}>
-          <span className={styles.labelText}>{title}</span>
+          <span className={styles.labelText}>
+            {title.split('').map((char, i) => (
+              <span key={i} className="project-char" style={{ display: 'inline-block' }}>
+                {char === ' ' ? '\u00A0' : char}
+              </span>
+            ))}
+          </span>
         </span>
       )}
     </button>
   );
 }
+

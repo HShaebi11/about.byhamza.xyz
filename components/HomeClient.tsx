@@ -1,11 +1,18 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import Divider from '@/components/Divider';
 import NavLink from '@/components/NavLink';
 import ProjectCard from '@/components/ProjectCard';
 import ProjectSheet from '@/components/ProjectSheet';
 import styles from '../app/page.module.css';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 const MOCK_PROJECTS = [
   { id: '01', title: 'Project One', description: 'A creative exploration of interactive design systems.' },
@@ -15,13 +22,40 @@ const MOCK_PROJECTS = [
 ];
 
 const splitText = (text: string) => {
-  return text;
+  return text.split('').map((char, index) => (
+    <span key={index} className="name-char-anim" style={{ display: 'inline-block' }}>{char === ' ' ? '\u00A0' : char}</span>
+  ));
 };
 
-const StaggerText = ({ text, className, highlightWord, highlightClass }: { text: string, className?: string, charClass?: string, highlightWord?: string, highlightClass?: string }) => {
+const StaggerText = ({ text, className, highlightWord, highlightClass }: { text: string, className?: string, highlightWord?: string, highlightClass?: string }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 85%',
+        toggleActions: 'play none none none'
+      }
+    });
+
+    tl.fromTo(gsap.utils.toArray('.char-anim'), 
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, stagger: 0.03, ease: 'power2.out', duration: 0.6 }
+    );
+
+    if (highlightWord) {
+      tl.fromTo('.highlight-bg', 
+        { scaleX: 0, transformOrigin: 'left center' },
+        { scaleX: 1, duration: 0.4, ease: 'power2.out' },
+        "-=0.2"
+      );
+    }
+  }, { scope: containerRef });
+
   const lines = text.split('\n');
   return (
-    <div className={className}>
+    <div className={className} ref={containerRef}>
       {lines.map((line, lineIndex) => {
         const words = line.split(' ');
         return (
@@ -58,10 +92,14 @@ const StaggerText = ({ text, className, highlightWord, highlightClass }: { text:
                       color: isHighlight ? '#000000' : 'inherit'
                     }}
                   >
-                    {word}
+                    {word.split('').map((char, charIndex) => (
+                      <span key={charIndex} className="char-anim" style={{ display: 'inline-block' }}>
+                        {char}
+                      </span>
+                    ))}
                   </span>
                   {wordIndex < words.length - 1 && (
-                    <span style={{ display: 'inline-block' }}>
+                    <span style={{ display: 'inline-block' }} className="char-anim">
                       {'\u00A0'}
                     </span>
                   )}
@@ -79,6 +117,52 @@ export default function HomeClient() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  useGSAP(() => {
+    // Name staggering
+    gsap.fromTo('.name-char-anim',
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, stagger: 0.05, duration: 0.8, ease: 'power3.out' }
+    );
+
+    // Nav, dividers and buttons slide fade + text stagger
+    gsap.utils.toArray('.slide-fade').forEach((el: any) => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 90%',
+        }
+      });
+
+      tl.fromTo(el,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }
+      );
+
+      const chars = el.querySelectorAll('.char, .project-char');
+      if (chars.length > 0) {
+        tl.fromTo(chars,
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, stagger: 0.02, duration: 0.4, ease: 'power2.out' },
+          "-=0.4"
+        );
+      }
+    });
+
+    // Rectangles scaling
+    gsap.utils.toArray('.scale-rect').forEach((rect: any) => {
+      gsap.fromTo(rect,
+        { scale: 0 },
+        { 
+          scale: 1, duration: 1, ease: 'power3.out',
+          scrollTrigger: {
+            trigger: rect,
+            start: 'top 85%',
+          }
+        }
+      );
+    });
+  }, { scope: containerRef });
 
   const openProject = (project: any) => {
     setSelectedProject(project);
@@ -103,9 +187,9 @@ export default function HomeClient() {
             <div className={styles.nameText}>{splitText("Shaebi")}</div>
           </header>
           
-          <Divider />
+          <div className="slide-fade"><Divider /></div>
 
-          <div className={styles.navSection}>
+          <div className={`${styles.navSection} slide-fade`}>
             <nav className={styles.navGrid}>
               <NavLink text="work" variant="fill" href="#work" />
               <NavLink text="process" href="#process" />
@@ -113,16 +197,16 @@ export default function HomeClient() {
             </nav>
           </div>
 
-          <Divider />
+          <div className="slide-fade"><Divider /></div>
 
           <div className={styles.heroSection}>
-            <div className={styles.heroBlock} />
+            <div className={`${styles.heroBlock} scale-rect`} />
           </div>
         </section>
 
         {/* About Section */}
         <section className={`${styles.section} ${styles.aboutSection} snap-section`}>
-          <div className={styles.aboutCenterBlock} />
+          <div className={`${styles.aboutCenterBlock} scale-rect`} />
           
           <StaggerText 
             text={"anti-\ndisciplinary"} 
@@ -174,7 +258,7 @@ export default function HomeClient() {
             className={`${styles.displayText} ${styles.posLON}`} 
           />
           
-          <div className={styles.locationBlock} />
+          <div className={`${styles.locationBlock} scale-rect`} />
 
           <div className={styles.posAvailable}>
             <StaggerText text="avail" className={styles.displayText} />
@@ -199,12 +283,13 @@ export default function HomeClient() {
           </div>
 
           {MOCK_PROJECTS.map((project) => (
-            <ProjectCard
-              key={project.id}
-              className={styles.projectCardWrap}
-              title={project.title}
-              onClick={() => openProject(project)}
-            />
+            <div key={project.id} className="slide-fade">
+              <ProjectCard
+                className={styles.projectCardWrap}
+                title={project.title}
+                onClick={() => openProject(project)}
+              />
+            </div>
           ))}
         </section>
 
@@ -220,7 +305,7 @@ export default function HomeClient() {
           />
 
           <div className={styles.processContent}>
-            <div className={styles.purpleSquare} />
+            <div className={`${styles.purpleSquare} scale-rect`} />
           </div>
 
           <StaggerText 
@@ -256,3 +341,4 @@ export default function HomeClient() {
     </>
   );
 }
+
