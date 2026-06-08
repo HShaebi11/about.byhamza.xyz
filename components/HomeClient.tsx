@@ -94,7 +94,6 @@ export default function HomeClient() {
       <main 
         className={styles.main} 
         ref={containerRef}
-        style={{ overflowY: isSheetOpen ? 'hidden' : 'auto' }}
       >
         {/* Intro Section */}
         <section className={`${styles.introSection} snap-section`}>
