@@ -22,7 +22,6 @@
   background-color: #ffffff;
   width: calc(100% - 80px);
   height: calc(100vh - 40px);
-  height: calc(100dvh - 40px);
   margin: 40px 40px 0;
   margin-bottom: 0;
   border-radius: 20px 20px 0 0;
