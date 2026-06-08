@@ -1,0 +1,19 @@
+components/HomeClient.tsx
+  s_06dfa8cad1fc5f::t_4ce3e98141f698 190,192,200
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "cb4fbfb99082b94088f48c5169dc698206210941",
+  "prompts": {},
+  "sessions": {
+    "s_06dfa8cad1fc5f": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "d0d4e12e-ae12-4b9b-9bb6-a7348d538ef7",
+        "model": "gemini-3.1-flash-lite"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
