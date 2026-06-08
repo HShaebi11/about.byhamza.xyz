@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .section {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    padding: 40px;
+    border: 1px solid black;
+    box-sizing: border-box;
+    background: #eee;
+  }
+  .child-zero {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 0, 0, 0.5);
+  }
+  .child-forty {
+    position: absolute;
+    top: 40px; left: 40px; right: 40px; bottom: 40px;
+    background: rgba(0, 0, 255, 0.5);
+  }
+</style>
+</head>
+<body>
+  <div class="section">
+    <div class="child-zero"></div>
+  </div>
+  <br>
+  <div class="section">
+    <div class="child-forty"></div>
+  </div>
+</body>
+</html>

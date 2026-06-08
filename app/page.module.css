@@ -86,14 +86,12 @@
 
 .aboutCenterBlock {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 1200px;
-  height: 728px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background-color: var(--color-brand-yellow);
   border-radius: var(--radius-lg);
-  padding: 80px;
   z-index: -1;
 }
 
@@ -329,8 +327,10 @@
     letter-spacing: var(--tracking-tablet);
   }
   .aboutCenterBlock {
-    width: 800px;
-    height: 931px;
+    top: 20px;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
   }
   .displayText, .ctaText, .workCount {
     font-size: var(--text-tablet-md);
@@ -361,9 +361,10 @@
     width: 100%;
   }
   .aboutCenterBlock {
-    width: 375px;
-    max-width: 100%;
-    height: 453px;
+    top: 20px;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
   }
   .aboutSection {
     grid-template-columns: repeat(5, minmax(0, 1fr));
