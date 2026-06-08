@@ -5,7 +5,6 @@ import Divider from '@/components/Divider';
 import NavLink from '@/components/NavLink';
 import ProjectCard from '@/components/ProjectCard';
 import ProjectSheet from '@/components/ProjectSheet';
-import { useGSAPAnimations } from '@/hooks/useGSAPAnimations';
 import styles from '../app/page.module.css';
 
 const MOCK_PROJECTS = [
@@ -44,7 +43,7 @@ const StaggerText = ({ text, className, highlightWord, highlightClass }: { text:
                 >
                   {isHighlight && (
                     <span 
-                      className={`${highlightClass} highlight-bg orange-highlight`} 
+                      className={`${highlightClass} highlight-bg`} 
                       style={{ 
                         position: 'absolute', 
                         top: '5%', 
@@ -85,12 +84,10 @@ export default function HomeClient() {
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-  // GSAP animations
-  useGSAPAnimations(containerRef);
-
   const openProject = (project: any) => {
     setSelectedProject(project);
     setIsSheetOpen(true);
+    // Use clean pathnames like /project/project-one
     window.history.pushState(null, '', `/project/${getSlug(project.title)}`);
   };
 
@@ -117,7 +114,9 @@ export default function HomeClient() {
       setIsSheetOpen(false);
     };
 
+    // Run once on load so shared URLs automatically open the project
     handlePopState();
+    
     window.addEventListener('popstate', handlePopState);
     return () => {
       window.removeEventListener('popstate', handlePopState);
@@ -133,14 +132,14 @@ export default function HomeClient() {
         {/* Intro Section */}
         <section className={`${styles.introSection} snap-section`}>
           <header className={styles.header}>
-            <div className={`${styles.nameText} intro-name`}>{splitText("Hamza")}</div>
-            <div className={`${styles.nameText} intro-name`}>{splitText("Shaebi")}</div>
+            <div className={styles.nameText}>{splitText("Hamza")}</div>
+            <div className={styles.nameText}>{splitText("Shaebi")}</div>
           </header>
           
           <Divider hidden={isSheetOpen} />
 
           <div className={styles.navSection}>
-            <nav className={`${styles.navGrid} intro-nav`}>
+            <nav className={styles.navGrid}>
               <NavLink text="work" variant="fill" href="#work" />
               <NavLink text="process" href="#process" />
               <NavLink text="say   hello" href="https://hello.byhamza.xyz/" />
@@ -150,50 +149,50 @@ export default function HomeClient() {
           <Divider hidden={isSheetOpen} />
 
           <div className={styles.heroSection}>
-            <div className={`${styles.heroBlock} intro-hero-block`} />
+            <div className={styles.heroBlock} />
           </div>
         </section>
 
         {/* About Section */}
-        <section className={`${styles.section} ${styles.aboutSection} snap-section section-about`}>
-          <div className={`${styles.aboutCenterBlock} about-bg-block`} />
+        <section className={`${styles.section} ${styles.aboutSection} snap-section`}>
+          <div className={styles.aboutCenterBlock} />
           
           <StaggerText 
             text={"anti-\ndisciplinary"} 
-            className={`${styles.displayText} ${styles.posAnti} about-anti`} 
+            className={`${styles.displayText} ${styles.posAnti}`} 
           />
           
           <StaggerText 
             text={"& design\nengineer"} 
-            className={`${styles.displayText} ${styles.posDesign} about-design`} 
+            className={`${styles.displayText} ${styles.posDesign}`} 
           />
 
           <StaggerText 
             text="for" 
-            className={`${styles.displayText} ${styles.posFor} about-for`} 
+            className={`${styles.displayText} ${styles.posFor}`} 
           />
 
           <StaggerText 
-            text="\u2192 \u2192" 
-            className={`${styles.displayText} ${styles.posArrows} about-arrows`} 
+            text="→ →" 
+            className={`${styles.displayText} ${styles.posArrows}`} 
           />
 
           <StaggerText 
             text={"cultural\n& creative"} 
-            className={`${styles.displayText} ${styles.posCultural} about-cultural`} 
+            className={`${styles.displayText} ${styles.posCultural}`} 
           />
 
           <StaggerText 
             text={"based\npractices"} 
-            className={`${styles.displayText} ${styles.posPractices} about-practices`} 
+            className={`${styles.displayText} ${styles.posPractices}`} 
           />
         </section>
 
         {/* Location Section */}
-        <section className={`${styles.section} ${styles.locationSection} snap-section section-location`}>
+        <section className={`${styles.section} ${styles.locationSection} snap-section`}>
           <StaggerText 
             text="located" 
-            className={`${styles.displayText} ${styles.posLocated} location-located`} 
+            className={`${styles.displayText} ${styles.posLocated}`} 
           />
           <StaggerText 
             text="in" 
@@ -201,36 +200,33 @@ export default function HomeClient() {
           />
           <StaggerText 
             text="bhx" 
-            className={`${styles.displayText} ${styles.posBHX} location-bhx`} 
+            className={`${styles.displayText} ${styles.posBHX}`} 
           />
           <StaggerText 
             text="lon" 
-            className={`${styles.displayText} ${styles.posLON} location-lon`} 
+            className={`${styles.displayText} ${styles.posLON}`} 
           />
           
-          <div className={`${styles.locationBlock} location-block`} />
+          <div className={styles.locationBlock} />
 
-          <div className={`${styles.posAvailable} location-available`}>
+          <div className={styles.posAvailable}>
             <StaggerText text="avail" className={styles.displayText} />
             <StaggerText text="able" className={styles.displayText} />
           </div>
-          <div className={`${styles.posWorld} location-world`}>
+          <div className={styles.posWorld}>
             <StaggerText text="world" className={styles.displayText} />
             <StaggerText text="wide" className={styles.displayText} />
           </div>
         </section>
 
         {/* Work Section */}
-        <section id="work" className={`${styles.section} ${styles.workSection} snap-section section-work`}>
+        <section id="work" className={`${styles.section} ${styles.workSection} snap-section`}>
           <div className={styles.workHeader}>
             <StaggerText 
               text="work" 
-              className={`${styles.displayText} work-title`} 
+              className={styles.displayText} 
             />
-            <div 
-              className={`${styles.workCount} work-count`}
-              data-count={MOCK_PROJECTS.length}
-            >
+            <div className={styles.workCount}>
               [{MOCK_PROJECTS.length}]
             </div>
           </div>
@@ -238,7 +234,7 @@ export default function HomeClient() {
           {MOCK_PROJECTS.map((project) => (
             <ProjectCard
               key={project.id}
-              className={`${styles.projectCardWrap} work-card`}
+              className={styles.projectCardWrap}
               title={project.title}
               onClick={() => openProject(project)}
             />
@@ -246,37 +242,37 @@ export default function HomeClient() {
         </section>
 
         {/* Process Section */}
-        <section id="process" className={`${styles.section} ${styles.processSection} snap-section section-process`}>
+        <section id="process" className={`${styles.section} ${styles.processSection} snap-section`}>
           <StaggerText 
             text="process:" 
-            className={`${styles.displayText} ${styles.posProcess} process-label`} 
+            className={`${styles.displayText} ${styles.posProcess}`} 
           />
           <StaggerText 
             text="concept" 
-            className={`${styles.displayText} ${styles.posConcept} process-concept`} 
+            className={`${styles.displayText} ${styles.posConcept}`} 
           />
 
           <div className={styles.processContent}>
-            <div className={`${styles.purpleSquare} process-square`} />
+            <div className={styles.purpleSquare} />
           </div>
 
           <StaggerText 
             text="build" 
-            className={`${styles.displayText} ${styles.posBuild} process-build`} 
+            className={`${styles.displayText} ${styles.posBuild}`} 
           />
           <StaggerText 
             text="ship" 
-            className={`${styles.displayText} ${styles.posShip} process-ship`} 
+            className={`${styles.displayText} ${styles.posShip}`} 
           />
         </section>
 
         {/* Footer CTA */}
-        <section className={`${styles.footerSection} snap-section section-footer`}>
+        <section className={`${styles.footerSection} snap-section`}>
           <div className={styles.footerContent}>
             <a href="https://hello.byhamza.xyz/" className={styles.ctaLink}>
               <StaggerText 
                 text={"let's build\nor chat\nabout\nsomething"} 
-                className={`${styles.ctaText} cta-text`} 
+                className={styles.ctaText} 
                 highlightWord="chat"
                 highlightClass={styles.orangeHighlight}
               />
