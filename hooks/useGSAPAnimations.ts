@@ -1,12 +1,7 @@
 'use client';
 
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SplitText } from 'gsap/SplitText';
+import { gsap, useGSAP, ScrollTrigger, SplitText } from '@/lib/gsap';
 import { RefObject } from 'react';
-
-gsap.registerPlugin(ScrollTrigger, SplitText);
 
 export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
   useGSAP(() => {
