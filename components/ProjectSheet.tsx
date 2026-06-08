@@ -30,17 +30,14 @@ export default function ProjectSheet({ isOpen, onClose, project }: ProjectSheetP
     <div 
       className={styles.overlay} 
       onClick={onClose}
-      style={{ 
-        opacity: isOpen ? 1 : 0, 
-        pointerEvents: isOpen ? 'all' : 'none',
-        display: isOpen ? 'flex' : 'none'
-      }}
+      style={{ display: isOpen ? 'flex' : 'none' }}
     >
+      <div className={styles.overlayBackdrop} aria-hidden="true" />
       <div 
         className={styles.sheet} 
         onClick={(e) => e.stopPropagation()}
         style={{ 
-          transform: isOpen ? 'translateY(0)' : 'translateY(100%)'
+          transform: isOpen ? 'translateY(0)' : 'translateY(calc(100% + 72px))'
         }}
       >
         <div className={styles.content}>

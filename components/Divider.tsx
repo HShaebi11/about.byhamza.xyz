@@ -1,5 +1,9 @@
 import styles from './Divider.module.css';
 
-export default function Divider() {
-  return <hr className={`${styles.divider} divider-anim`} />;
+interface DividerProps {
+  hidden?: boolean;
+}
+
+export default function Divider({ hidden }: DividerProps) {
+  return <hr className={`${styles.divider} ${hidden ? styles.hidden : ''} divider-anim`} />;
 }

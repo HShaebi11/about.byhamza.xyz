@@ -18,6 +18,10 @@ const splitText = (text: string) => {
   return text;
 };
 
+const getSlug = (title: string) => {
+  return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+};
+
 const StaggerText = ({ text, className, highlightWord, highlightClass }: { text: string, className?: string, charClass?: string, highlightWord?: string, highlightClass?: string }) => {
   const lines = text.split('\n');
   return (
@@ -83,18 +87,47 @@ export default function HomeClient() {
   const openProject = (project: any) => {
     setSelectedProject(project);
     setIsSheetOpen(true);
+    // Use clean pathnames like /project/project-one
+    window.history.pushState(null, '', `/project/${getSlug(project.title)}`);
   };
 
   const closeProject = () => {
-    setIsSheetOpen(false);
+    if (window.location.pathname.startsWith('/project/')) {
+      window.history.back();
+    } else {
+      setIsSheetOpen(false);
+    }
   };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const pathname = window.location.pathname;
+      if (pathname.startsWith('/project/')) {
+        const slug = pathname.replace('/project/', '');
+        const project = MOCK_PROJECTS.find((p) => getSlug(p.title) === slug);
+        if (project) {
+          setSelectedProject(project);
+          setIsSheetOpen(true);
+          return;
+        }
+      }
+      setIsSheetOpen(false);
+    };
+
+    // Run once on load so shared URLs automatically open the project
+    handlePopState();
+    
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
 
   return (
     <>
       <main 
         className={styles.main} 
         ref={containerRef}
-        style={{ overflowY: isSheetOpen ? 'hidden' : 'auto' }}
       >
         {/* Intro Section */}
         <section className={`${styles.introSection} snap-section`}>
@@ -103,7 +136,7 @@ export default function HomeClient() {
             <div className={styles.nameText}>{splitText("Shaebi")}</div>
           </header>
           
-          <Divider />
+          <Divider hidden={isSheetOpen} />
 
           <div className={styles.navSection}>
             <nav className={styles.navGrid}>
@@ -113,7 +146,7 @@ export default function HomeClient() {
             </nav>
           </div>
 
-          <Divider />
+          <Divider hidden={isSheetOpen} />
 
           <div className={styles.heroSection}>
             <div className={styles.heroBlock} />
