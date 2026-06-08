@@ -16,7 +16,7 @@
 
 :root {
   /* Colors */
-  --color-bg-primary: #ffffff;
+  --color-bg-primary: transparent;
   --color-text-primary: #000000;
   --color-bg-secondary: #ebebeb; /* Nav links */
   
