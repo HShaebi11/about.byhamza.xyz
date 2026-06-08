@@ -25,13 +25,12 @@
   background-color: #ffffff;
   width: calc(100% - 80px);
   height: calc(100vh - 40px);
-  margin: 40px 40px 0;
-  margin-bottom: 0;
-  border-radius: 20px 20px 0 0;
+  margin: 40px 40px;
+  margin-bottom: max(20px, env(safe-area-inset-bottom, 0px));
+  border-radius: 20px;
   overflow-y: auto;
   position: relative;
   border: 1px solid #000;
-  border-bottom: none;
 }
 
 .content {
@@ -185,9 +184,9 @@
   .sheet {
     width: calc(100% - 40px);
     height: calc(100% - 60px);
-    margin: 60px 20px 0;
-    margin-bottom: 0;          /* CHANGED from 20px */
-    border-radius: 20px 20px 0 0; /* CHANGED — flat bottom */
+    margin: 60px 20px;
+    margin-bottom: max(20px, env(safe-area-inset-bottom, 0px));
+    border-radius: 20px;
     background-color: #ffffff;
   }
   
