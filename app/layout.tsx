@@ -10,9 +10,6 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "Hamza Shaebi | Portfolio",
   description: "Anti-disciplinarity & Design Engineer",
-  other: {
-    "theme-color": "#ffffff",
-  },
 };
 
 export default function RootLayout({
