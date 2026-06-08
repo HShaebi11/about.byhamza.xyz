@@ -9,11 +9,15 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .overlayBackdrop {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: env(safe-area-inset-bottom, 0px);
   background-color: rgba(0, 0, 0, 0.4);
   z-index: -1;
 }
