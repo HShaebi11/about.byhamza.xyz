@@ -96,11 +96,6 @@ export default function HomeClient() {
   };
 
   useEffect(() => {
-    // Clear project hash on initial load to ensure a blank canvas
-    if (typeof window !== 'undefined' && window.location.hash.startsWith('#project-')) {
-      window.history.replaceState(null, '', window.location.pathname + window.location.search);
-    }
-
     const handlePopState = () => {
       const hash = window.location.hash;
       if (hash.startsWith('#project-')) {
@@ -114,6 +109,9 @@ export default function HomeClient() {
       }
       setIsSheetOpen(false);
     };
+
+    // Run once on load so shared URLs automatically open the project
+    handlePopState();
     
     window.addEventListener('popstate', handlePopState);
     window.addEventListener('hashchange', handlePopState);
