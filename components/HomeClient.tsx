@@ -174,7 +174,7 @@ export default function HomeClient() {
           />
 
           <StaggerText 
-            text="\u2192 \u2192" 
+            text="→ →" 
             className={`${styles.displayText} ${styles.posArrows} about-arrows`} 
           />
 

@@ -18,10 +18,9 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
     const DUR = 0.7;
 
     // ─── 1. INTRO SECTION ────────────────────────────────────────────────────
-    // Plays on mount — no ScrollTrigger needed for the first section
     const introTl = gsap.timeline({ paused: true });
 
-    // HAMZA / SHAEBI — SplitText chars slide up from y:60, HAMZA first then SHAEBI
+    // HAMZA / SHAEBI — SplitText chars slide up from y:60
     const nameEls = gsap.utils.toArray<HTMLElement>('.intro-name');
     nameEls.forEach((el, i) => {
       const split = SplitText.create(el, { type: 'chars' });
@@ -37,14 +36,12 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
     // Nav links — background scaleX wipe left→right, sequential per link
     const navLinks = gsap.utils.toArray<HTMLElement>('.intro-nav .nav-link-bg');
     navLinks.forEach((link, i) => {
-      // Background wipe: scaleX from 0 to 1
       introTl.from(link, {
         scaleX: 0,
         transformOrigin: 'left center',
         duration: 0.5,
         ease: EASE_IN_OUT,
       }, `-=${i === 0 ? 0.2 : -0.1}`);
-      // Chars inside each nav link slide up after background lands
       const chars = link.querySelectorAll<HTMLElement>('.char');
       if (chars.length) {
         introTl.from(chars, {
@@ -69,7 +66,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
     // ─── 2. ABOUT SECTION ────────────────────────────────────────────────────
     const aboutTl = gsap.timeline({ paused: true });
 
-    // Yellow BG block scales in first
     aboutTl.from('.about-bg-block', {
       scale: 0.7,
       opacity: 0,
@@ -77,7 +73,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       ease: EASE_OUT,
     });
 
-    // Each text group — SplitText chars scattered → place, sequential
     const aboutGroups: Array<{ selector: string; fromX?: number; fromY?: number }> = [
       { selector: '.about-anti',      fromX: -80 },
       { selector: '.about-design',    fromX: 80 },
@@ -112,7 +107,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
     // ─── 3. LOCATION SECTION ─────────────────────────────────────────────────
     const locationTl = gsap.timeline({ paused: true });
 
-    // Yellow rectangle expands from center dot
     locationTl.from('.location-block', {
       scale: 0,
       opacity: 0,
@@ -121,7 +115,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       ease: 'back.out(1.2)',
     });
 
-    // LOCATED slides up from below
     locationTl.from('.location-located', {
       y: 60,
       opacity: 0,
@@ -129,7 +122,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       ease: EASE_OUT,
     }, '-=0.4');
 
-    // BHX — typed in char-by-char
     const bhxEl = document.querySelector<HTMLElement>('.location-bhx');
     if (bhxEl) {
       const bhxSplit = SplitText.create(bhxEl, { type: 'chars' });
@@ -142,7 +134,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       }, '-=0.3');
     }
 
-    // LON — typed in char-by-char after BHX
     const lonEl = document.querySelector<HTMLElement>('.location-lon');
     if (lonEl) {
       const lonSplit = SplitText.create(lonEl, { type: 'chars' });
@@ -155,7 +146,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       }, '-=0.1');
     }
 
-    // AVAILABLE / WORLDWIDE rise up from below
     locationTl.from('.location-available', {
       y: 80,
       opacity: 0,
@@ -179,7 +169,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
     // ─── 4. WORK SECTION ─────────────────────────────────────────────────────
     const workTl = gsap.timeline({ paused: true });
 
-    // WORK title — SplitText chars stagger in
     const workTitleEl = document.querySelector<HTMLElement>('.work-title');
     if (workTitleEl) {
       const workSplit = SplitText.create(workTitleEl, { type: 'chars' });
@@ -192,7 +181,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       });
     }
 
-    // Count animates from 1 to MOCK_PROJECTS.length
     const countEl = document.querySelector<HTMLElement>('.work-count');
     if (countEl) {
       const finalCount = parseInt(countEl.getAttribute('data-count') || '4', 10);
@@ -208,7 +196,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       }, '<0.2');
     }
 
-    // Cards stagger in sequentially y: 80 → 0
     const cards = gsap.utils.toArray<HTMLElement>('.work-card');
     workTl.from(cards, {
       y: 80,
@@ -229,7 +216,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
     // ─── 5. PROCESS SECTION ──────────────────────────────────────────────────
     const processTl = gsap.timeline({ paused: true });
 
-    // Purple square — scale punch 0 → 1.1 → 1
     processTl.from('.process-square', {
       scale: 0,
       opacity: 0,
@@ -242,7 +228,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       ease: 'power2.inOut',
     });
 
-    // Four corner words — SplitText chars, sequential after square lands
     const processGroups = [
       { selector: '.process-label',   fromY: -60 },
       { selector: '.process-concept', fromX: 80 },
@@ -274,7 +259,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
     // ─── 6. FOOTER CTA ───────────────────────────────────────────────────────
     const footerTl = gsap.timeline({ paused: true });
 
-    // Grand reveal — chars stagger up one by one, slow and deliberate
     const ctaEl = document.querySelector<HTMLElement>('.cta-text');
     if (ctaEl) {
       const split = SplitText.create(ctaEl, { type: 'chars' });
@@ -287,7 +271,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       });
     }
 
-    // Orange highlight wipes in last — scaleX 0 → 1, left→right like a signature
     footerTl.from('.orange-highlight', {
       scaleX: 0,
       transformOrigin: 'left center',
