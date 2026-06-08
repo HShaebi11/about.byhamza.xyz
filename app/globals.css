@@ -93,3 +93,22 @@ a {
 p, div, span, a {
   text-transform: uppercase;
 }
+
+/* Safari Chrome Tint Shims */
+@supports (-webkit-touch-callout: none) {
+  .safari-safearea-shim {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--color-bg-secondary);
+    pointer-events: none;
+    z-index: 9999;
+  }
+  .safari-safearea-shim.top {
+    top: 0;
+  }
+  .safari-safearea-shim.bottom {
+    bottom: 0;
+  }
+}
