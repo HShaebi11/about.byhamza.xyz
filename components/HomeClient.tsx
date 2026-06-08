@@ -103,7 +103,7 @@ export default function HomeClient() {
             <div className={styles.nameText}>{splitText("Shaebi")}</div>
           </header>
           
-          <Divider />
+          <Divider hidden={isSheetOpen} />
 
           <div className={styles.navSection}>
             <nav className={styles.navGrid}>
@@ -113,7 +113,7 @@ export default function HomeClient() {
             </nav>
           </div>
 
-          <Divider />
+          <Divider hidden={isSheetOpen} />
 
           <div className={styles.heroSection}>
             <div className={styles.heroBlock} />

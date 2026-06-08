@@ -75,6 +75,7 @@ body {
   color: var(--color-text-primary);
   font-family: 'PP Mondwest', sans-serif; /* Fallback to sans-serif */
   height: 100%;
+  position: relative; /* ADD THIS LINE */
 }
 
 a {
@@ -86,3 +87,10 @@ a {
 p, div, span, a {
   text-transform: uppercase;
 }
+
+@supports (padding: env(safe-area-inset-bottom)) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
