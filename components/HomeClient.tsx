@@ -225,7 +225,7 @@ export default function HomeClient() {
           />
           <StaggerText 
             text="in" 
-            className={`${styles.displayText} ${styles.posIn}`} 
+            className={`${styles.displayText} ${styles.posIn} location-in`} 
           />
           <StaggerText 
             text="bhx" 

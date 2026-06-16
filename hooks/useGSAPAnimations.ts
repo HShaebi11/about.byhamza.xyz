@@ -126,6 +126,18 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       ease: EASE_OUT,
     }, '-=0.4');
 
+    const inEl = document.querySelector<HTMLElement>('.location-in');
+    if (inEl) {
+      const inSplit = SplitText.create(inEl, { type: 'chars' });
+      locationTl.from(inSplit.chars, {
+        opacity: 0,
+        y: 20,
+        duration: 0.3,
+        stagger: 0.08,
+        ease: EASE_OUT,
+      }, '-=0.2');
+    }
+
     const bhxEl = document.querySelector<HTMLElement>('.location-bhx');
     if (bhxEl) {
       const bhxSplit = SplitText.create(bhxEl, { type: 'chars' });
