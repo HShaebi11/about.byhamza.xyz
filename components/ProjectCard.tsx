@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import styles from './ProjectCard.module.css';
 
 interface ProjectCardProps {
+  id?: string;
   color?: string;
   title?: string;
   className?: string;
@@ -12,7 +13,7 @@ interface ProjectCardProps {
 
 const TAP_THRESHOLD_PX = 12;
 
-export default function ProjectCard({ color, title, className, onClick }: ProjectCardProps) {
+export default function ProjectCard({ id, color, title, className, onClick }: ProjectCardProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const touchHandled = useRef(false);
 
@@ -64,6 +65,7 @@ export default function ProjectCard({ color, title, className, onClick }: Projec
 
   return (
     <button
+      id={id}
       ref={buttonRef}
       type="button"
       className={[styles.projectCard, className].filter(Boolean).join(' ')}

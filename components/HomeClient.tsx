@@ -84,10 +84,17 @@ export default function HomeClient() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [originRect, setOriginRect] = useState<DOMRect | null>(null);
 
   useGSAPAnimations(containerRef);
 
   const openProject = (project: any) => {
+    const cardEl = document.getElementById(`project-card-${project.id}`);
+    if (cardEl) {
+      setOriginRect(cardEl.getBoundingClientRect());
+    } else {
+      setOriginRect(null);
+    }
     setSelectedProject(project);
     setIsSheetOpen(true);
     // Use clean pathnames like /project/project-one
@@ -100,6 +107,24 @@ export default function HomeClient() {
     } else {
       setIsSheetOpen(false);
     }
+  };
+
+  const handleNextProject = () => {
+    if (!selectedProject) return;
+    const currentIndex = MOCK_PROJECTS.findIndex(p => p.id === selectedProject.id);
+    const nextIndex = (currentIndex + 1) % MOCK_PROJECTS.length;
+    const nextProject = MOCK_PROJECTS[nextIndex];
+    setSelectedProject(nextProject);
+    window.history.pushState(null, '', `/project/${getSlug(nextProject.title)}`);
+  };
+
+  const handlePrevProject = () => {
+    if (!selectedProject) return;
+    const currentIndex = MOCK_PROJECTS.findIndex(p => p.id === selectedProject.id);
+    const prevIndex = (currentIndex - 1 + MOCK_PROJECTS.length) % MOCK_PROJECTS.length;
+    const prevProject = MOCK_PROJECTS[prevIndex];
+    setSelectedProject(prevProject);
+    window.history.pushState(null, '', `/project/${getSlug(prevProject.title)}`);
   };
 
   useEffect(() => {
@@ -241,6 +266,7 @@ export default function HomeClient() {
           {MOCK_PROJECTS.map((project) => (
             <ProjectCard
               key={project.id}
+              id={`project-card-${project.id}`}
               className={`${styles.projectCardWrap} work-card`}
               title={project.title}
               onClick={() => openProject(project)}
@@ -292,6 +318,9 @@ export default function HomeClient() {
         isOpen={isSheetOpen} 
         onClose={closeProject} 
         project={selectedProject} 
+        onNext={handleNextProject}
+        onPrev={handlePrevProject}
+        originRect={originRect}
       />
     </>
   );
