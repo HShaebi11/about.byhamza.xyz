@@ -112,6 +112,7 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
     // ─── 3. LOCATION SECTION ─────────────────────────────────────────────────
     const locationTl = gsap.timeline({ paused: true });
 
+    // 1. The block (rectangle) scales in FIRST
     locationTl.from('.location-block', {
       scale: 0,
       transformOrigin: 'center center',
@@ -119,49 +120,45 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       ease: 'power3.inOut',
     });
 
-    locationTl.from('.location-located', {
-      y: 60,
-      opacity: 0,
-      duration: DUR,
-      ease: EASE_OUT,
-    }, '-=0.4');
+    // 2. Text ABOVE the rectangle (located, in, bhx, lon)
+    const topGroups = [
+      '.location-located',
+      '.location-in',
+      '.location-bhx',
+      '.location-lon'
+    ];
 
-    const bhxEl = document.querySelector<HTMLElement>('.location-bhx');
-    if (bhxEl) {
-      const bhxSplit = SplitText.create(bhxEl, { type: 'chars' });
-      locationTl.from(bhxSplit.chars, {
+    topGroups.forEach((selector, i) => {
+      const el = document.querySelector<HTMLElement>(selector);
+      if (!el) return;
+      const split = SplitText.create(el, { type: 'chars' });
+      locationTl.from(split.chars, {
+        y: 60,
         opacity: 0,
-        y: 20,
-        duration: 0.3,
-        stagger: 0.08,
+        duration: DUR,
+        stagger: 0.04,
         ease: EASE_OUT,
-      }, '-=0.3');
-    }
+      }, i === 0 ? '-=0.6' : '-=0.4');
+    });
 
-    const lonEl = document.querySelector<HTMLElement>('.location-lon');
-    if (lonEl) {
-      const lonSplit = SplitText.create(lonEl, { type: 'chars' });
-      locationTl.from(lonSplit.chars, {
+    // 3. Text BELOW the rectangle (available, worldwide)
+    const bottomGroups = [
+      '.location-available',
+      '.location-world'
+    ];
+
+    bottomGroups.forEach((selector, i) => {
+      const el = document.querySelector<HTMLElement>(selector);
+      if (!el) return;
+      const split = SplitText.create(el, { type: 'chars' });
+      locationTl.from(split.chars, {
+        y: 60,
         opacity: 0,
-        y: 20,
-        duration: 0.3,
-        stagger: 0.08,
+        duration: DUR,
+        stagger: 0.04,
         ease: EASE_OUT,
-      }, '-=0.1');
-    }
-
-    locationTl.from('.location-available', {
-      y: 80,
-      opacity: 0,
-      duration: DUR,
-      ease: EASE_OUT,
-    }, '-=0.2');
-    locationTl.from('.location-world', {
-      y: 80,
-      opacity: 0,
-      duration: DUR,
-      ease: EASE_OUT,
-    }, '<0.1');
+      }, '-=0.4');
+    });
 
     ScrollTrigger.create({
       trigger: '.section-location',
@@ -220,15 +217,26 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
     // ─── 5. PROCESS SECTION ──────────────────────────────────────────────────
     const processTl = gsap.timeline({ paused: true });
 
+    const processLabelEl = document.querySelector<HTMLElement>('.process-label');
+    if (processLabelEl) {
+      const split = SplitText.create(processLabelEl, { type: 'chars' });
+      processTl.from(split.chars, {
+        y: 60,
+        opacity: 0,
+        duration: DUR,
+        stagger: 0.04,
+        ease: EASE_OUT,
+      });
+    }
+
     processTl.from('.process-square', {
       scale: 0,
       transformOrigin: 'center center',
       duration: 1.0,
       ease: 'power3.inOut',
-    });
+    }, '-=0.4');
 
     const processGroups = [
-      '.process-label',
       '.process-concept',
       '.process-build',
       '.process-ship',
@@ -244,7 +252,7 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
         duration: DUR,
         stagger: 0.04,
         ease: EASE_OUT,
-      }, i === 0 ? '-=0.2' : '-=0.4');
+      }, i === 0 ? '-=0.6' : '-=0.4');
     });
 
     ScrollTrigger.create({
