@@ -220,15 +220,26 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
     // ─── 5. PROCESS SECTION ──────────────────────────────────────────────────
     const processTl = gsap.timeline({ paused: true });
 
+    const processLabelEl = document.querySelector<HTMLElement>('.process-label');
+    if (processLabelEl) {
+      const split = SplitText.create(processLabelEl, { type: 'chars' });
+      processTl.from(split.chars, {
+        y: 60,
+        opacity: 0,
+        duration: DUR,
+        stagger: 0.04,
+        ease: EASE_OUT,
+      });
+    }
+
     processTl.from('.process-square', {
       scale: 0,
       transformOrigin: 'center center',
       duration: 1.0,
       ease: 'power3.inOut',
-    });
+    }, '-=0.4');
 
     const processGroups = [
-      '.process-label',
       '.process-concept',
       '.process-build',
       '.process-ship',
@@ -244,7 +255,7 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
         duration: DUR,
         stagger: 0.04,
         ease: EASE_OUT,
-      }, i === 0 ? '-=0.2' : '-=0.4');
+      }, i === 0 ? '-=0.6' : '-=0.4');
     });
 
     ScrollTrigger.create({
