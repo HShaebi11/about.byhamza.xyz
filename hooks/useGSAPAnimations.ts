@@ -112,6 +112,7 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
     // ─── 3. LOCATION SECTION ─────────────────────────────────────────────────
     const locationTl = gsap.timeline({ paused: true });
 
+    // 1. The block (rectangle) scales in FIRST
     locationTl.from('.location-block', {
       scale: 0,
       transformOrigin: 'center center',
@@ -119,61 +120,45 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       ease: 'power3.inOut',
     });
 
-    locationTl.from('.location-located', {
-      y: 60,
-      opacity: 0,
-      duration: DUR,
-      ease: EASE_OUT,
-    }, '-=0.4');
+    // 2. Text ABOVE the rectangle (located, in, bhx, lon)
+    const topGroups = [
+      '.location-located',
+      '.location-in',
+      '.location-bhx',
+      '.location-lon'
+    ];
 
-    const inEl = document.querySelector<HTMLElement>('.location-in');
-    if (inEl) {
-      const inSplit = SplitText.create(inEl, { type: 'chars' });
-      locationTl.from(inSplit.chars, {
+    topGroups.forEach((selector, i) => {
+      const el = document.querySelector<HTMLElement>(selector);
+      if (!el) return;
+      const split = SplitText.create(el, { type: 'chars' });
+      locationTl.from(split.chars, {
+        y: 60,
         opacity: 0,
-        y: 20,
-        duration: 0.3,
-        stagger: 0.08,
+        duration: DUR,
+        stagger: 0.04,
         ease: EASE_OUT,
-      }, '-=0.2');
-    }
+      }, i === 0 ? '-=0.6' : '-=0.4');
+    });
 
-    const bhxEl = document.querySelector<HTMLElement>('.location-bhx');
-    if (bhxEl) {
-      const bhxSplit = SplitText.create(bhxEl, { type: 'chars' });
-      locationTl.from(bhxSplit.chars, {
+    // 3. Text BELOW the rectangle (available, worldwide)
+    const bottomGroups = [
+      '.location-available',
+      '.location-world'
+    ];
+
+    bottomGroups.forEach((selector, i) => {
+      const el = document.querySelector<HTMLElement>(selector);
+      if (!el) return;
+      const split = SplitText.create(el, { type: 'chars' });
+      locationTl.from(split.chars, {
+        y: 60,
         opacity: 0,
-        y: 20,
-        duration: 0.3,
-        stagger: 0.08,
+        duration: DUR,
+        stagger: 0.04,
         ease: EASE_OUT,
-      }, '-=0.3');
-    }
-
-    const lonEl = document.querySelector<HTMLElement>('.location-lon');
-    if (lonEl) {
-      const lonSplit = SplitText.create(lonEl, { type: 'chars' });
-      locationTl.from(lonSplit.chars, {
-        opacity: 0,
-        y: 20,
-        duration: 0.3,
-        stagger: 0.08,
-        ease: EASE_OUT,
-      }, '-=0.1');
-    }
-
-    locationTl.from('.location-available', {
-      y: 80,
-      opacity: 0,
-      duration: DUR,
-      ease: EASE_OUT,
-    }, '-=0.2');
-    locationTl.from('.location-world', {
-      y: 80,
-      opacity: 0,
-      duration: DUR,
-      ease: EASE_OUT,
-    }, '<0.1');
+      }, '-=0.4');
+    });
 
     ScrollTrigger.create({
       trigger: '.section-location',

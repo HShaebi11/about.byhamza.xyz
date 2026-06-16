@@ -1,0 +1,754 @@
+class framer {
+	/**
+	 * Add a component instance by module URL.
+	 *
+	 * @param url - The component module URL. Can be copied from the components panel.
+	 * @param attributes - Optional component attributes.
+	 *
+	 * @returns The newly created component instance node.
+	 * @category canvas
+	 */
+	addComponentInstance({ url, attributes, parentId, }: AddComponentInstanceOptions): Promise<ComponentInstanceNode>
+
+	/**
+	 * Adds a new component instance placeholder.
+	 *
+	 * @param attributes - The attributes of the component instance placeholder.
+	 * @returns The component instance placeholder.
+	 */
+	addComponentInstancePlaceholder(attributes?: ComponentInstancePlaceholderAttributes): Promise<ComponentInstancePlaceholder>
+
+	/**
+	 * Adds the layers of a component by module URL.
+	 * @category canvas
+	 */
+	addDetachedComponentLayers({ url, layout, attributes }: AddDetachedComponentLayersOptions): Promise<FrameNode>
+
+	/**
+	 * Upload an image, and insert on the canvas.
+	 * @category canvas
+	 */
+	addImage(image: NamedImageAssetInput | File): Promise<void>
+
+	/**
+	 * Add multiple images, replacing the selected images, or insert on the canvas.
+	 * @category canvas
+	 */
+	addImages(images: readonly NamedImageAssetInput[]): Promise<void>
+
+	/**
+	 * Add new redirects or update existing ones if their IDs match
+	 *
+	 * `from` paths can contain wildcards (`*`) which match any string, and
+	 * captured groups can be referenced in the `to` path using `:1`, `:2`,
+	 * etc.
+	 *
+	 * Throws a `FramerPluginError` when the user lacks Site Settings permissions,
+	 * when the project plan does not include Redirects, or when the maximum
+	 * redirect count (2500) is reached.
+	 *
+	 * @param redirects - An array of redirect objects to add.
+	 * @returns The added Redirects.
+	 *
+	 * @example
+	 * ```ts
+	 * await framer.addRedirects([
+	 *   { from: "/business", to: "/enterprise", expandToAllLocales: true },
+	 *   { from: "/posts/*", to: "/blog/:1", expandToAllLocales: false },
+	 * ])
+	 * ```
+	 * @category settings
+	 */
+	addRedirects(redirects: RedirectInput[]): Promise<Redirect[]>
+
+	/**
+	 * Add an SVG, replacing the selected SVG, or insert on the canvas.
+	 * @category canvas
+	 */
+	addSVG(svg: SVGData): Promise<void>
+
+	/**
+	 * Add a new text node to the canvas.
+	 * @category canvas
+	 */
+	addText(text: string, options?: AddTextOptions): Promise<void>
+
+	/**
+	 * Agent-specific methods exposed by framer-api as its agent namespace.
+	 *
+	 * Each method delegates to the corresponding wire-protocol name on the engine
+	 * (e.g. `agent.publish(...)` invokes `"publishForAgent"`).
+	 */
+	agent: FramerAgentAPI
+
+	/**
+	 * Clone a node.
+	 * @category canvas
+	 */
+	cloneNode(nodeId: NodeId): Promise<AnyNode | null>
+
+	/**
+	 * Create a new code file in the project.
+	 *
+	 * @param name - The name of the code file (including extension).
+	 * @param code - The initial content of the code file.
+	 * @param options - Optional settings. `editViaPlugin`: when `true`, the "Edit Code" UI action will open the plugin which created the code file.
+	 * @returns The newly created code file instance.
+	 *
+	 * @example
+	 * ```ts
+	 * const newFile = await framer.createCodeFile(
+	 *   "MyComponent",
+	 *   `export default function MyComponent() {
+	 *     return <div>Hello World</div>
+	 *   }`
+	 * )
+	 * ```
+	 * @category code-files
+	 */
+	createCodeFile(name: string, code: string, options?: { editViaPlugin?: boolean; }): Promise<CodeFile>
+
+	/**
+	 * Create a new collection.
+	 *
+	 * @param name - The name to give the new collection.
+	 * @category cms
+	 */
+	createCollection(name: string): Promise<Collection>
+
+	/**
+	 * Add a new color style to the project.
+	 * @category canvas
+	 */
+	createColorStyle(attributes: ColorStyleAttributes): Promise<ColorStyle>
+
+	/**
+	 * Create a new smart component node.
+	 *
+	 * @alpha
+	 * @param name - The name of the node.
+	 * @param attributes - The attributes of the node.
+	 * @returns The created node.
+	 */
+	createComponentNode(name: string): Promise<ComponentNode | null>
+
+	/**
+	 * Create a new design page.
+	 *
+	 * If you want to open the newly created design page, you can `.navigateTo()` the page after creation.
+	 *
+	 * @param pageName - The name for the new design page.
+	 *
+	 * @example
+	 * ```ts
+	 * const designPage = await framer.createDesignPage("About")
+	 * await designPage.navigateTo()
+	 * ```
+	 * @category canvas
+	 */
+	createDesignPage(pageName: string): Promise<DesignPageNode>
+
+	/**
+	 * Create a new node on the canvas.
+	 * @category canvas
+	 */
+	createFrameNode(attributes: Partial<EditableFrameNodeAttributes>, parentId?: string): Promise<FrameNode | null>
+
+	/**
+	 * Create a new locale in the project.
+	 *
+	 * @alpha
+	 * @param input - The locale configuration, use `getLocaleLanguages` and `getLocaleRegions` to get valid language and region codes.
+	 * @returns The created locale.
+	 */
+	createLocale(input: CreateLocaleInput): Promise<Locale>
+
+	/**
+	 * Add a new plugin-managed CMS Collection.
+	 *
+	 * If a name is provided which matches an existing Collection, the promise will reject.
+	 *
+	 * @param name - The name to give the new collection.
+	 *
+	 * @example
+	 * ```ts
+	 * const newCollection = await framer.createManagedCollection(name)
+	 * ```
+	 * @category cms
+	 */
+	createManagedCollection(name: string): Promise<ManagedCollection>
+
+	/**
+	 * Create a new text node on the canvas.
+	 *
+	 * @alpha
+	 * @param attributes - The attributes of the node.
+	 * @param parentId - The id of the parent node.
+	 * @returns The created node.
+	 */
+	createTextNode(attributes: Partial<EditableTextNodeAttributes>, parentId?: string): Promise<TextNode | null>
+
+	/**
+	 * Add a new text style to the project.
+	 * @category canvas
+	 */
+	createTextStyle(attributes: TextStyleAttributes): Promise<TextStyle>
+
+	/**
+	 * Create a new web page.
+	 *
+	 * If you want to open the newly created web page, you can `.navigateTo()` the page after creation.
+	 *
+	 * @param pagePath - The path for the new web page (e.g., "/about").
+	 *
+	 * @example
+	 * ```ts
+	 * const webPage = await framer.createWebPage("/about")
+	 * await webPage.navigateTo()
+	 * ```
+	 * @category canvas
+	 */
+	createWebPage(pagePath: string): Promise<WebPageNode>
+
+	deploy(deploymentId: string, domains?: string[]): Promise<Hostname[]>
+
+	disconnect(): Promise<void>
+
+	exportSVG(nodeId: string): Promise<string>
+
+	/**
+	 * Get the root of the current canvas.
+	 * @category canvas
+	 */
+	getCanvasRoot(): Promise<CanvasRootNode>
+
+	getChangeContributors(fromVersion?: number, toVersion?: number): Promise<string[]>
+
+	getChangedPaths(): Promise<{ added: string[]; removed: string[]; modified: string[]; }>
+
+	/**
+	 * Get the children of a node.
+	 * @category canvas
+	 */
+	getChildren(nodeId: NodeId): Promise<CanvasNode[]>
+
+	/**
+	 * Get a specific code file by its ID or file path.
+	 *
+	 * @param idOrPath - The unique identifier (e.g. `"codeFile/AbcD_23"`) or
+	 * file path (e.g. `"Button.tsx"` or `"overrides/withAnalytics.tsx"`) of the
+	 * code file.
+	 * @returns The CodeFile instance or `null` if not found.
+	 *
+	 * @example
+	 * ```ts
+	 * // Look up by ID
+	 * const codeFile = await framer.getCodeFile("codeFile/AbcD_23")
+	 *
+	 * // Look up by file path
+	 * const codeFile = await framer.getCodeFile("Button.tsx")
+	 * ```
+	 * @category code-files
+	 */
+	getCodeFile(idOrPath: string): Promise<CodeFile | null>
+
+	/**
+	 * Get all code files in the project.
+	 *
+	 * @returns An array of all CodeFile instances.
+	 *
+	 * @example
+	 * ```ts
+	 * const allFiles = await framer.getCodeFiles()
+	 * console.log(`Project has ${allFiles.length} code files`)
+	 * ```
+	 * @category code-files
+	 */
+	getCodeFiles(): Promise<readonly CodeFile[]>
+
+	/**
+	 * Get a collection by its id.
+	 * @category cms
+	 */
+	getCollection(id: NodeId): Promise<Collection | null>
+
+	/**
+	 * Get all Collections in the project, both managed and unmanaged.
+	 *
+	 * @example
+	 * ```ts
+	 * const collections = await framer.getCollections()
+	 * ```
+	 * @category cms
+	 */
+	getCollections(): Promise<Collection[]>
+
+	/**
+	 * Get a specific color style.
+	 * @category canvas
+	 */
+	getColorStyle(id: NodeId): Promise<ColorStyle | null>
+
+	/**
+	 * Get all color styles in the project.
+	 * @category canvas
+	 */
+	getColorStyles(): Promise<ColorStyle[]>
+
+	/**
+	 * Get information about the user that's interacting with the plugin.
+	 *
+	 * @example
+	 * ```ts
+	 * const user = await framer.getCurrentUser();
+	 * ```
+	 * @category user
+	 */
+	getCurrentUser(): Promise<User>
+
+	/**
+	 * Get custom code settings set by the plugin.
+	 *
+	 * Your plugin can detect if custom code was set and whether the user has
+	 * disabled it.
+	 *
+	 * @example
+	 * ```ts
+	 * const customCode = await framer.getCustomCode()
+	 * if (customCode.bodyStart.disabled) {
+	 *   // Custom code was disabled by the user in settings
+	 * }
+	 * ```
+	 * @category code-files
+	 */
+	getCustomCode(): Promise<CustomCode>
+
+	/**
+	 * Get the default locale of the project.
+	 *
+	 * @example
+	 * ```ts
+	 * const defaultLocale = await framer.getDefaultLocale()
+	 * ```
+	 * @category localization
+	 */
+	getDefaultLocale(): Promise<Locale>
+
+	getDeployments(): Promise<Deployment[]>
+
+	/**
+	 * Get a specific font from a family by name.
+	 *
+	 * This is not case sensitive. By default, returns a font with normal weight
+	 * and style. Returns `null` if the font does not exist or lacks the
+	 * requested weight/style combination.
+	 *
+	 * Note: Custom fonts are not available to plugins.
+	 *
+	 * @param family - The font family name (e.g., `"Noto Sans"`).
+	 * @param attributes - Optional weight and style attributes.
+	 * @returns The matched font or `null` if not found.
+	 *
+	 * @example
+	 * ```ts
+	 * // Get Noto Sans with default weight (400) and normal style
+	 * const font = await framer.getFont("Noto Sans")
+	 *
+	 * // Get Noto Sans with a specific weight and style
+	 * const font = await framer.getFont("Noto Sans", {
+	 *   weight: 800,
+	 *   style: "italic"
+	 * })
+	 * ```
+	 * @category canvas
+	 */
+	getFont(family: string, attributes?: FontAttributes): Promise<Font | null>
+
+	/**
+	 * Get all available fonts.
+	 *
+	 * Unlike the Font Picker which groups fonts by typeface, this lists
+	 * individual fonts for each weight and style (each representing a separate
+	 * font file).
+	 *
+	 * Note: Custom fonts are not available to plugins.
+	 *
+	 * @returns An array of all available fonts.
+	 *
+	 * @example
+	 * ```ts
+	 * const fonts = await framer.getFonts()
+	 * ```
+	 * @category canvas
+	 */
+	getFonts(): Promise<Font[]>
+
+	/**
+	 * Get the image of the current selection or `null` if there is no image.
+	 *
+	 * In `editImage` mode, this returns the image the user already has set,
+	 * which your plugin can then modify.
+	 * @category canvas
+	 */
+	getImage(): Promise<ImageAsset | null>
+
+	/**
+	 * Get all available locale languages.
+	 *
+	 * @alpha
+	 * @returns A list of language codes and their display names, sorted by name.
+	 */
+	getLocaleLanguages(): Promise<{ code: string; name: string; }[]>
+
+	/**
+	 * Get all available locale regions for a given language.
+	 *
+	 * @alpha
+	 * @param languageCode - The language code to get regions for. Use `getLocaleLanguages` to get valid language codes.
+	 * @returns A list of region codes, their display names, and whether they are commonly paired with the given language.
+	 */
+	getLocaleRegions(languageCode: string): Promise<{ code: string; name: string; isCommon: boolean; }[]>
+
+	/**
+	 * Get all Locales in the project.
+	 *
+	 * Does not include the default Locale. See `getDefaultLocale`.
+	 *
+	 * @example
+	 * ```ts
+	 * const locales = await framer.getLocales()
+	 * ```
+	 * @category localization
+	 */
+	getLocales(): Promise<readonly Locale[]>
+
+	/**
+	 * Get Localization Groups in the project, optionally filtered.
+	 *
+	 * @param filter - Optional filter to narrow down the returned groups.
+	 *
+	 * @example
+	 * ```ts
+	 * // Get all groups
+	 * const groups = await framer.getLocalizationGroups()
+	 *
+	 * // Get only page groups
+	 * const pageGroups = await framer.getLocalizationGroups({ type: "page" })
+	 *
+	 * // Get specific groups by ID
+	 * const specific = await framer.getLocalizationGroups({ groupIds: ["id1", "id2"] })
+	 * ```
+	 * @category localization
+	 */
+	getLocalizationGroups(filter?: GetLocalizationGroupsFilter): Promise<readonly LocalizationGroup[]>
+
+	/**
+	 * Retrieve Collections that are managed by the current Plugin.
+	 *
+	 * - Only Collections created or controlled by your Plugin appear in this list.
+	 * - These Collections can be modified without the restrictions placed on user-created Collections.
+	 *
+	 * @example
+	 * ```ts
+	 * const managedCollections = await framer.getManagedCollections();
+	 * ```
+	 * @category cms
+	 */
+	getManagedCollections(): Promise<ManagedCollection[]>
+
+	/**
+	 * Get a node by its id.
+	 * @category canvas
+	 */
+	getNode(nodeId: NodeId): Promise<AnyNode | null>
+
+	/**
+	 * Get all nodes with a certain attribute.
+	 * @category canvas
+	 */
+	getNodesWithAttribute(attribute: T): Promise<Node[]>
+
+	/**
+	 * Get all nodes with a certain attribute which value is set.
+	 * @category canvas
+	 */
+	getNodesWithAttributeSet(attribute: T): Promise<Node[]>
+
+	/**
+	 * Get all nodes of a certain class.
+	 * @category canvas
+	 */
+	getNodesWithType(type: "FrameNode"): Promise<FrameNode[]>
+
+	/**
+	 * Get the parent of a node.
+	 * @category canvas
+	 */
+	getParent(nodeId: NodeId): Promise<AnyNode | null>
+
+	/**
+	 * Get the project info like name and id.
+	 * @category settings
+	 */
+	getProjectInfo(): Promise<ProjectInfo>
+
+	/**
+	 * Get information about the published website.
+	 *
+	 * Provides details such as the time of the most recent deploy or the URL of
+	 * the current page. Covers both `staging` and `production` environments
+	 * (either may be `null` if the site has never been published).
+	 *
+	 * @returns The current publish info for both staging and production.
+	 * @category settings
+	 */
+	getPublishInfo(): Promise<PublishInfo>
+
+	/**
+	 * Get the rect of a node
+	 * @category canvas
+	 */
+	getRect(nodeId: NodeId): Promise<Rect$1 | null>
+
+	/**
+	 * Get all Redirects in the project.
+	 *
+	 * @returns All of the Redirects in the project.
+	 *
+	 * @example
+	 * ```ts
+	 * const redirects = await framer.getRedirects()
+	 * ```
+	 * @category settings
+	 */
+	getRedirects(): Promise<readonly Redirect[]>
+
+	/**
+	 * Get plaintext of the current selection or null if there is no text.
+	 * @category canvas
+	 */
+	getText(): Promise<string | null>
+
+	/**
+	 * Get a specific text style.
+	 * @category canvas
+	 */
+	getTextStyle(id: NodeId): Promise<TextStyle | null>
+
+	/**
+	 * Get all text styles in the project.
+	 * @category canvas
+	 */
+	getTextStyles(): Promise<TextStyle[]>
+
+	/**
+	 * Get all available vector sets.
+	 *
+	 * @alpha
+	 */
+	getVectorSets(): Promise<VectorSet[]>
+
+	/**
+	 * Get the current mode.
+	 *
+	 * A plugin can launch in a special mode where only a subset of the API is
+	 * allowed. The mode is set when the plugin launches and never changes while
+	 * the plugin is active.
+	 *
+	 * @example
+	 * ```ts
+	 * if (framer.mode === "image" || framer.mode === "editImage") {
+	 *   // Do image mode specific logic
+	 *   return
+	 * }
+	 * ```
+	 * @category settings
+	 */
+	mode: Mode
+
+	/** Liveness round-trip: resolves once Vekter's plugin handler answers. Used by the headless backend to verify the transport actually routes, not just that the page is alive. */
+	ping(): Promise<void>
+
+	publish(): Promise<PublishResult>
+
+	rejectAllPending(error: FramerPluginError): void
+
+	/**
+	 * Remove nodes from the canvas.
+	 * @category canvas
+	 */
+	removeNodes(nodeIds: NodeId[]): Promise<void>
+
+	/**
+	 * Remove Redirects from the project.
+	 *
+	 * Unknown Redirect IDs are ignored.
+	 *
+	 * Throws a `FramerPluginError` when the user lacks Site Settings permissions
+	 * or when the project plan does not include Redirects.
+	 *
+	 * @param redirectIds - An array of Redirect IDs to remove.
+	 *
+	 * @example
+	 * ```ts
+	 * await framer.removeRedirects([aboutPageRedirect.id, blogPageRedirect.id])
+	 * ```
+	 * @category settings
+	 */
+	removeRedirects(redirectIds: string[]): Promise<void>
+
+	requestId: string
+
+	screenshot(nodeId: string, options?: ScreenshotOptions): Promise<ScreenshotResult>
+
+	sessionId: string
+
+	/**
+	 * Set the attributes of a node.
+	 * @category canvas
+	 */
+	setAttributes(nodeId: NodeId, attributes: Partial<AnyEditableAttributes>): Promise<AnyNode | null>
+
+	/**
+	 * When enabled, a modal confirmation will appear before close to confirm the action.
+	 *
+	 * Pass `false` to disable the warning.
+	 *
+	 * @param message - The message to show when attempting to close the plugin. `false` disables the warning.
+	 *
+	 * @example
+	 * ```ts
+	 * // Show a close warning when the user attempts to close the plugin
+	 * await framer.setCloseWarning("Are you sure?")
+	 *
+	 * // Remove the close warning
+	 * await framer.setCloseWarning(false)
+	 * ```
+	 * @category settings
+	 */
+	setCloseWarning(message: string | false): Promise<void>
+
+	/**
+	 * Install a custom code snippet in the user's website via `<script>` tags.
+	 *
+	 * A plugin can only set custom HTML once per location. Custom code should be
+	 * valid HTML. Setting `html` to `null` clears the installed code snippet.
+	 *
+	 * @param options - The custom code options including `html` and `location`.
+	 *
+	 * @example
+	 * ```ts
+	 * framer.setCustomCode({
+	 *   html: '<script src="https://example.com/script.js"></script>',
+	 *   location: "bodyEnd"
+	 * })
+	 * ```
+	 * @category code-files
+	 */
+	setCustomCode(options: SetCustomCodeOptions): Promise<void>
+
+	/**
+	 * Upload an image and set it on the selected node.
+	 *
+	 * In `image` or `editImage` mode, this is the primary method to send the
+	 * selected or edited image back to Framer.
+	 * @category canvas
+	 */
+	setImage(image: NamedImageAssetInput | File): Promise<void>
+
+	/**
+	 * Update localization data.
+	 *
+	 * @param update - An object representing the localization update.
+	 *
+	 * @example
+	 * ```ts
+	 * await framer.setLocalizationData({
+	 *     valuesBySource: {
+	 *         [titleSourceId]: {
+	 *             [dutchLocaleId]: { action: "set", value: "Hallo Wereld" }
+	 *         }
+	 *     },
+	 *     statusByLocaleByGroup: {
+	 *         [blogPostGroupId]: {
+	 *             [dutchLocaleId]: "ready",
+	 *             [frenchLocaleId]: "excluded"
+	 *         }
+	 *     }
+	 * })
+	 * ```
+	 * @category localization
+	 */
+	setLocalizationData(update: LocalizationData): Promise<SetLocalizationDataResult>
+
+	/**
+	 * Set the parent of a node.
+	 * @category canvas
+	 */
+	setParent(nodeId: NodeId, parentId: NodeId, index?: number | undefined): Promise<void>
+
+	/**
+	 * Set the order of Redirects in the list.
+	 *
+	 * Unknown Redirect IDs are ignored.
+	 *
+	 * Throws a `FramerPluginError` when the user lacks Site Settings permissions
+	 * or when the project plan does not include Redirects.
+	 *
+	 * @param redirectIds - An array of Redirect IDs representing the desired order.
+	 *
+	 * @example
+	 * ```ts
+	 * await framer.setRedirectOrder([aboutPageRedirect.id, blogPageRedirect.id])
+	 * ```
+	 * @category settings
+	 */
+	setRedirectOrder(redirectIds: string[]): Promise<void>
+
+	/**
+	 * Set the current selection.
+	 * @category canvas
+	 */
+	setSelection(nodeIds: string | Iterable<string>): Promise<void>
+
+	/**
+	 * Set the text of the current selection or insert it onto the canvas.
+	 * @category canvas
+	 */
+	setText(text: string): Promise<void>
+
+	/**
+	 * Type check a code file and return the diagnostics.
+	 *
+	 * @param fileName - The name of the code file, must include the extension. Use `*.tsx` for TSX files, otherwise the React JSX syntax will be rejected.
+	 * @param content - The content of the code file.
+	 * @param compilerOptions - Optional compiler options to override the default compiler options for type checking.
+	 * @param sessionId - Optional session ID. Pass it when repeatedly type checking the same file. If not provided, a new session will be created for each type check, which is slow.
+	 * @category code-files
+	 */
+	typecheckCode(fileName: string, content: string, compilerOptions?: ts.server.protocol.CompilerOptions, sessionId?: string): Promise<TypecheckDiagnostic[]>
+
+	/**
+	 * Uploads a file without assigning it to a property.
+	 * @category canvas
+	 */
+	uploadFile(file: NamedFileAssetInput | File): Promise<FileAsset>
+
+	/**
+	 * Upload multiple files without assigning them to properties.
+	 * @category canvas
+	 */
+	uploadFiles(files: readonly NamedFileAssetInput[]): Promise<FileAsset[]>
+
+	/**
+	 * Upload an image without assigning it to a property.
+	 * @category canvas
+	 */
+	uploadImage(image: NamedImageAssetInput | File): Promise<ImageAsset>
+
+	/**
+	 * Upload multiple images without assigning them to properties.
+	 * @category canvas
+	 */
+	uploadImages(images: readonly NamedImageAssetInput[]): Promise<ImageAsset[]>
+}

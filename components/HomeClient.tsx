@@ -219,32 +219,36 @@ export default function HomeClient() {
 
         {/* Location Section */}
         <section className={`${styles.section} ${styles.locationSection} snap-section section-location`}>
-          <StaggerText 
-            text="located" 
-            className={`${styles.displayText} ${styles.posLocated} location-located`} 
-          />
-          <StaggerText 
-            text="in" 
-            className={`${styles.displayText} ${styles.posIn} location-in`} 
-          />
-          <StaggerText 
-            text="bhx" 
-            className={`${styles.displayText} ${styles.posBHX} location-bhx`} 
-          />
-          <StaggerText 
-            text="lon" 
-            className={`${styles.displayText} ${styles.posLON} location-lon`} 
-          />
+          <div className={styles.locationTopWrapper}>
+            <StaggerText 
+              text="located" 
+              className={`${styles.displayText} ${styles.posLocated} location-located`} 
+            />
+            <StaggerText 
+              text="in" 
+              className={`${styles.displayText} ${styles.posIn} location-in`} 
+            />
+            <StaggerText 
+              text="bhx" 
+              className={`${styles.displayText} ${styles.posBHX} location-bhx`} 
+            />
+            <StaggerText 
+              text="lon" 
+              className={`${styles.displayText} ${styles.posLON} location-lon`} 
+            />
+          </div>
           
           <div className={`${styles.locationBlock} location-block`} />
 
-          <div className={`${styles.posAvailable} location-available`}>
-            <StaggerText text="avail" className={styles.displayText} />
-            <StaggerText text="able" className={styles.displayText} />
-          </div>
-          <div className={`${styles.posWorld} location-world`}>
-            <StaggerText text="world" className={styles.displayText} />
-            <StaggerText text="wide" className={styles.displayText} />
+          <div className={styles.locationBottomWrapper}>
+            <div className={`${styles.posAvailable} location-available`}>
+              <StaggerText text="avail" className={styles.displayText} />
+              <StaggerText text="able" className={styles.displayText} />
+            </div>
+            <div className={`${styles.posWorld} location-world`}>
+              <StaggerText text="world" className={styles.displayText} />
+              <StaggerText text="wide" className={styles.displayText} />
+            </div>
           </div>
         </section>
 
