@@ -182,6 +182,7 @@ export default function ProjectSheet({ isOpen, onClose, onNext, onPrev, project 
       onClick={onClose}
       style={{ display: shouldRender ? 'flex' : 'none' }}
     >
+      <div className={styles.safeAreaBlock} />
       <div 
         ref={sheetRef}
         className={styles.sheet} 

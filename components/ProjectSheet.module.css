@@ -103,6 +103,9 @@
   text-transform: inherit;
   cursor: pointer;
   padding: 0;
+  color: #000 !important;
+  -webkit-appearance: none;
+  opacity: 1;
 }
 
 .heroSection {
@@ -253,6 +256,9 @@
   text-transform: uppercase;
   cursor: pointer;
   padding: 0;
+  color: #000 !important;
+  -webkit-appearance: none;
+  opacity: 1;
 }
 
 .footerButtonNext {
@@ -268,6 +274,9 @@
   align-items: center;
   gap: 16px;
   transition: opacity 0.2s ease;
+  color: #000 !important;
+  -webkit-appearance: none;
+  opacity: 1;
 }
 
 .footerButtonNext:hover {
@@ -310,11 +319,19 @@
   }
   
   .footer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 40px;
     padding-top: 40px;
+    /* Removed flex-direction: column to keep items in a row */
   }
+}
+
+.safeAreaBlock {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: max(1px, env(safe-area-inset-bottom, 0px));
+  background-color: #ffffff;
+  z-index: 0;
 }
 
 
