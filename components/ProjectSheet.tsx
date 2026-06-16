@@ -111,10 +111,10 @@ export default function ProjectSheet({ isOpen, onClose, onNext, onPrev, project 
 
       const tl = gsap.timeline({
         onComplete: () => {
+          // Simply flag that we should stop rendering.
+          // Do NOT clearProps here, otherwise it will instantly flash 
+          // the fully visible state for 1 frame before React unmounts it!
           setShouldRender(false);
-          gsap.set(sheet, { clearProps: "all" });
-          gsap.set([headerItems, line, tags, titleLetters, otherElements], { clearProps: "all" });
-          splitInstance.revert(); // clean up SplitText instance on close
         }
       });
 
@@ -139,11 +139,6 @@ export default function ProjectSheet({ isOpen, onClose, onNext, onPrev, project 
         ease: "expo.inOut"
       });
     }
-    
-    // Cleanup split text when component unmounts if open
-    return () => {
-      splitInstance.revert();
-    };
   }, [isOpen]);
 
   useEffect(() => {
