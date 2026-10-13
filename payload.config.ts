@@ -10,6 +10,7 @@ import sharp from 'sharp'
 import { Media } from './collections/Media'
 import { Projects } from './collections/Projects'
 import { Users } from './collections/Users'
+import { getServerURL } from './lib/payload/server-url'
 import { storagePlugins } from './lib/payload/storage'
 
 const filename = fileURLToPath(import.meta.url)
@@ -28,7 +29,7 @@ export default buildConfig({
   collections: [Projects, Media, Users],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET ?? '',
-  serverURL: process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:3000',
+  serverURL: getServerURL(),
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },

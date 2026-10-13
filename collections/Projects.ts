@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { compositionBlocks } from '../blocks'
 import { revalidateProjects } from '../lib/payload/revalidate'
+import { getServerURL } from '../lib/payload/server-url'
 
 function slugify(input?: string): string {
   return (input ?? '')
@@ -20,9 +21,8 @@ export const Projects: CollectionConfig = {
     defaultColumns: ['title', 'year', 'role', '_status', 'updatedAt'],
     preview: (doc) => {
       if (!doc?.slug) return null
-      const base = process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:3000'
       const secret = process.env.PREVIEW_SECRET ?? ''
-      return `${base}/api/preview?secret=${secret}&slug=/project/${doc.slug}`
+      return `${getServerURL()}/api/preview?secret=${secret}&slug=/project/${doc.slug}`
     },
   },
   versions: {
