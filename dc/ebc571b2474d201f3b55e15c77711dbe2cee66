@@ -1,0 +1,57 @@
+components/ProjectSheet.tsx
+  s_6d952c45f46ad6::t_39133bde96aa74 3,18
+  s_6d952c45f46ad6::t_90ee4cf2959c81 16,19-25,28-31,34-35,37-47,49,52,61,64-68,70-74,86,135
+app/page.module.css
+  s_d6a50f43a0c06d::t_6f8aa31e9a1850 234-237
+components/ProjectCard.tsx
+  s_d6a50f43a0c06d::t_903d2139723947 18
+  s_d6a50f43a0c06d::t_1ef8a8d2bbb844 14-15
+  s_6d952c45f46ad6::t_49cf3736993e88 16-17
+  s_6d952c45f46ad6::t_d4a2d81a3c6690 19-22
+  s_6d952c45f46ad6::t_9729b5359ba310 11,13,29
+components/ProjectSheet.module.css
+  s_6d952c45f46ad6::t_b1e3df96ee63d5 35-36,48,113,117,122,182
+  s_6d952c45f46ad6::t_f1f6ce2e15961d 20-21,162-163
+  s_6d952c45f46ad6::t_6abe37c4b0b86a 14-15,25,27,31-32,171
+  s_6d952c45f46ad6::t_9e4fc938923535 7-10
+  s_6d952c45f46ad6::t_3f3f2b98874bdc 29
+  s_d6a50f43a0c06d::t_c24de40fc25a7a 24
+  s_d6a50f43a0c06d::t_5b8af0c3bd91af 30,33-34
+components/ProjectCard.module.css
+  s_6d952c45f46ad6::t_2fbbac7f165a55 14-20
+  s_6d952c45f46ad6::t_96351a67f694f0 21-24
+  s_6d952c45f46ad6::t_f40bda2b5fadec 29,38,61
+  s_36e925a03bd5cb::t_e6d0d8379380c3 41-45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "dcebc571b2474d201f3b55e15c77711dbe2cee66",
+  "prompts": {},
+  "sessions": {
+    "s_36e925a03bd5cb": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "d41c145c-0f53-44ae-9fa7-be9597a2e6e9",
+        "model": "gemini-3-flash-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_6d952c45f46ad6": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "9cf13698-e4f7-4332-928b-bafa71c0b10b",
+        "model": "gemini-3-flash-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_d6a50f43a0c06d": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "f3e3a59a-3712-4be2-8f59-860234178b30",
+        "model": "gemini-3-flash-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+app/globals.css
+  s_a78da18c26dd70::t_730d072299200c 1-16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "4b9f6bf2cbb0c0ed709011599a5df5b50bf06d5f",
+  "prompts": {},
+  "sessions": {
+    "s_a78da18c26dd70": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "5c3be0c4-0901-4ec3-8d49-95a58a6431f8",
+        "model": "gemini-3-flash-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}

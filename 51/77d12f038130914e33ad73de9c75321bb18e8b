@@ -1,0 +1,19 @@
+app/page.tsx
+  s_d6a50f43a0c06d::t_6b354ce8a012c5 248
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "5177d12f038130914e33ad73de9c75321bb18e8b",
+  "prompts": {},
+  "sessions": {
+    "s_d6a50f43a0c06d": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "f3e3a59a-3712-4be2-8f59-860234178b30",
+        "model": "gemini-3-flash-preview"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
