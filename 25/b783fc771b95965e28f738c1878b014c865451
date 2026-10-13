@@ -1,0 +1,71 @@
+lib/notion/types.ts
+  s_15b3868d4d323e::t_06e32317a407a3 1-43,46-57
+  s_15b3868d4d323e::t_894773342dd9af 44-45
+package.json
+  s_15b3868d4d323e::t_19d113aa636cc8 13
+lib/notion/fallback.ts
+  s_15b3868d4d323e::t_19bbfc855ba324 58
+  s_15b3868d4d323e::t_eed3b99a326481 72
+  s_15b3868d4d323e::t_5449f5a4ed2d79 86
+  s_15b3868d4d323e::t_af2dd95cbed18e 19
+  s_15b3868d4d323e::t_204f990740ae01 1-18,20-57,59-71,73-85,87-98
+lib/notion/projects.ts
+  s_15b3868d4d323e::t_028bfd57e5302a 1-3,5-133,135-190
+  s_15b3868d4d323e::t_ea1c6d0805f6df 134
+  s_15b3868d4d323e::t_ef285f2b97f89b 4
+lib/notion/client.ts
+  s_15b3868d4d323e::t_faa716e6ce44ce 1-24
+components/NotionBlocks.tsx
+  s_15b3868d4d323e::t_7248fa7ef79226 1-185
+app/api/notion-image/route.ts
+  s_15b3868d4d323e::t_b2e0eea0dd68b0 1-26,31-62
+  s_15b3868d4d323e::t_03972d2aac5da9 27-30
+lib/notion/index.ts
+  s_15b3868d4d323e::t_06ce2065e93deb 1-9
+next.config.ts
+  s_15b3868d4d323e::t_0284761edd3222 4,6-27
+components/ProjectSheet.tsx
+  s_15b3868d4d323e::t_bae91ca604848e 5-6,14
+  s_15b3868d4d323e::t_6b482b4fc843e4 44
+  s_15b3868d4d323e::t_eac0cebae3a273 212,216,220,224,232-242,245-248,250,252
+.env.example
+  s_15b3868d4d323e::t_63533ed3027f07 1-21
+.gitignore
+  s_15b3868d4d323e::t_be53b0d30aeea7 35
+components/ProjectSheet.module.css
+  s_15b3868d4d323e::t_57b78c9aa3569d 193-204
+components/HomeClient.tsx
+  s_15b3868d4d323e::t_9663ddb1f6c13f 104-106,108,113-115,117
+  s_15b3868d4d323e::t_1380960a1ba3c2 254,256,260
+  s_15b3868d4d323e::t_be351c02c221f5 9
+  s_15b3868d4d323e::t_1daafdfdccfa7d 73,75,81,91
+  s_15b3868d4d323e::t_c24666513fa144 125,142
+app/page.tsx
+  s_15b3868d4d323e::t_1871eb6ded96fa 2,4-7
+lib/notion/blocks.ts
+  s_15b3868d4d323e::t_79a4c06d8d52df 1-102
+app/api/revalidate/route.ts
+  s_15b3868d4d323e::t_38e73b576c1a3b 1-39
+README.md
+  s_15b3868d4d323e::t_305c1223fc36f1 3-48
+components/NotionBlocks.module.css
+  s_15b3868d4d323e::t_6386d79dad6c8c 1-206
+package-lock.json
+  s_15b3868d4d323e::t_69804c600582ed 12,1247-1255
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "25b783fc771b95965e28f738c1878b014c865451",
+  "prompts": {},
+  "sessions": {
+    "s_15b3868d4d323e": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_ec8a66569fferLJ2F7c0xy5oK0",
+        "model": "big-pickle"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
