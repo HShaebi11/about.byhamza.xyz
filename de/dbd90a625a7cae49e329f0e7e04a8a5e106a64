@@ -1,0 +1,25 @@
+payload.config.ts
+  s_6b1f155f63fcb3::t_3dc94dc50db0d4 13
+  s_6b1f155f63fcb3::t_46dcd6565871bb 32
+collections/Projects.ts
+  s_6b1f155f63fcb3::t_21cf5a256abf94 25
+  s_6b1f155f63fcb3::t_460b0be4cff1f0 5
+lib/payload/server-url.ts
+  s_6b1f155f63fcb3::t_f27d9a4f114378 1-28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "dedbd90a625a7cae49e329f0e7e04a8a5e106a64",
+  "prompts": {},
+  "sessions": {
+    "s_6b1f155f63fcb3": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_ec897c5edffedKceJIg840OKdF",
+        "model": "big-pickle"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
