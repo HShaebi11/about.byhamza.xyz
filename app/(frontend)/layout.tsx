@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
+import PreviewBanner from "@/components/PreviewBanner";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
 
@@ -66,7 +68,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <Suspense fallback={null}>
+          <PreviewBanner />
+        </Suspense>
+      </body>
     </html>
   );
 }

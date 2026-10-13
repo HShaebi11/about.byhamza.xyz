@@ -1,0 +1,222 @@
+.blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
+}
+
+.imageFill {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.size_inline {
+  max-width: 640px;
+}
+
+.size_wide {
+  max-width: 1000px;
+}
+
+.caption {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #999;
+  margin: 0;
+}
+
+/* Rich text */
+.richText {
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.richText p {
+  margin: 0;
+}
+
+.richText h1,
+.richText h2,
+.richText h3,
+.richText h4 {
+  color: #000;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 20px 0 0 0;
+}
+
+.richText h2 {
+  font-size: 2rem;
+}
+
+.richText h3 {
+  font-size: 1.5rem;
+}
+
+.richText ul,
+.richText ol {
+  margin: 0;
+  padding-left: 1.4em;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.richText li {
+  padding-left: 0.2em;
+}
+
+.richText a {
+  color: #000;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.richText blockquote {
+  margin: 0;
+  padding-left: 24px;
+  border-left: 2px solid #000;
+  color: #555;
+  font-style: italic;
+}
+
+.richText code {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 0.9em;
+  background: #f4f4f4;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Image pair / galleries */
+.pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.pairItem {
+  min-width: 0;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.galleryMasonry {
+  columns: 2;
+  column-gap: 40px;
+}
+
+.galleryMasonry .figure {
+  break-inside: avoid;
+  margin-bottom: 40px;
+}
+
+/* Video */
+.videoFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f4f4f4;
+}
+
+.videoFrame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Captions */
+.captions {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid #eaeaea;
+}
+
+.captionRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid #eaeaea;
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.captionLabel {
+  opacity: 0.5;
+}
+
+.captionValue {
+  margin: 0;
+  text-align: right;
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: #999;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #eaeaea;
+}
+
+.dividerLabel {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .pair,
+  .gallery {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .galleryMasonry {
+    columns: 1;
+  }
+}

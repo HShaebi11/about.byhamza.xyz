@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is the source for [about.byhamza.xyz](https://about.byhamza.xyz) — a Next.js portfolio site with an embedded [Payload CMS](https://payloadcms.com) used to publish projects.
+
+## Stack
+
+- **Next.js 16** (App Router, Turbopack, Cache Components) + React 19
+- **Payload CMS 3** (`@payloadcms/next`) for the project publishing system
+- **Postgres** (`@payloadcms/db-postgres`) — Neon in production
+- **Storage**: Vercel Blob or Cloudflare R2 in production, local disk in development
+- GSAP for the animated project sheet
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install dependencies
+
+```bash
+npm install --legacy-peer-deps
+```
+
+### 2. Configure environment
+
+Copy `.env.example` to `.env` and fill in the values:
+
+```bash
+cp .env.example .env
+```
+
+| Variable | Description |
+| --- | --- |
+| `PAYLOAD_SECRET` | Random string used to sign Payload sessions/JWTs |
+| `DATABASE_URL` | Postgres connection string |
+| `PREVIEW_SECRET` | Shared secret for the draft-preview link |
+| `NEXT_PUBLIC_SERVER_URL` | Public site URL (`http://localhost:3000` in dev) |
+| `STORAGE_ADAPTER` | `local` (dev), `vercel-blob`, or `r2` |
+| `BLOB_READ_WRITE_TOKEN` | Required when `STORAGE_ADAPTER=vercel-blob` |
+| `R2_BUCKET` / `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY` / `R2_ENDPOINT` / `R2_PUBLIC_URL` | Required when `STORAGE_ADAPTER=r2` |
+| `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` | Optional admin credentials for the seed script |
+
+### 3. Start a local Postgres
+
+```bash
+docker run --name payload-pg -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=portfolio -p 5432:5432 -d postgres:17-alpine
+```
+
+Then set `DATABASE_URL=postgres://postgres:postgres@localhost:5432/portfolio` in `.env`.
+
+### 4. Apply migrations and seed
+
+```bash
+npm run payload migrate      # apply the schema
+npm run generate:types       # regenerate payload-types.ts
+npm run seed                 # seed an admin user, media, and the POSTRUN project
+```
+
+The seed prints the generated admin password (it is only generated when no users exist).
+
+### 5. Run the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Site: [http://localhost:3000](http://localhost:3000)
+- Admin: [http://localhost:3000/admin](http://localhost:3000/admin)
+- GraphQL: `/api/graphql` · Playground: `/api/graphql-playground`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Publishing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Projects are edited in the Payload admin. Each project has a title, slug, description, cover, sidebar metadata (year/role/client/order), and a `composition` of blocks:
 
-## Learn More
+`richText`, `image`, `imagePair`, `gallery`, `video`, `divider`, `captions`.
 
-To learn more about Next.js, take a look at the following resources:
+Drafts are enabled, so edits stay private until **Publish**. The homepage list is cached under the `projects` tag and revalidated automatically on save (`lib/payload/revalidate.ts`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Draft preview
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open a project in the admin and use its **Preview** link:
+
+```
+/api/preview?secret=<PREVIEW_SECRET>&slug=postrun
+```
+
+This enables Next.js Draft Mode, redirects to `/project/postrun`, and shows unpublished changes with a preview banner. Use the banner's exit action (`POST /api/exit-preview`) to leave.
+
+## Scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start Next.js in development |
+| `npm run build` | Production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | ESLint |
+| `npm run payload <cmd>` | Payload CLI (`migrate`, `migrate:create`, `generate:importmap`, …) |
+| `npm run generate:types` | Regenerate `payload-types.ts` |
+| `npm run seed` | Seed the database |
+
+## Architecture notes
+
+- `payload.config.ts` wires the Postgres adapter (`push: false`, migrations are the source of truth), Lexical editor, storage plugins, and the MCP plugin.
+- `lib/payload/queries.ts` reads projects inside a `'use cache'` boundary tagged `projects`; draft mode bypasses the cache.
+- `lib/payload/storage.ts` selects the storage adapter from `STORAGE_ADAPTER`.
+- `app/(frontend)/` is the public site; `app/(payload)/` is the admin/API. The `/project/:slug` rewrite is defined in `next.config.ts`.
+- `migrations/` is generated by `npm run payload migrate:create`; commit it.
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Set the environment variables above, run migrations against the production database, and deploy. Use `STORAGE_ADAPTER=vercel-blob` (with `BLOB_READ_WRITE_TOKEN`) or `STORAGE_ADAPTER=r2` for media.

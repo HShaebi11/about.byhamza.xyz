@@ -2,6 +2,8 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap, SplitText } from '@/lib/gsap';
+import type { ProjectView } from '@/lib/payload/types';
+import BlockRenderer from './blocks/BlockRenderer';
 import styles from './ProjectSheet.module.css';
 
 interface ProjectSheetProps {
@@ -9,11 +11,12 @@ interface ProjectSheetProps {
   onClose: () => void;
   onNext: () => void;
   onPrev: () => void;
-  project: any; 
+  project: ProjectView | null;
+  index?: number;
   originRect?: DOMRect | null;
 }
 
-export default function ProjectSheet({ isOpen, onClose, onNext, onPrev, project }: ProjectSheetProps) {
+export default function ProjectSheet({ isOpen, onClose, onNext, onPrev, project, index = 0 }: ProjectSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [isMaximized, setIsMaximized] = useState(false);
@@ -39,9 +42,12 @@ export default function ProjectSheet({ isOpen, onClose, onNext, onPrev, project 
     const headerItems = sheet.querySelectorAll(`.${styles.macButtons}, .${styles.windowTitle}, .${styles.closeButton}`);
     const line = sheet.querySelectorAll(`.${styles.topBarLine}`);
     const tags = sheet.querySelectorAll(`.${styles.projectLabel}`);
-    const otherElements = sheet.querySelectorAll(`.${styles.metadataGrid}, .${styles.descriptionLarge}, .${styles.heroMedia}, .${styles.detailsSection}, .${styles.mediaGrid}, .${styles.footer}`);
+    const otherElements = sheet.querySelectorAll(`.${styles.metadataGrid}, .${styles.descriptionLarge}, .${styles.blocksWrap}, .${styles.footer}`);
 
     if (isOpen) {
+      // Mount the sheet so GSAP can animate it in; the flag is only used to
+      // keep the node rendered during the closing animation.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShouldRender(true);
       document.body.style.overflow = 'hidden';
 
@@ -160,7 +166,8 @@ export default function ProjectSheet({ isOpen, onClose, onNext, onPrev, project 
   };
 
   const title = project?.title || 'Untitled Project';
-  const description = project?.description || 'Something light about this project, like one sentence: the problem, the domains, all that kind of thing. So just one problem to be shared.';
+  const description = project?.description || '';
+  const projectNumber = String(index + 1).padStart(2, '0');
 
   const sheetStyles: React.CSSProperties = {};
 
@@ -200,60 +207,36 @@ export default function ProjectSheet({ isOpen, onClose, onNext, onPrev, project 
 
           <div className={styles.heroSection}>
             <div className={styles.heroHeader}>
-              <span className={styles.projectLabel}>NO. {project?.id || '01'}</span>
+              <span className={styles.projectLabel}>NO. {projectNumber}</span>
               <h1 className={styles.projectNameLarge} ref={titleRef}>{title}</h1>
             </div>
 
             <div className={styles.metadataGrid}>
               <div className={styles.metadataItem}>
                 <span className={styles.metadataLabel}>Role</span>
-                <span>Design Engineer</span>
+                <span>{project?.role || '—'}</span>
               </div>
               <div className={styles.metadataItem}>
                 <span className={styles.metadataLabel}>Year</span>
-                <span>2024</span>
+                <span>{project?.year || '—'}</span>
               </div>
               <div className={styles.metadataItem}>
                 <span className={styles.metadataLabel}>Client</span>
-                <span>Internal Exploration</span>
+                <span>{project?.client || '—'}</span>
               </div>
               <div className={styles.metadataItem}>
                 <span className={styles.metadataLabel}>Status</span>
-                <span>Live</span>
+                <span>{project?.status === 'published' ? 'Live' : 'Draft'}</span>
               </div>
             </div>
 
-            <p className={styles.descriptionLarge}>{description}</p>
+            {description && <p className={styles.descriptionLarge}>{description}</p>}
           </div>
 
-          <div className={styles.heroMedia}>
-            <div className={styles.mediaPlaceholderFull}>16:9 MEDIA BLOCK</div>
+          <div className={styles.blocksWrap}>
+            <BlockRenderer blocks={project?.blocks ?? []} />
           </div>
 
-          <div className={styles.detailsSection}>
-            <h3 className={styles.detailsHeading}>The Challenge</h3>
-            <div className={styles.detailsContent}>
-              <p className={styles.detailsText}>
-                Crafting a seamless experience that bridges the gap between complex functionality and minimalistic design. 
-                The goal was to create an interface that feels invisible, allowing the content to take center stage while 
-                maintaining a strong, distinct brand identity.
-              </p>
-              <p className={styles.detailsText}>
-                Through meticulous attention to typography, spacing, and micro-interactions, we developed a system 
-                that scales elegantly across devices. Later, this will be connected to a CMS.
-              </p>
-            </div>
-          </div>
-
-          <div className={styles.mediaGrid}>
-            <div className={styles.mediaPlaceholderSquare}>4:5 MEDIA BLOCK</div>
-            <div className={styles.mediaPlaceholderSquare}>4:5 MEDIA BLOCK</div>
-          </div>
-
-          <div className={styles.heroMedia}>
-            <div className={styles.mediaPlaceholderFull}>16:9 MEDIA BLOCK</div>
-          </div>
-          
           <footer className={styles.footer}>
             <button className={styles.footerButtonNext} onClick={onPrev}>&larr; Prev</button>
             <button className={styles.footerButton} onClick={onClose}>[ Home ]</button>

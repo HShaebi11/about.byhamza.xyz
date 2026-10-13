@@ -176,6 +176,12 @@
   position: relative;
 }
 
+.blocksWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
 .mediaPlaceholderFull {
   width: 100%;
   height: 100%;
