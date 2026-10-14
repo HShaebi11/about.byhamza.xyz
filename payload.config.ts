@@ -26,6 +26,11 @@ export default buildConfig({
       titleSuffix: ' · Hamza Shaebi',
     },
   },
+  cors: [
+    getServerURL(),
+    'http://localhost:3000',
+  ],
+  csrf: [getServerURL(), 'http://localhost:3000'],
   collections: [Projects, Media, Users],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET ?? '',
