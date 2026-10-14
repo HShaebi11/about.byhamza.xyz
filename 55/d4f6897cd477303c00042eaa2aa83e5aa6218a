@@ -1,0 +1,19 @@
+payload.config.ts
+  s_218453d8161450::t_5f28c23ee26963 29-33
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "55d4f6897cd477303c00042eaa2aa83e5aa6218a",
+  "prompts": {},
+  "sessions": {
+    "s_218453d8161450": {
+      "agent_id": {
+        "tool": "devin",
+        "id": "s_218453d8161450",
+        "model": "unknown"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
