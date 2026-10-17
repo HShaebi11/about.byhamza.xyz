@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { siteConfig } from "@/config/site";
-import "./globals.css";
+import "@/app/globals.css";
 
 export const viewport: Viewport = {
   viewportFit: 'cover',
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default function FrontendLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -70,4 +70,3 @@ export default function RootLayout({
     </html>
   );
 }
-
