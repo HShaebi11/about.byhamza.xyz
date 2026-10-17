@@ -3,13 +3,14 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap, SplitText } from '@/lib/gsap';
 import styles from './ProjectSheet.module.css';
+import type { ProjectItem } from './HomeClient';
 
 interface ProjectSheetProps {
   isOpen: boolean;
   onClose: () => void;
   onNext: () => void;
   onPrev: () => void;
-  project: any; 
+  project: ProjectItem | null; 
   originRect?: DOMRect | null;
 }
 
@@ -18,6 +19,10 @@ export default function ProjectSheet({ isOpen, onClose, onNext, onPrev, project 
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [isMaximized, setIsMaximized] = useState(false);
   const [shouldRender, setShouldRender] = useState(isOpen);
+
+  if (isOpen && !shouldRender) {
+    setShouldRender(true);
+  }
 
   useEffect(() => {
     if (sheetRef.current) {
@@ -42,7 +47,6 @@ export default function ProjectSheet({ isOpen, onClose, onNext, onPrev, project 
     const otherElements = sheet.querySelectorAll(`.${styles.metadataGrid}, .${styles.descriptionLarge}, .${styles.heroMedia}, .${styles.detailsSection}, .${styles.mediaGrid}, .${styles.footer}`);
 
     if (isOpen) {
-      setShouldRender(true);
       document.body.style.overflow = 'hidden';
 
       const tl = gsap.timeline();
@@ -105,12 +109,12 @@ export default function ProjectSheet({ isOpen, onClose, onNext, onPrev, project 
 
     } else {
       document.body.style.overflow = '';
-      setIsMaximized(false);
 
       if (!shouldRender) return;
 
       const tl = gsap.timeline({
         onComplete: () => {
+          setIsMaximized(false);
           // Simply flag that we should stop rendering.
           // Do NOT clearProps here, otherwise it will instantly flash 
           // the fully visible state for 1 frame before React unmounts it!
@@ -200,26 +204,26 @@ export default function ProjectSheet({ isOpen, onClose, onNext, onPrev, project 
 
           <div className={styles.heroSection}>
             <div className={styles.heroHeader}>
-              <span className={styles.projectLabel}>NO. {project?.id || '01'}</span>
+              <span className={styles.projectLabel}>NO. {project?.projectNumber || project?.id || '01'}</span>
               <h1 className={styles.projectNameLarge} ref={titleRef}>{title}</h1>
             </div>
 
             <div className={styles.metadataGrid}>
               <div className={styles.metadataItem}>
                 <span className={styles.metadataLabel}>Role</span>
-                <span>Design Engineer</span>
+                <span>{project?.role || 'Design Engineer'}</span>
               </div>
               <div className={styles.metadataItem}>
                 <span className={styles.metadataLabel}>Year</span>
-                <span>2024</span>
+                <span>{project?.year || '2024'}</span>
               </div>
               <div className={styles.metadataItem}>
                 <span className={styles.metadataLabel}>Client</span>
-                <span>Internal Exploration</span>
+                <span>{project?.client || 'Internal Exploration'}</span>
               </div>
               <div className={styles.metadataItem}>
                 <span className={styles.metadataLabel}>Status</span>
-                <span>Live</span>
+                <span>{project?.status || 'Live'}</span>
               </div>
             </div>
 
@@ -227,27 +231,68 @@ export default function ProjectSheet({ isOpen, onClose, onNext, onPrev, project 
           </div>
 
           <div className={styles.heroMedia}>
-            <div className={styles.mediaPlaceholderFull}>16:9 MEDIA BLOCK</div>
+            {typeof project?.heroImage === 'object' && project?.heroImage?.url ? (
+              <img
+                src={project.heroImage.url}
+                alt={project.heroImage.alt || title}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            ) : (
+              <div className={styles.mediaPlaceholderFull}>16:9 MEDIA BLOCK</div>
+            )}
           </div>
 
           <div className={styles.detailsSection}>
             <h3 className={styles.detailsHeading}>The Challenge</h3>
             <div className={styles.detailsContent}>
-              <p className={styles.detailsText}>
-                Crafting a seamless experience that bridges the gap between complex functionality and minimalistic design. 
-                The goal was to create an interface that feels invisible, allowing the content to take center stage while 
-                maintaining a strong, distinct brand identity.
-              </p>
-              <p className={styles.detailsText}>
-                Through meticulous attention to typography, spacing, and micro-interactions, we developed a system 
-                that scales elegantly across devices. Later, this will be connected to a CMS.
-              </p>
+              {project?.challenge ? (
+                typeof project.challenge === 'string' ? (
+                  project.challenge.split('\n\n').map((para: string, i: number) => (
+                    <p key={i} className={styles.detailsText}>{para}</p>
+                  ))
+                ) : (
+                  <p className={styles.detailsText}>{project.challenge}</p>
+                )
+              ) : (
+                <>
+                  <p className={styles.detailsText}>
+                    Crafting a seamless experience that bridges the gap between complex functionality and minimalistic design. 
+                    The goal was to create an interface that feels invisible, allowing the content to take center stage while 
+                    maintaining a strong, distinct brand identity.
+                  </p>
+                  <p className={styles.detailsText}>
+                    Through meticulous attention to typography, spacing, and micro-interactions, we developed a system 
+                    that scales elegantly across devices.
+                  </p>
+                </>
+              )}
             </div>
           </div>
 
           <div className={styles.mediaGrid}>
-            <div className={styles.mediaPlaceholderSquare}>4:5 MEDIA BLOCK</div>
-            <div className={styles.mediaPlaceholderSquare}>4:5 MEDIA BLOCK</div>
+            {project?.gallery && project.gallery.length >= 2 ? (
+              project.gallery.slice(0, 2).map((item, i: number) => {
+                const img = typeof item.image === 'object' ? item.image : null;
+                return (
+                  <div key={i} className={styles.mediaPlaceholderSquare} style={{ overflow: 'hidden' }}>
+                    {img?.url ? (
+                      <img
+                        src={img.url}
+                        alt={img.alt || `Media ${i + 1}`}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    ) : (
+                      '4:5 MEDIA BLOCK'
+                    )}
+                  </div>
+                );
+              })
+            ) : (
+              <>
+                <div className={styles.mediaPlaceholderSquare}>4:5 MEDIA BLOCK</div>
+                <div className={styles.mediaPlaceholderSquare}>4:5 MEDIA BLOCK</div>
+              </>
+            )}
           </div>
 
           <div className={styles.heroMedia}>
