@@ -1,21 +1,41 @@
 'use client';
 
-import { gsap, useGSAP, ScrollTrigger, SplitText } from '@/lib/gsap';
-import { RefObject } from 'react';
+import { gsap, useGSAP, Observer, SplitText } from '@/lib/gsap';
+import { RefObject, useRef, useCallback, useEffect } from 'react';
 
-export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
+export function useGSAPAnimations(
+  containerRef: RefObject<HTMLElement | null>,
+  isSheetOpen: boolean = false
+) {
+  const gotoSectionRef = useRef<(index: number, direction?: number) => void>(() => {});
+  const isSheetOpenRef = useRef(isSheetOpen);
+  const observerRef = useRef<Observer | null>(null);
+
+  useEffect(() => {
+    isSheetOpenRef.current = isSheetOpen;
+    if (observerRef.current) {
+      if (isSheetOpen) {
+        observerRef.current.disable();
+      } else {
+        observerRef.current.enable();
+      }
+    }
+  }, [isSheetOpen]);
+
   useGSAP(() => {
     if (!containerRef.current) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    const sections = gsap.utils.toArray<HTMLElement>('.snap-section');
+    if (!sections.length) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const EASE_OUT = 'power4.out';
     const EASE_IN_OUT = 'expo.inOut';
-    const DUR = 0.7;
+    const DUR = prefersReducedMotion ? 0 : 0.7;
 
     // ─── 1. INTRO SECTION ────────────────────────────────────────────────────
     const introTl = gsap.timeline({ paused: true });
 
-    // HAMZA / SHAEBI — SplitText chars slide up from y:60
     const nameEls = gsap.utils.toArray<HTMLElement>('.intro-name');
     nameEls.forEach((el, i) => {
       const split = SplitText.create(el, { type: 'chars' });
@@ -28,7 +48,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       }, i === 0 ? 0 : '-=0.4');
     });
 
-    // Dividers — clip-path wipe left→right mask effect
     const dividers = gsap.utils.toArray<HTMLElement>('.divider-anim');
     if (dividers.length) {
       introTl.from(dividers, {
@@ -39,7 +58,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       }, '-=0.6');
     }
 
-    // Nav links — background scaleX wipe left→right, uniform stagger
     const navLinks = gsap.utils.toArray<HTMLElement>('.intro-nav .nav-link-bg');
     introTl.from(navLinks, {
       scaleX: 0,
@@ -60,15 +78,12 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       }, '-=0.4');
     }
 
-    // Hero blue block — smooth scale up
     introTl.from('.intro-hero-block', {
       scale: 0,
       transformOrigin: 'center center',
       duration: 1.0,
       ease: 'power3.inOut',
     }, '-=0.4');
-
-    introTl.play();
 
     // ─── 2. ABOUT SECTION ────────────────────────────────────────────────────
     const aboutTl = gsap.timeline({ paused: true });
@@ -102,17 +117,9 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       }, i === 0 ? '-=0.2' : '-=0.4');
     });
 
-    ScrollTrigger.create({
-      trigger: '.section-about',
-      start: 'top center',
-      onEnter: () => aboutTl.play(),
-      onLeaveBack: () => aboutTl.reverse(),
-    });
-
     // ─── 3. LOCATION SECTION ─────────────────────────────────────────────────
     const locationTl = gsap.timeline({ paused: true });
 
-    // 1. The block (rectangle) scales in FIRST
     locationTl.from('.location-block', {
       scale: 0,
       transformOrigin: 'center center',
@@ -120,7 +127,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       ease: 'power3.inOut',
     });
 
-    // 2. Text ABOVE the rectangle (located, in, bhx, lon)
     const topGroups = [
       '.location-located',
       '.location-in',
@@ -141,7 +147,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       }, i === 0 ? '-=0.6' : '-=0.4');
     });
 
-    // 3. Text BELOW the rectangle (available, worldwide)
     const bottomGroups = [
       '.location-available',
       '.location-world'
@@ -158,13 +163,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
         stagger: 0.04,
         ease: EASE_OUT,
       }, '-=0.4');
-    });
-
-    ScrollTrigger.create({
-      trigger: '.section-location',
-      start: 'top center',
-      onEnter: () => locationTl.play(),
-      onLeaveBack: () => locationTl.reverse(),
     });
 
     // ─── 4. WORK SECTION ─────────────────────────────────────────────────────
@@ -207,13 +205,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       ease: EASE_OUT,
     }, '-=0.3');
 
-    ScrollTrigger.create({
-      trigger: '.section-work',
-      start: 'top center',
-      onEnter: () => workTl.play(),
-      onLeaveBack: () => workTl.reverse(),
-    });
-
     // ─── 5. PROCESS SECTION ──────────────────────────────────────────────────
     const processTl = gsap.timeline({ paused: true });
 
@@ -255,13 +246,6 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       }, i === 0 ? '-=0.6' : '-=0.4');
     });
 
-    ScrollTrigger.create({
-      trigger: '.section-process',
-      start: 'top center',
-      onEnter: () => processTl.play(),
-      onLeaveBack: () => processTl.reverse(),
-    });
-
     // ─── 6. FOOTER CTA ───────────────────────────────────────────────────────
     const footerTl = gsap.timeline({ paused: true });
 
@@ -284,12 +268,147 @@ export function useGSAPAnimations(containerRef: RefObject<HTMLElement | null>) {
       ease: EASE_IN_OUT,
     }, '-=0.2');
 
-    ScrollTrigger.create({
-      trigger: '.section-footer',
-      start: 'top center',
-      onEnter: () => footerTl.play(),
-      onLeaveBack: () => footerTl.reverse(),
+    const sectionTls = [introTl, aboutTl, locationTl, workTl, processTl, footerTl];
+
+    // ─── INFINITE CONTINUOUS SECTION LOOPING ─────────────────────────────────
+    const wrap = gsap.utils.wrap(0, sections.length);
+    let currentIndex = 0;
+    let animating = false;
+    let lastTransitionTime = 0;
+
+    // Check for hash on mount (#work -> 3, #process -> 4)
+    if (typeof window !== 'undefined') {
+      if (window.location.hash === '#work') currentIndex = 3;
+      else if (window.location.hash === '#process') currentIndex = 4;
+    }
+
+    // Set initial positions: active section visible at 0%, all others hidden
+    gsap.set(sections, { yPercent: 100, autoAlpha: 0, zIndex: 0 });
+    gsap.set(sections[currentIndex], { yPercent: 0, autoAlpha: 1, zIndex: 1 });
+    sectionTls[currentIndex]?.play();
+
+    const gotoSection = (index: number, direction?: number) => {
+      const now = Date.now();
+      if (animating || (now - lastTransitionTime < 650)) return;
+
+      const targetIndex = wrap(index);
+      if (targetIndex === currentIndex) return;
+
+      if (direction === undefined) {
+        const diff = (targetIndex - currentIndex + sections.length) % sections.length;
+        direction = diff <= sections.length / 2 ? 1 : -1;
+      }
+
+      animating = true;
+      lastTransitionTime = now;
+
+      const prevIndex = currentIndex;
+      const currentSection = sections[prevIndex];
+      const nextSection = sections[targetIndex];
+
+      // Prepare next section in the direction of motion
+      gsap.set(sections, { zIndex: 0 });
+      gsap.set(currentSection, { zIndex: 1 });
+      gsap.set(nextSection, {
+        zIndex: 2,
+        autoAlpha: 1,
+        yPercent: direction * 100,
+      });
+
+      const transitionDuration = prefersReducedMotion ? 0.1 : 0.85;
+
+      const transitionTl = gsap.timeline({
+        defaults: { duration: transitionDuration, ease: 'power2.inOut' },
+        onComplete: () => {
+          gsap.set(currentSection, { autoAlpha: 0, zIndex: 0 });
+          gsap.set(nextSection, { zIndex: 1 });
+          currentIndex = targetIndex;
+
+          // Reset previous section's timeline so it's ready to replay
+          sectionTls[prevIndex]?.progress(0).pause();
+
+          // Small cooldown to prevent rapid trackpad inertia from skipping
+          setTimeout(() => {
+            animating = false;
+          }, 150);
+        },
+      });
+
+      // Slide out current section and slide in next section simultaneously
+      transitionTl
+        .to(currentSection, { yPercent: -direction * 100 }, 0)
+        .to(nextSection, { yPercent: 0 }, 0);
+
+      // Replay incoming section entrance animation
+      sectionTls[targetIndex]?.restart();
+
+      // Update URL hash cleanly
+      if (typeof window !== 'undefined') {
+        if (targetIndex === 3) {
+          window.history.replaceState(null, '', '#work');
+        } else if (targetIndex === 4) {
+          window.history.replaceState(null, '', '#process');
+        } else if (targetIndex === 0 && window.location.hash) {
+          window.history.replaceState(null, '', window.location.pathname);
+        }
+      }
+    };
+
+    gotoSectionRef.current = gotoSection;
+
+    // Observer intercepts wheel and touch gestures seamlessly
+    const observer = Observer.create({
+      target: window,
+      type: 'wheel,touch',
+      wheelSpeed: -1,
+      tolerance: 20,
+      preventDefault: true,
+      onUp: () => {
+        if (!animating && !isSheetOpenRef.current) {
+          gotoSection(currentIndex + 1, 1);
+        }
+      },
+      onDown: () => {
+        if (!animating && !isSheetOpenRef.current) {
+          gotoSection(currentIndex - 1, -1);
+        }
+      },
     });
 
+    observerRef.current = observer;
+
+    // Keyboard navigation (ArrowDown, ArrowUp, PageDown, PageUp, Space)
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isSheetOpenRef.current) return;
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+        e.preventDefault();
+        gotoSection(currentIndex + 1, 1);
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        e.preventDefault();
+        gotoSection(currentIndex - 1, -1);
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        gotoSection(0, -1);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        gotoSection(sections.length - 1, 1);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      observer.kill();
+      sectionTls.forEach((tl) => tl.kill());
+    };
   }, { scope: containerRef });
+
+  const gotoSection = useCallback((index: number, direction?: number) => {
+    gotoSectionRef.current(index, direction);
+  }, []);
+
+  return { gotoSection };
 }

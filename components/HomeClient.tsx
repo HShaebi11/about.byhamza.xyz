@@ -80,15 +80,38 @@ const StaggerText = ({ text, className, highlightWord, highlightClass }: { text:
   );
 };
 
-export default function HomeClient() {
+export type ProjectItem = {
+  id: string | number;
+  title: string;
+  description: string;
+  slug?: string | null;
+  projectNumber?: string | null;
+  role?: string | null;
+  year?: string | null;
+  client?: string | null;
+  status?: string | null;
+  challenge?: string | null;
+  heroImage?: number | { url?: string | null; alt?: string | null } | null;
+  gallery?: Array<{ id?: string | null; image?: number | { url?: string | null; alt?: string | null } | null; caption?: string | null }> | null;
+  order?: number | null;
+  published?: boolean | null;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export default function HomeClient({ initialProjects }: { initialProjects?: ProjectItem[] } = {}) {
+  const projects: ProjectItem[] = initialProjects && initialProjects.length > 0
+    ? initialProjects.map((p) => ({ ...p, id: p.projectNumber || p.id }))
+    : MOCK_PROJECTS;
+
   const containerRef = useRef<HTMLDivElement>(null);
-  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [originRect, setOriginRect] = useState<DOMRect | null>(null);
 
-  useGSAPAnimations(containerRef);
+  const { gotoSection } = useGSAPAnimations(containerRef, isSheetOpen);
 
-  const openProject = (project: any) => {
+  const openProject = (project: ProjectItem) => {
     const cardEl = document.getElementById(`project-card-${project.id}`);
     if (cardEl) {
       setOriginRect(cardEl.getBoundingClientRect());
@@ -98,7 +121,7 @@ export default function HomeClient() {
     setSelectedProject(project);
     setIsSheetOpen(true);
     // Use clean pathnames like /project/project-one
-    window.history.pushState(null, '', `/project/${getSlug(project.title)}`);
+    window.history.pushState(null, '', `/project/${project.slug || getSlug(project.title)}`);
   };
 
   const closeProject = () => {
@@ -111,20 +134,20 @@ export default function HomeClient() {
 
   const handleNextProject = () => {
     if (!selectedProject) return;
-    const currentIndex = MOCK_PROJECTS.findIndex(p => p.id === selectedProject.id);
-    const nextIndex = (currentIndex + 1) % MOCK_PROJECTS.length;
-    const nextProject = MOCK_PROJECTS[nextIndex];
+    const currentIndex = projects.findIndex(p => p.id === selectedProject.id);
+    const nextIndex = (currentIndex + 1) % projects.length;
+    const nextProject = projects[nextIndex];
     setSelectedProject(nextProject);
-    window.history.pushState(null, '', `/project/${getSlug(nextProject.title)}`);
+    window.history.pushState(null, '', `/project/${nextProject.slug || getSlug(nextProject.title)}`);
   };
 
   const handlePrevProject = () => {
     if (!selectedProject) return;
-    const currentIndex = MOCK_PROJECTS.findIndex(p => p.id === selectedProject.id);
-    const prevIndex = (currentIndex - 1 + MOCK_PROJECTS.length) % MOCK_PROJECTS.length;
-    const prevProject = MOCK_PROJECTS[prevIndex];
+    const currentIndex = projects.findIndex(p => p.id === selectedProject.id);
+    const prevIndex = (currentIndex - 1 + projects.length) % projects.length;
+    const prevProject = projects[prevIndex];
     setSelectedProject(prevProject);
-    window.history.pushState(null, '', `/project/${getSlug(prevProject.title)}`);
+    window.history.pushState(null, '', `/project/${prevProject.slug || getSlug(prevProject.title)}`);
   };
 
   useEffect(() => {
@@ -132,7 +155,7 @@ export default function HomeClient() {
       const pathname = window.location.pathname;
       if (pathname.startsWith('/project/')) {
         const slug = pathname.replace('/project/', '');
-        const project = MOCK_PROJECTS.find((p) => getSlug(p.title) === slug);
+        const project = projects.find((p) => (p.slug === slug || getSlug(p.title) === slug));
         if (project) {
           setSelectedProject(project);
           setIsSheetOpen(true);
@@ -149,7 +172,7 @@ export default function HomeClient() {
     return () => {
       window.removeEventListener('popstate', handlePopState);
     };
-  }, []);
+  }, [projects]);
 
   return (
     <>
@@ -168,8 +191,23 @@ export default function HomeClient() {
 
           <div className={styles.navSection}>
             <nav className={`${styles.navGrid} intro-nav`}>
-              <NavLink text="work" variant="fill" href="#work" />
-              <NavLink text="process" href="#process" />
+              <NavLink 
+                text="work" 
+                variant="fill" 
+                href="#work" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  gotoSection(3);
+                }}
+              />
+              <NavLink 
+                text="process" 
+                href="#process" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  gotoSection(4);
+                }}
+              />
               <NavLink text="socials" href="#" />
               <NavLink text="say   hello" href="https://hello.byhamza.xyz/" />
             </nav>
@@ -261,13 +299,13 @@ export default function HomeClient() {
             />
             <div
               className={`${styles.workCount} work-count`}
-              data-count={MOCK_PROJECTS.length}
+              data-count={projects.length}
             >
-              [{MOCK_PROJECTS.length}]
+              [{projects.length}]
             </div>
           </div>
 
-          {MOCK_PROJECTS.map((project) => (
+          {projects.map((project) => (
             <ProjectCard
               key={project.id}
               id={`project-card-${project.id}`}
