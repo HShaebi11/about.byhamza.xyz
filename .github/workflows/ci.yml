@@ -1,0 +1,48 @@
+name: CI & Error Tracking
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify-and-build:
+    name: Lint, Test & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript Check
+        run: npx tsc --noEmit
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Build Next.js & Cloudflare Worker
+        env:
+          NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN: ${{ secrets.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN }}
+          NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET || 'ci-dummy-secret-at-least-32-characters-long' }}
+        run: npm run build:worker
+
+      - name: Upload Source Maps to PostHog
+        if: github.ref == 'refs/heads/main' && env.POSTHOG_PERSONAL_API_KEY != ''
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
+        run: |
+          npx -y @posthog/wizard@latest upload-source-maps \
+            --api-key "$POSTHOG_PERSONAL_API_KEY" \
+            --project-id "$POSTHOG_PROJECT_ID"

@@ -1,36 +1,153 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hamza Shaebi | Portfolio with Payload CMS (Cloudflare Native)
 
-## Getting Started
+A high-performance portfolio for Hamza Shaebi built with **Next.js 16 (App Router)**, **GSAP**, and integrated with **Payload CMS 3.x**, running natively on **Cloudflare Workers**, **Cloudflare D1 (SQLite database)**, and **Cloudflare R2 (media storage)** via `@opennextjs/cloudflare`.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router with Turbopack)
+- **Deployment Platform**: Cloudflare Workers (Edge runtime via OpenNext)
+- **CMS**: Payload CMS 3.x (Headless CMS running directly in Next.js on Cloudflare Workers)
+- **Database**: Cloudflare D1 (Serverless SQLite at the edge) with local SQLite fallback
+- **Object Storage**: Cloudflare R2 (S3-compatible bucket storage via `@payloadcms/storage-r2`)
+- **Rich Text**: Lexical Editor (`@payloadcms/richtext-lexical`)
+- **Animation**: GSAP (GreenSock) & SplitText
+- **Styling**: Modern CSS Modules with Responsive Fluid Typography
+
+---
+
+## Architecture
+
+```
+┌────────────────────────────────────────────────────────┐
+│                   Cloudflare Worker                    │
+│                                                        │
+│  ┌───────────────────────┐  ┌───────────────────────┐  │
+│  │     Next.js 16        │  │     Payload CMS 3     │  │
+│  │   Portfolio Routes    │  │  Admin, REST, GraphQL │  │
+│  │       app/(frontend)  │  │       app/(payload)   │  │
+│  └───────────┬───────────┘  └───────────┬───────────┘  │
+└──────────────┼──────────────────────────┼──────────────┘
+               ▼                          ▼
+     ┌──────────────────┐       ┌──────────────────┐
+     │  Cloudflare D1   │       │  Cloudflare R2   │
+     │  SQL Database    │       │  Media Storage   │
+     └──────────────────┘       └──────────────────┘
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Local Development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Install Dependencies
+```bash
+npm install
+```
 
-## Learn More
+### 2. Run Local Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) to view the portfolio.
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Seed Initial Data
+```bash
+npm run seed
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Cloudflare Preview (Local Simulation)
 
-## Deploy on Vercel
+Test the compiled Cloudflare Worker locally with Miniflare running local D1 and R2 bindings:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+# 1. Build Next.js & package for Cloudflare Workers
+npm run build:worker
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# 2. Initialize local D1 database schema (one-time setup for local simulation)
+npx wrangler d1 execute portfolio-d1 --local --file=./migrations/0001_init.sql
+npx wrangler d1 execute portfolio-d1 --local --file=./migrations/0002_seed.sql
+
+# 3. Preview Worker locally
+npm run preview
+```
+Open [http://localhost:8787](http://localhost:8787) to view the worker preview.
+
+---
+
+## Cloudflare Production Deployment Guide
+
+### Step 1: Login to Cloudflare
+```bash
+npx wrangler login
+```
+
+### Step 2: Create Cloudflare D1 Database
+Create the production D1 database:
+```bash
+npx wrangler d1 create portfolio-d1
+```
+This command outputs your database configuration:
+```jsonc
+{
+  "binding": "DB",
+  "database_name": "portfolio-d1",
+  "database_id": "<YOUR-DATABASE-UUID>"
+}
+```
+Update the `database_id` inside `wrangler.jsonc` with your `<YOUR-DATABASE-UUID>`.
+
+### Step 3: Create Cloudflare R2 Bucket
+Create the production media storage bucket:
+```bash
+npx wrangler r2 bucket create portfolio-media
+```
+
+### Step 4: Apply Database Migrations to Remote D1
+Run the initial database schema against your live remote D1 database:
+```bash
+npx wrangler d1 execute portfolio-d1 --remote --file=./migrations/0001_init.sql
+npx wrangler d1 execute portfolio-d1 --remote --file=./migrations/0002_seed.sql
+```
+
+### Step 5: Set Production Secrets
+Set your production Payload secret on Cloudflare:
+```bash
+npx wrangler secret put PAYLOAD_SECRET
+```
+*(Enter a strong random 32+ character hex string)*.
+
+### Step 6: Deploy to Cloudflare Workers
+```bash
+npm run deploy
+```
+
+---
+
+## Payload CMS Admin Panel & APIs
+
+- **Admin Panel**: `/admin` (create your first admin user upon first visit)
+- **REST API**:
+  - `GET /api/projects`: List all portfolio projects
+  - `GET /api/globals/site-settings`: Fetch portfolio site settings
+  - `GET /api/media`: Access uploaded media assets
+- **GraphQL API**:
+  - Endpoint: `POST /api/graphql`
+  - Playground: `/api/graphql-playground`
+
+---
+
+## Available Scripts
+
+| Command | Description |
+| :--- | :--- |
+| `npm run dev` | Start Next.js development server locally |
+| `npm run build` | Compile Next.js production build |
+| `npm run build:worker` | Package Next.js application into `.open-next/worker.js` for Cloudflare |
+| `npm run preview` | Run local Wrangler preview of the compiled Worker with Miniflare D1/R2 |
+| `npm run deploy` | Build and deploy directly to Cloudflare Workers |
+| `npm run cf-typegen` | Regenerate TypeScript types for Cloudflare bindings |
+| `npm run seed` | Seed initial projects and site settings |
+| `npm run lint` | Run ESLint check |

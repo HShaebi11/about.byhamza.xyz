@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import posthog from 'posthog-js';
 import Divider from '@/components/Divider';
 import NavLink from '@/components/NavLink';
 import ProjectCard from '@/components/ProjectCard';
@@ -108,6 +109,9 @@ export default function HomeClient({ initialProjects }: { initialProjects?: Proj
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [originRect, setOriginRect] = useState<DOMRect | null>(null);
+  const isPostHogConfigured = Boolean(
+    process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN && process.env.NEXT_PUBLIC_POSTHOG_HOST,
+  );
 
   const { gotoSection } = useGSAPAnimations(containerRef, isSheetOpen);
 
@@ -120,11 +124,22 @@ export default function HomeClient({ initialProjects }: { initialProjects?: Proj
     }
     setSelectedProject(project);
     setIsSheetOpen(true);
+    if (isPostHogConfigured) {
+      posthog.capture('project_opened', {
+        project_id: String(project.id),
+      });
+    }
     // Use clean pathnames like /project/project-one
     window.history.pushState(null, '', `/project/${project.slug || getSlug(project.title)}`);
   };
 
   const closeProject = () => {
+    if (isPostHogConfigured && selectedProject) {
+      posthog.capture('project_closed', {
+        project_id: String(selectedProject.id),
+      });
+    }
+
     if (window.location.pathname.startsWith('/project/')) {
       window.history.back();
     } else {
@@ -138,6 +153,12 @@ export default function HomeClient({ initialProjects }: { initialProjects?: Proj
     const nextIndex = (currentIndex + 1) % projects.length;
     const nextProject = projects[nextIndex];
     setSelectedProject(nextProject);
+    if (isPostHogConfigured) {
+      posthog.capture('project_navigated', {
+        direction: 'next',
+        project_id: String(nextProject.id),
+      });
+    }
     window.history.pushState(null, '', `/project/${nextProject.slug || getSlug(nextProject.title)}`);
   };
 
@@ -147,6 +168,12 @@ export default function HomeClient({ initialProjects }: { initialProjects?: Proj
     const prevIndex = (currentIndex - 1 + projects.length) % projects.length;
     const prevProject = projects[prevIndex];
     setSelectedProject(prevProject);
+    if (isPostHogConfigured) {
+      posthog.capture('project_navigated', {
+        direction: 'previous',
+        project_id: String(prevProject.id),
+      });
+    }
     window.history.pushState(null, '', `/project/${prevProject.slug || getSlug(prevProject.title)}`);
   };
 
@@ -344,7 +371,15 @@ export default function HomeClient({ initialProjects }: { initialProjects?: Proj
         {/* Footer CTA */}
         <section className={`${styles.footerSection} snap-section section-footer`}>
           <div className={styles.footerContent}>
-            <a href="https://hello.byhamza.xyz/" className={styles.ctaLink}>
+            <a
+              href="https://hello.byhamza.xyz/"
+              className={styles.ctaLink}
+              onClick={() => {
+                if (isPostHogConfigured) {
+                  posthog.capture('contact_link_clicked', { source: 'footer' });
+                }
+              }}
+            >
               <StaggerText 
                 text={"let's build\nor chat\nabout\nsomething"} 
                 className={`${styles.ctaText} cta-text`} 
