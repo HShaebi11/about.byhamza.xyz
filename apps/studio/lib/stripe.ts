@@ -1,10 +1,17 @@
-import Stripe from 'stripe'
+import type Stripe from 'stripe'
 
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder'
+let stripeClient: Stripe | null = null
 
-export const stripe = new Stripe(stripeSecretKey, {
-  httpClient: Stripe.createFetchHttpClient(),
-})
+// Lazy-loaded so the Stripe SDK stays out of the cold-start module graph
+export async function getStripe(): Promise<Stripe> {
+  if (!stripeClient) {
+    const { default: StripeSdk } = await import('stripe')
+    stripeClient = new StripeSdk(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', {
+      httpClient: StripeSdk.createFetchHttpClient(),
+    })
+  }
+  return stripeClient
+}
 
 export interface CreateInvoiceCheckoutParams {
   invoiceId: string | number
@@ -22,6 +29,8 @@ export async function createInvoiceCheckoutSession(params: CreateInvoiceCheckout
   if (!process.env.STRIPE_SECRET_KEY) {
     throw new Error('STRIPE_SECRET_KEY is not configured')
   }
+
+  const stripe = await getStripe()
 
   const session = await stripe.checkout.sessions.create({
     customer_email: params.clientEmail,

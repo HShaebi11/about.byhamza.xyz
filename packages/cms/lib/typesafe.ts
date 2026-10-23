@@ -1,6 +1,3 @@
-import { choice, noul, score, TypeSafeClient } from '@typesafe-ai/sdk'
-import Anthropic from '@anthropic-ai/sdk'
-
 export interface LeadScoringResult {
   intentLabel: 'hot' | 'warm' | 'cold' | 'unscored'
   intentScore: number
@@ -17,6 +14,12 @@ export async function scoreLead(inquiry: {
   budget?: string | null
   message: string
 }): Promise<LeadScoringResult> {
+  // Lazy-loaded so the SDKs stay out of the cold-start module graph
+  const [{ score, TypeSafeClient }, { default: Anthropic }] = await Promise.all([
+    import('@typesafe-ai/sdk'),
+    import('@anthropic-ai/sdk'),
+  ])
+
   const client = new TypeSafeClient()
 
   const state = {

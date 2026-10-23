@@ -1,14 +1,16 @@
-import { PostHog } from 'posthog-node';
+import type { PostHog } from 'posthog-node';
 
 let posthogClient: PostHog | null = null;
 
-export function getPostHogClient() {
+// Lazy-loaded so posthog-node stays out of the cold-start module graph
+export async function getPostHogClient(): Promise<PostHog | null> {
   if (!process.env.POSTHOG_PERSONAL_API_KEY || !process.env.POSTHOG_PROJECT_ID) {
     console.warn('PostHog server client not configured: missing POSTHOG_PERSONAL_API_KEY or POSTHOG_PROJECT_ID');
     return null;
   }
 
   if (!posthogClient) {
+    const { PostHog } = await import('posthog-node');
     posthogClient = new PostHog(process.env.POSTHOG_PERSONAL_API_KEY, {
       host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com',
     });
@@ -29,7 +31,7 @@ export async function trackInquirySubmission(inquiryData: {
   budget?: string;
   posthogDistinctId?: string;
 }) {
-  const client = getPostHogClient();
+  const client = await getPostHogClient();
   if (!client) return;
 
   try {
@@ -71,7 +73,7 @@ export async function trackInquiryConversion(
     intentScore?: number | null
   },
 ) {
-  const client = getPostHogClient();
+  const client = await getPostHogClient();
   if (!client) return;
 
   try {

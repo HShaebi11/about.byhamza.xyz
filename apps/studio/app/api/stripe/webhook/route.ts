@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import type Stripe from 'stripe'
-import { stripe } from '@/lib/stripe'
+import { getStripe } from '@/lib/stripe'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
 
   try {
     if (webhookSecret && sig) {
+      const stripe = await getStripe()
       event = stripe.webhooks.constructEvent(body, sig, webhookSecret)
     } else {
       // In development fallback if secret is not yet set

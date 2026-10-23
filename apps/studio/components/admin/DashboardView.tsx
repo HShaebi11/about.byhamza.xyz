@@ -1,7 +1,13 @@
 import React from 'react'
 import Link from 'next/link'
 import type { AdminViewServerProps } from 'payload'
-import type { Inquiry, Invoice, Project, SiteSetting } from '@repo/cms/generated/payload-types'
+import { sql as dsql } from '@payloadcms/db-d1-sqlite'
+import type { Inquiry, Project, SiteSetting } from '@repo/cms/generated/payload-types'
+
+interface OutstandingRow {
+  currency: string | null
+  total: number | null
+}
 
 const SERVICE_LABELS: Record<string, string> = {
   design_engineering: 'Design Engineering',
@@ -98,7 +104,7 @@ export const DashboardView: React.FC<AdminViewServerProps> = async ({ payload })
       cCount,
       invOutstandingCount,
       invOverdueCount,
-      outstandingDocs,
+      outstandingRows,
       settings,
       recents,
       recentLeads,
@@ -122,12 +128,20 @@ export const DashboardView: React.FC<AdminViewServerProps> = async ({ payload })
         where: { status: { in: ['sent', 'viewed', 'overdue'] } },
       }),
       payload.count({ collection: 'invoices', where: { status: { equals: 'overdue' } } }),
-      payload.find({
-        collection: 'invoices',
-        where: { status: { in: ['sent', 'viewed', 'overdue'] } },
-        limit: 200,
-        depth: 0,
-      }),
+      // SQL aggregate instead of fetching+deserializing up to 200 invoice
+      // docs — keeps dashboard CPU cost low on the Workers Free plan
+      (async (): Promise<OutstandingRow[]> => {
+        const drizzle = (
+          payload.db as { drizzle?: { all: (q: unknown) => Promise<unknown[]> } }
+        ).drizzle
+        if (!drizzle) return []
+        return (await drizzle.all(dsql`
+          SELECT currency, SUM(total_amount) AS total
+          FROM invoices
+          WHERE status IN ('sent', 'viewed', 'overdue')
+          GROUP BY currency
+        `)) as OutstandingRow[]
+      })(),
       payload.findGlobal({ slug: 'site-settings' }).catch(() => null) as Promise<SiteSetting | null>,
       payload.find({ collection: 'projects', limit: 5, sort: '-updatedAt' }),
       payload.find({ collection: 'inquiries', limit: 5, sort: '-createdAt' }),
@@ -148,9 +162,9 @@ export const DashboardView: React.FC<AdminViewServerProps> = async ({ payload })
     invoicesOverdue = invOverdueCount.totalDocs
 
     const sums = new Map<string, number>()
-    for (const doc of outstandingDocs.docs as Invoice[]) {
-      const currency = doc.currency || 'GBP'
-      sums.set(currency, (sums.get(currency) || 0) + (doc.totalAmount || 0))
+    for (const row of outstandingRows) {
+      const currency = row.currency || 'GBP'
+      sums.set(currency, (sums.get(currency) || 0) + (Number(row.total) || 0))
     }
     if (sums.size === 1) {
       const [currency, amount] = [...sums.entries()][0]

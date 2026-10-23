@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
-import { stripe } from '@/lib/stripe'
+import { getStripe } from '@/lib/stripe'
 import { trackInquiryConversion } from '@/lib/posthog'
 
 export async function POST(req: NextRequest) {
@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
     let stripeCustomerId = ''
     try {
       if (process.env.STRIPE_SECRET_KEY) {
+        const stripe = await getStripe()
         const customer = await stripe.customers.create({
           email: inquiry.email,
           name: inquiry.name,
