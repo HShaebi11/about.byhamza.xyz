@@ -1,0 +1,29 @@
+README.md
+  s_5e1bdb3a1ea8cc::t_274f70633bccae 20,77-94,120
+apps/keepalive/src/index.ts
+  s_5e1bdb3a1ea8cc::t_8223f6c3dd67e4 9-10
+apps/keepalive/wrangler.jsonc
+  s_5e1bdb3a1ea8cc::t_3af54e73d27f92 3
+apps/studio/wrangler.jsonc
+  s_5e1bdb3a1ea8cc::t_11a11fc7f16836 3,23,26-27
+apps/web/wrangler.jsonc
+  s_5e1bdb3a1ea8cc::t_ea14926342fdbb 3,17-18,23
+packages/cms/client.ts
+  s_5e1bdb3a1ea8cc::t_5f4559f57a1976 9-10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b57c95d608a56cd97ae6050399764f7168c4584e",
+  "prompts": {},
+  "sessions": {
+    "s_5e1bdb3a1ea8cc": {
+      "agent_id": {
+        "tool": "devin",
+        "id": "s_5e1bdb3a1ea8cc",
+        "model": "unknown"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
