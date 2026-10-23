@@ -25,7 +25,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'about-byhamza-xyz-studio.hamza-9e2.workers.dev',
+        hostname: 'portfolio-studio.hamza-personal.workers.dev',
       },
     ],
     formats: ['image/avif', 'image/webp'],
