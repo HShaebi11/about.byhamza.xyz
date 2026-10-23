@@ -17,7 +17,7 @@ packages/
 ```
 ┌──────────────────────────┐        ┌──────────────────────────┐
 │   apps/web worker        │        │   apps/studio worker     │
-│   about-byhamza-xyz      │───────▶│   about-byhamza-xyz-     │
+│   portfolio-web      │───────▶│   portfolio-     │
 │                          │service │   studio                 │
 │  / /blog /tools          │binding │                          │
 │  /services /project/:slug│        │  /admin /api/* /graphql  │
@@ -74,8 +74,24 @@ npm run deploy -w apps/studio
 npm run deploy -w apps/web
 ```
 
-- Studio: `about-byhamza-xyz-studio.hamza-9e2.workers.dev` (intended: `admin.byhamza.xyz`)
-- Web: `about-byhamza-xyz.hamza-9e2.workers.dev` (intended: `about.byhamza.xyz`)
+- Studio: `portfolio-studio.hamza-personal.workers.dev` (intended: `admin.byhamza.xyz`)
+- Web: `portfolio-web.hamza-personal.workers.dev` (intended: `about.byhamza.xyz`)
+
+### Cloudflare account layout
+
+Resources live in the **Personal** account
+(`d8029516e0a19fdd4d7fedeb1a44c6aa`, workers.dev subdomain
+`hamza-personal`). The **Screening** account
+(`9e23c4aff5c32a1fb7650453b7eee0fe`) holds the Screening platform, and
+**Interfaces** (`8445a35064a3489bbeaae0003b888555`) is reserved for general
+Interfaces Company work.
+
+Deploys to Personal use the `portfolio-deploy` API token (Workers/D1/R2
+read-write, scoped to that account) rather than the wrangler OAuth grant:
+
+```bash
+export CLOUDFLARE_API_TOKEN=<token> CLOUDFLARE_ACCOUNT_ID=d8029516e0a19fdd4d7fedeb1a44c6aa
+```
 
 To attach the custom domains, `byhamza.xyz` must be added as a zone on the
 Cloudflare account, then add to each `wrangler.jsonc`:
@@ -101,7 +117,7 @@ by raw SQL files applied with `wrangler d1 execute`.
 
 ### Secrets (studio worker)
 
-Set via `wrangler secret bulk --name about-byhamza-xyz-studio` or
+Set via `wrangler secret bulk --name portfolio-studio` or
 `wrangler secret put`: `PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL`,
 `DATABASE_URL`, `STORAGE_ADAPTER`, `PREVIEW_SECRET`, PostHog/Stripe/AI keys
 as needed.

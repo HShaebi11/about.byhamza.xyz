@@ -6,7 +6,8 @@ import type {
   Tool,
 } from './generated/payload-types'
 
-export const DEFAULT_CMS_API_URL = 'https://admin.byhamza.xyz/api'
+export const DEFAULT_CMS_API_URL =
+	'https://portfolio-studio.hamza-personal.workers.dev/api'
 
 type FetchLike = (input: string, init?: RequestInit) => Promise<Response>
 

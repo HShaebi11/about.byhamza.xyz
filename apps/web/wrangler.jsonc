@@ -1,6 +1,6 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "about-byhamza-xyz",
+	"name": "portfolio-web",
 	"main": ".open-next/worker.js",
 	"compatibility_date": "2025-09-01",
 	"compatibility_flags": ["nodejs_compat", "expose_global_message_channel"],
@@ -14,13 +14,13 @@
 		"mode": "smart"
 	},
 	"vars": {
-		"CMS_API_URL": "https://about-byhamza-xyz-studio.hamza-9e2.workers.dev/api",
-		"NEXT_PUBLIC_CMS_API_URL": "https://about-byhamza-xyz-studio.hamza-9e2.workers.dev/api"
+		"CMS_API_URL": "https://portfolio-studio.hamza-personal.workers.dev/api",
+		"NEXT_PUBLIC_CMS_API_URL": "https://portfolio-studio.hamza-personal.workers.dev/api"
 	},
 	"services": [
 		{
 			"binding": "STUDIO",
-			"service": "about-byhamza-xyz-studio"
+			"service": "portfolio-studio"
 		}
 	]
 }

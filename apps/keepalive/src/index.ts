@@ -6,8 +6,8 @@
 // 100k/day free quota across both targets.
 
 const TARGETS = [
-	'https://about-byhamza-xyz.hamza-9e2.workers.dev/',
-	'https://about-byhamza-xyz-studio.hamza-9e2.workers.dev/admin/login',
+	'https://portfolio-web.hamza-personal.workers.dev/',
+	'https://portfolio-studio.hamza-personal.workers.dev/admin/login',
 ] as const
 
 export default {

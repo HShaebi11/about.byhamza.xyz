@@ -1,6 +1,6 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "about-byhamza-xyz-studio",
+	"name": "portfolio-studio",
 	"main": ".open-next/worker.js",
 	"compatibility_date": "2025-09-01",
 	"compatibility_flags": ["nodejs_compat", "expose_global_message_channel"],
@@ -20,13 +20,9 @@
 		{
 			"binding": "DB",
 			"database_name": "portfolio-d1",
-			"database_id": "dfad9dba-f162-4d9e-9613-73bc7a758f65"
-		}
-	],
-	"r2_buckets": [
-		{
-			"binding": "R2",
-			"bucket_name": "portfolio-media"
+			"database_id": "85ac63d7-303c-4637-9494-02040449208a"
 		}
 	]
+	// TODO: re-add r2_buckets binding (bucket_name: portfolio-media) after
+	// R2 is enabled on the Personal account via the dashboard.
 }
