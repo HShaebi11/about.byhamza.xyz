@@ -1,0 +1,19 @@
+apps/studio/wrangler.jsonc
+  s_16f06929f6f665::t_f040a13cc137c2 25-30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "31eeffd6bb487a5180a673022e3d0aaea5264e55",
+  "prompts": {},
+  "sessions": {
+    "s_16f06929f6f665": {
+      "agent_id": {
+        "tool": "devin",
+        "id": "s_16f06929f6f665",
+        "model": "unknown"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
