@@ -1,0 +1,19 @@
+apps/web/next.config.ts
+  s_c009d9d29edeb2::t_4bd3c279631470 28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5bd1cb09e6a7f23ed64f0853e34891c5a526db59",
+  "prompts": {},
+  "sessions": {
+    "s_c009d9d29edeb2": {
+      "agent_id": {
+        "tool": "devin",
+        "id": "s_c009d9d29edeb2",
+        "model": "unknown"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
