@@ -1,0 +1,26 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "about-byhamza-xyz",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2025-09-01",
+	"compatibility_flags": ["nodejs_compat", "expose_global_message_channel"],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS",
+		"html_handling": "auto-trailing-slash"
+	},
+	"workers_dev": true,
+	"placement": {
+		"mode": "smart"
+	},
+	"vars": {
+		"CMS_API_URL": "https://about-byhamza-xyz-studio.hamza-9e2.workers.dev/api",
+		"NEXT_PUBLIC_CMS_API_URL": "https://about-byhamza-xyz-studio.hamza-9e2.workers.dev/api"
+	},
+	"services": [
+		{
+			"binding": "STUDIO",
+			"service": "about-byhamza-xyz-studio"
+		}
+	]
+}

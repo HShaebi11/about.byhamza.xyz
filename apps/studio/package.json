@@ -1,0 +1,50 @@
+{
+  "name": "studio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "build:worker": "opennextjs-cloudflare build",
+    "preview": "opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types cloudflare-env.d.ts",
+    "generate:types": "payload generate:types",
+    "generate:importmap": "payload generate:importmap",
+    "start": "next start",
+    "seed": "tsx --env-file=.env scripts/seed.ts",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.135.0",
+    "@opennextjs/cloudflare": "^1.20.12",
+    "@payloadcms/db-d1-sqlite": "^3.91.0",
+    "@payloadcms/db-sqlite": "^3.91.0",
+    "@payloadcms/next": "^3.91.0",
+    "@payloadcms/richtext-lexical": "^3.91.0",
+    "@payloadcms/storage-r2": "^3.91.0",
+    "@repo/cms": "*",
+    "@typesafe-ai/sdk": "^0.7.0",
+    "graphql": "^16.14.2",
+    "next": "^16.4.2",
+    "payload": "^3.91.0",
+    "posthog-js": "^1.438.12",
+    "posthog-node": "^5.11.5",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "resend": "^6.34.1",
+    "sharp": "^0.35.5",
+    "stripe": "^23.0.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261016.1",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tsx": "^4.20.6",
+    "typescript": "^5",
+    "wrangler": "^4.151.1"
+  }
+}
