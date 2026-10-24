@@ -1,0 +1,151 @@
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.listItem {
+  border-top: 1px dashed var(--color-text-primary);
+  padding: 24px 0;
+}
+
+.listItem:last-child {
+  border-bottom: 1px dashed var(--color-text-primary);
+}
+
+.listLink {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+}
+
+.listIndex {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.listTitle {
+  font-family: 'PP Mondwest', sans-serif;
+  font-size: 32px;
+  letter-spacing: -1px;
+  line-height: 1;
+  text-transform: uppercase;
+  flex: 1;
+}
+
+.listLink:hover .listTitle {
+  text-decoration: underline;
+}
+
+.listMeta {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 12px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.listExcerpt {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 8px;
+  margin-left: calc(12px + 20px);
+  max-width: 640px;
+  text-transform: none;
+}
+
+.empty {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 14px;
+  padding: 48px 0;
+  border-top: 1px dashed var(--color-text-primary);
+  border-bottom: 1px dashed var(--color-text-primary);
+}
+
+.groupLabel {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 12px 0;
+  margin-top: 24px;
+  border-top: 1px dashed var(--color-text-primary);
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  border: 1px dashed var(--color-text-primary);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cardTitle {
+  font-family: 'PP Mondwest', sans-serif;
+  font-size: 28px;
+  letter-spacing: -1px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.cardBody {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  text-transform: none;
+}
+
+.cardMeta {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-top: auto;
+}
+
+.cardLink {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.cardLink:hover {
+  text-decoration: underline;
+}
+
+.deliverables {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.deliverables li {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 12px;
+  text-transform: none;
+}
+
+.deliverables li::before {
+  content: '— ';
+}
+
+@media (max-width: 768px) {
+  .listTitle {
+    font-size: 24px;
+  }
+
+  .listLink {
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
+}

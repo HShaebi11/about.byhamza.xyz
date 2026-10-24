@@ -1,0 +1,102 @@
+.shell {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px var(--padding-desktop);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.topBarLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-bottom: 1px dashed var(--color-text-primary);
+  transform-origin: left;
+}
+
+.windowTitle {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.homeLink,
+.footerLink {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.homeLink:hover,
+.footerLink:hover {
+  text-decoration: underline;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--padding-desktop);
+  scrollbar-width: none;
+}
+
+.content::-webkit-scrollbar {
+  display: none;
+}
+
+.headingRow {
+  margin-bottom: 40px;
+}
+
+.eyebrow {
+  display: block;
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.pageTitle {
+  font-family: 'PP Mondwest', sans-serif;
+  font-size: var(--text-desktop-md);
+  letter-spacing: var(--tracking-desktop);
+  line-height: var(--leading-tight);
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+.footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  padding: 16px var(--padding-desktop);
+  border-top: 1px dashed var(--color-text-primary);
+}
+
+@media (max-width: 768px) {
+  .topBar,
+  .content,
+  .footer {
+    padding-left: var(--padding-mobile);
+    padding-right: var(--padding-mobile);
+  }
+
+  .pageTitle {
+    font-size: var(--text-mobile-lg);
+    letter-spacing: var(--tracking-mobile);
+  }
+}

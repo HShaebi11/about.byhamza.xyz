@@ -1,0 +1,61 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "portfolio-web",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2025-09-01",
+	"compatibility_flags": ["nodejs_compat", "expose_global_message_channel"],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS",
+		"html_handling": "auto-trailing-slash"
+	},
+	"workers_dev": true,
+	"placement": {
+		"mode": "off"
+	},
+	"observability": {
+		"enabled": true
+	},
+	"vars": {
+		"NEXT_PUBLIC_SITE_URL": "https://portfolio-web.hamza-personal.workers.dev",
+		"CMS_API_URL": "https://portfolio-studio.hamza-personal.workers.dev/api",
+		"NEXT_PUBLIC_CMS_API_URL": "https://portfolio-studio.hamza-personal.workers.dev/api"
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "portfolio-d1",
+			"database_id": "85ac63d7-303c-4637-9494-02040449208a"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "R2",
+			"bucket_name": "portfolio-media"
+		},
+		{
+			"binding": "NEXT_INC_CACHE_R2_BUCKET",
+			"bucket_name": "portfolio-web-cache"
+		}
+	],
+	"services": [
+		{
+			"binding": "WORKER_SELF_REFERENCE",
+			"service": "portfolio-web"
+		}
+	],
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "NEXT_CACHE_DO_QUEUE",
+				"class_name": "DOQueueHandler"
+			}
+		]
+	},
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_sqlite_classes": ["DOQueueHandler"]
+		}
+	]
+}

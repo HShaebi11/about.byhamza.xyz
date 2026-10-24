@@ -1,0 +1,32 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "portfolio-studio",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2025-09-01",
+	"compatibility_flags": ["nodejs_compat", "expose_global_message_channel"],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS",
+		"html_handling": "auto-trailing-slash"
+	},
+	"workers_dev": true,
+	"placement": {
+		"mode": "smart"
+	},
+	"observability": {
+		"enabled": true
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "portfolio-d1",
+			"database_id": "85ac63d7-303c-4637-9494-02040449208a"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "R2",
+			"bucket_name": "portfolio-media"
+		}
+	]
+}

@@ -8,16 +8,19 @@ const eslintConfig = defineConfig([
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
-    ".next/**",
-    ".open-next/**",
-    ".wrangler/**",
-    "cloudflare-env.d.ts",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
+    "**/.next/**",
+    "**/.open-next/**",
+    "**/.wrangler/**",
+    "**/cloudflare-env.d.ts",
+    "**/out/**",
+    "**/build/**",
+    "**/next-env.d.ts",
     "*.js",
-    "scripts/**",
-    "lib/SplitText.*",
+    "**/scripts/**",
+    "**/lib/SplitText.*",
+    "**/generated/**",
+    "**/migrations/**",
+    "**/importMap.js",
   ]),
 ]);
 
