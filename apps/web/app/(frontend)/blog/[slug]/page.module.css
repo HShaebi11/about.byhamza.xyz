@@ -1,0 +1,112 @@
+.cover {
+  width: 100%;
+  max-height: 60dvh;
+  object-fit: cover;
+  border: 1px dashed var(--color-text-primary);
+  border-radius: var(--radius-md);
+  margin-bottom: 40px;
+}
+
+.article {
+  max-width: 720px;
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.article p {
+  margin-bottom: 1.4em;
+  text-transform: none;
+}
+
+.article h1,
+.article h2,
+.article h3,
+.article h4,
+.article h5,
+.article h6 {
+  font-family: 'PP Mondwest', sans-serif;
+  font-weight: normal;
+  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  margin: 1.6em 0 0.6em;
+}
+
+.article h2 {
+  font-size: 40px;
+}
+
+.article h3 {
+  font-size: 32px;
+}
+
+.article h4,
+.article h5,
+.article h6 {
+  font-size: 26px;
+}
+
+.article ul,
+.article ol {
+  margin: 0 0 1.4em 1.2em;
+  text-transform: none;
+}
+
+.article li {
+  margin-bottom: 0.4em;
+}
+
+.article a {
+  text-decoration: underline;
+}
+
+.article blockquote {
+  border-left: 2px solid var(--color-text-primary);
+  padding-left: 16px;
+  margin: 0 0 1.4em;
+}
+
+.article code {
+  background: var(--color-bg-secondary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.article pre {
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  overflow-x: auto;
+  margin-bottom: 1.4em;
+}
+
+.article pre code {
+  background: none;
+  padding: 0;
+}
+
+.article img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+}
+
+.tags {
+  list-style: none;
+  display: flex;
+  gap: 8px;
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px dashed var(--color-text-primary);
+}
+
+.tag {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  border: 1px dashed var(--color-text-primary);
+  border-radius: 999px;
+  padding: 4px 12px;
+}

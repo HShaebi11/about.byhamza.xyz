@@ -1,0 +1,21 @@
+{
+  "name": "@repo/cms",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./client": "./client.ts",
+    "./d1-reader": "./d1-reader.ts",
+    "./collections/*": "./collections/*.ts",
+    "./globals/*": "./globals/*.ts",
+    "./lib/*": "./lib/*.ts",
+    "./generated/*": "./generated/*.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.135.0",
+    "@typesafe-ai/sdk": "^0.7.0"
+  },
+  "peerDependencies": {
+    "payload": ">=3.0.0"
+  }
+}

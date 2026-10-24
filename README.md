@@ -1,153 +1,157 @@
-# Hamza Shaebi | Portfolio with Payload CMS (Cloudflare Native)
+# Hamza Shaebi | Portfolio + Studio (Cloudflare Native Monorepo)
 
-A high-performance portfolio for Hamza Shaebi built with **Next.js 16 (App Router)**, **GSAP**, and integrated with **Payload CMS 3.x**, running natively on **Cloudflare Workers**, **Cloudflare D1 (SQLite database)**, and **Cloudflare R2 (media storage)** via `@opennextjs/cloudflare`.
+A high-performance portfolio for Hamza Shaebi, split into a lean public site and a separate Payload CMS studio — both running natively on **Cloudflare Workers** with **D1** and **R2**, via `@opennextjs/cloudflare`.
 
----
+## Repository Layout
 
-## Tech Stack
-
-- **Framework**: Next.js 16 (App Router with Turbopack)
-- **Deployment Platform**: Cloudflare Workers (Edge runtime via OpenNext)
-- **CMS**: Payload CMS 3.x (Headless CMS running directly in Next.js on Cloudflare Workers)
-- **Database**: Cloudflare D1 (Serverless SQLite at the edge) with local SQLite fallback
-- **Object Storage**: Cloudflare R2 (S3-compatible bucket storage via `@payloadcms/storage-r2`)
-- **Rich Text**: Lexical Editor (`@payloadcms/richtext-lexical`)
-- **Animation**: GSAP (GreenSock) & SplitText
-- **Styling**: Modern CSS Modules with Responsive Fluid Typography
-
----
+```
+apps/
+  web/        Public portfolio — Next.js 16, GSAP, no Payload in the bundle
+  studio/     Payload CMS 3 + CRM (inquiries, clients, invoices, Stripe)
+packages/
+  cms/        Shared collections, globals, generated types, typed API client
+```
 
 ## Architecture
 
 ```
-┌────────────────────────────────────────────────────────┐
-│                   Cloudflare Worker                    │
-│                                                        │
-│  ┌───────────────────────┐  ┌───────────────────────┐  │
-│  │     Next.js 16        │  │     Payload CMS 3     │  │
-│  │   Portfolio Routes    │  │  Admin, REST, GraphQL │  │
-│  │       app/(frontend)  │  │       app/(payload)   │  │
-│  └───────────┬───────────┘  └───────────┬───────────┘  │
-└──────────────┼──────────────────────────┼──────────────┘
-               ▼                          ▼
-     ┌──────────────────┐       ┌──────────────────┐
-     │  Cloudflare D1   │       │  Cloudflare R2   │
-     │  SQL Database    │       │  Media Storage   │
-     └──────────────────┘       └──────────────────┘
+┌──────────────────────────┐        ┌──────────────────────────┐
+│   apps/web worker        │        │   apps/studio            │
+│   portfolio-web          │        │   MacBook and/or Worker  │
+│  / /blog /tools          │        │  /admin  CRM  Stripe     │
+│  /services /api/media    │        └───────────┬──────────────┘
+└────────────┬─────────────┘                    │
+             │         both read/write D1 + R2    │
+             └──────────────┬─────────────────────┘
+                            ▼
+              ┌────────────────────────────┐
+              │  D1 portfolio-d1           │
+              │  R2 portfolio-media        │
+              │  R2 portfolio-web-cache    │
+              └────────────────────────────┘
 ```
 
----
+The public site reads **published** rows from D1 and files from R2. It does
+not boot Payload, so visitors stay on the Workers Free CPU budget.
+
+### Two ways to edit
+
+1. **MacBook (works on Free):** `npm run dev -w apps/studio` on port 3001.
+   For production data, run studio with Wrangler remote bindings so localhost
+   writes to the live D1/R2.
+2. **Internet `/admin`:** keep deploying `portfolio-studio`. On Workers Free
+   the first load may Error 1102 (10ms CPU). Turn on **Workers Paid ($5)** in
+   the Cloudflare dashboard when you want that URL to work; no code change.
+
+Public pages revalidate once a day (`revalidate = 86400`). Failed CMS reads
+are not cached.
 
 ## Local Development
 
-### 1. Install Dependencies
 ```bash
-npm install
+npm install                     # installs all workspaces
+npm run dev -w apps/studio      # studio on :3001 (Payload admin at /admin)
+npm run dev -w apps/web         # web on :3000
 ```
 
-### 2. Run Local Development Server
-```bash
-npm run dev
-```
-Open [http://localhost:3000](http://localhost:3000) to view the portfolio.
+For `next dev` on web (no D1), set `CMS_API_URL=http://localhost:3001/api`
+so it can still talk to local Studio over HTTP. Production uses D1 directly.
 
-### 3. Seed Initial Data
+Seed local data:
+
 ```bash
-npm run seed
+npm run seed -w apps/studio
 ```
 
----
-
-## Cloudflare Preview (Local Simulation)
-
-Test the compiled Cloudflare Worker locally with Miniflare running local D1 and R2 bindings:
+## Cloudflare Preview
 
 ```bash
-# 1. Build Next.js & package for Cloudflare Workers
-npm run build:worker
-
-# 2. Initialize local D1 database schema (one-time setup for local simulation)
+# Apply schema to local D1 (studio dir, one-time)
+cd apps/studio
 npx wrangler d1 execute portfolio-d1 --local --file=./migrations/0001_init.sql
 npx wrangler d1 execute portfolio-d1 --local --file=./migrations/0002_seed.sql
+npx wrangler d1 execute portfolio-d1 --local --file=./migrations/0003_content_expansion.sql
 
-# 3. Preview Worker locally
-npm run preview
+npm run preview -w apps/studio   # :8787 — Payload admin (may be heavy on Free)
+npm run preview -w apps/web      # :8788 (pass -- --port 8788); uses local D1/R2
 ```
-Open [http://localhost:8787](http://localhost:8787) to view the worker preview.
 
----
+## Deployment
 
-## Cloudflare Production Deployment Guide
+**Deploy order:** studio first is still fine (shared D1/R2), then web.
+The public site no longer calls the studio Worker at request time.
 
-### Step 1: Login to Cloudflare
 ```bash
-npx wrangler login
+npm run deploy -w apps/studio
+npm run deploy -w apps/web
 ```
 
-### Step 2: Create Cloudflare D1 Database
-Create the production D1 database:
+- Studio: `portfolio-studio.hamza-personal.workers.dev` (intended: `admin.byhamza.xyz`)
+- Web: `portfolio-web.hamza-personal.workers.dev` (intended: `about.byhamza.xyz`)
+
+### Cloudflare account layout
+
+Resources live in the **Personal** account
+(`d8029516e0a19fdd4d7fedeb1a44c6aa`, workers.dev subdomain
+`hamza-personal`). The **Screening** account
+(`9e23c4aff5c32a1fb7650453b7eee0fe`) holds the Screening platform, and
+**Interfaces** (`8445a35064a3489bbeaae0003b888555`) is reserved for general
+Interfaces Company work.
+
+Deploys to Personal use the `portfolio-deploy` API token (Workers/D1/R2
+read-write, scoped to that account) rather than the wrangler OAuth grant:
+
 ```bash
-npx wrangler d1 create portfolio-d1
+export CLOUDFLARE_API_TOKEN=<token> CLOUDFLARE_ACCOUNT_ID=d8029516e0a19fdd4d7fedeb1a44c6aa
 ```
-This command outputs your database configuration:
+
+To attach the custom domains, `byhamza.xyz` must be added as a zone on the
+Cloudflare account, then add to each `wrangler.jsonc`:
+
 ```jsonc
-{
-  "binding": "DB",
-  "database_name": "portfolio-d1",
-  "database_id": "<YOUR-DATABASE-UUID>"
-}
+"routes": [{ "pattern": "admin.byhamza.xyz", "custom_domain": true }]
 ```
-Update the `database_id` inside `wrangler.jsonc` with your `<YOUR-DATABASE-UUID>`.
 
-### Step 3: Create Cloudflare R2 Bucket
-Create the production media storage bucket:
+…and update `NEXT_PUBLIC_SITE_URL` in `apps/web/wrangler.jsonc` plus
+`NEXT_PUBLIC_SERVER_URL` on studio.
+
+### Remote D1 migrations
+
 ```bash
-npx wrangler r2 bucket create portfolio-media
+cd apps/studio
+npx wrangler d1 execute portfolio-d1 --remote --file=./migrations/0003_content_expansion.sql
+npx wrangler d1 execute portfolio-d1 --remote --file=./migrations/0004_seed_content.sql
 ```
 
-### Step 4: Apply Database Migrations to Remote D1
-Run the initial database schema against your live remote D1 database:
-```bash
-npx wrangler d1 execute portfolio-d1 --remote --file=./migrations/0001_init.sql
-npx wrangler d1 execute portfolio-d1 --remote --file=./migrations/0002_seed.sql
-```
+Migration tracks: Payload TS migrations (`migrations/*.ts` + `index.ts`,
+generated via `npm run payload migrate:create -w apps/studio`) are mirrored
+by raw SQL files applied with `wrangler d1 execute`.
 
-### Step 5: Set Production Secrets
-Set your production Payload secret on Cloudflare:
-```bash
-npx wrangler secret put PAYLOAD_SECRET
-```
-*(Enter a strong random 32+ character hex string)*.
+### Secrets (studio worker)
 
-### Step 6: Deploy to Cloudflare Workers
-```bash
-npm run deploy
-```
+Set via `wrangler secret bulk --name portfolio-studio` or
+`wrangler secret put`: `PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL`,
+`DATABASE_URL`, `STORAGE_ADAPTER`, `PREVIEW_SECRET`, PostHog/Stripe/AI keys
+as needed.
 
----
+## Studio APIs
 
-## Payload CMS Admin Panel & APIs
-
-- **Admin Panel**: `/admin` (create your first admin user upon first visit)
-- **REST API**:
-  - `GET /api/projects`: List all portfolio projects
-  - `GET /api/globals/site-settings`: Fetch portfolio site settings
-  - `GET /api/media`: Access uploaded media assets
-- **GraphQL API**:
-  - Endpoint: `POST /api/graphql`
-  - Playground: `/api/graphql-playground`
-
----
+- Admin: `/admin`
+- REST: `/api/projects`, `/api/posts`, `/api/tools`, `/api/services`,
+  `/api/media`, `/api/inquiries`, `/api/clients`, `/api/invoices`,
+  `/api/globals/site-settings`
+- GraphQL: `/api/graphql`, playground `/api/graphql-playground`
+- Webhooks: `POST /api/stripe/webhook`, `POST /api/convert-inquiry-to-client`
 
 ## Available Scripts
 
 | Command | Description |
 | :--- | :--- |
-| `npm run dev` | Start Next.js development server locally |
-| `npm run build` | Compile Next.js production build |
-| `npm run build:worker` | Package Next.js application into `.open-next/worker.js` for Cloudflare |
-| `npm run preview` | Run local Wrangler preview of the compiled Worker with Miniflare D1/R2 |
-| `npm run deploy` | Build and deploy directly to Cloudflare Workers |
-| `npm run cf-typegen` | Regenerate TypeScript types for Cloudflare bindings |
-| `npm run seed` | Seed initial projects and site settings |
-| `npm run lint` | Run ESLint check |
+| `npm run dev -w apps/{web,studio}` | Next.js dev server for one app |
+| `npm run build -w apps/web` | Production Next.js build |
+| `npm run build:worker -w apps/web` | Package into `.open-next/worker.js` |
+| `npm run preview -w apps/studio` | Wrangler preview with local D1/R2 |
+| `npm run deploy -w apps/studio` | Build + deploy worker |
+| `npm run generate:types -w apps/studio` | Regenerate Payload types → `packages/cms/generated` |
+| `npm run seed -w apps/studio` | Seed projects/settings/posts/tools/services |
+| `npm run lint` | ESLint across the monorepo |
