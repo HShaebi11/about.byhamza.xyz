@@ -16,23 +16,35 @@ packages/
 
 ```
 ┌──────────────────────────┐        ┌──────────────────────────┐
-│   apps/web worker        │        │   apps/studio worker     │
-│   portfolio-web      │───────▶│   portfolio-     │
-│                          │service │   studio                 │
-│  / /blog /tools          │binding │                          │
-│  /services /project/:slug│        │  /admin /api/* /graphql  │
-└──────────────────────────┘        │  Stripe webhook, CRM     │
-                                    └───────────┬──────────────┘
-                                                ▼
-                              ┌────────────────────────────┐
-                              │  D1 portfolio-d1           │
-                              │  R2 portfolio-media        │
-                              └────────────────────────────┘
+│   apps/web worker        │        │   apps/studio            │
+│   portfolio-web          │        │   MacBook and/or Worker  │
+│  / /blog /tools          │        │  /admin  CRM  Stripe     │
+│  /services /api/media    │        └───────────┬──────────────┘
+└────────────┬─────────────┘                    │
+             │         both read/write D1 + R2    │
+             └──────────────┬─────────────────────┘
+                            ▼
+              ┌────────────────────────────┐
+              │  D1 portfolio-d1           │
+              │  R2 portfolio-media        │
+              │  R2 portfolio-web-cache    │
+              └────────────────────────────┘
 ```
 
-The web worker reads CMS content through the studio's REST API — via the
-`STUDIO` service binding in production (no public hop), or `CMS_API_URL`
-over HTTPS as a fallback. Responses are cached with ISR (`revalidate`).
+The public site reads **published** rows from D1 and files from R2. It does
+not boot Payload, so visitors stay on the Workers Free CPU budget.
+
+### Two ways to edit
+
+1. **MacBook (works on Free):** `npm run dev -w apps/studio` on port 3001.
+   For production data, run studio with Wrangler remote bindings so localhost
+   writes to the live D1/R2.
+2. **Internet `/admin`:** keep deploying `portfolio-studio`. On Workers Free
+   the first load may Error 1102 (10ms CPU). Turn on **Workers Paid ($5)** in
+   the Cloudflare dashboard when you want that URL to work; no code change.
+
+Public pages revalidate once a day (`revalidate = 86400`). Failed CMS reads
+are not cached.
 
 ## Local Development
 
@@ -42,9 +54,8 @@ npm run dev -w apps/studio      # studio on :3001 (Payload admin at /admin)
 npm run dev -w apps/web         # web on :3000
 ```
 
-For web to reach studio locally, `apps/web/.dev.vars` sets
-`CMS_API_URL=http://localhost:8787/api` (Wrangler preview) — for `next dev`
-use `http://localhost:3001/api`.
+For `next dev` on web (no D1), set `CMS_API_URL=http://localhost:3001/api`
+so it can still talk to local Studio over HTTP. Production uses D1 directly.
 
 Seed local data:
 
@@ -61,13 +72,14 @@ npx wrangler d1 execute portfolio-d1 --local --file=./migrations/0001_init.sql
 npx wrangler d1 execute portfolio-d1 --local --file=./migrations/0002_seed.sql
 npx wrangler d1 execute portfolio-d1 --local --file=./migrations/0003_content_expansion.sql
 
-npm run preview -w apps/studio   # :8787 — web's STUDIO binding connects to it
-npm run preview -w apps/web      # :8788 (pass -- --port 8788)
+npm run preview -w apps/studio   # :8787 — Payload admin (may be heavy on Free)
+npm run preview -w apps/web      # :8788 (pass -- --port 8788); uses local D1/R2
 ```
 
 ## Deployment
 
-**Deploy order matters — studio first** (web depends on its API):
+**Deploy order:** studio first is still fine (shared D1/R2), then web.
+The public site no longer calls the studio Worker at request time.
 
 ```bash
 npm run deploy -w apps/studio
@@ -100,8 +112,8 @@ Cloudflare account, then add to each `wrangler.jsonc`:
 "routes": [{ "pattern": "admin.byhamza.xyz", "custom_domain": true }]
 ```
 
-…and update `CMS_API_URL` / `NEXT_PUBLIC_CMS_API_URL` in
-`apps/web/wrangler.jsonc` and `NEXT_PUBLIC_SERVER_URL` secret on studio.
+…and update `NEXT_PUBLIC_SITE_URL` in `apps/web/wrangler.jsonc` plus
+`NEXT_PUBLIC_SERVER_URL` on studio.
 
 ### Remote D1 migrations
 

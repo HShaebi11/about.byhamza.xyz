@@ -1,28 +1,36 @@
-import { createCmsClient, DEFAULT_CMS_API_URL } from '@repo/cms/client'
+import { unstable_noStore as noStore } from 'next/cache'
+import { createCmsClient, DEFAULT_CMS_API_URL, type CmsClient } from '@repo/cms/client'
+import { createD1CmsClient } from '@repo/cms/d1-reader'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 
-/**
- * Fetches content from the studio worker's Payload REST API.
- * Prefers the STUDIO service binding (worker-to-worker, no public hop)
- * when deployed; falls back to HTTPS via CMS_API_URL locally.
- */
-const studioFetcher = async (input: string, init?: RequestInit): Promise<Response> => {
+const httpCms = createCmsClient({
+  baseUrl: process.env.CMS_API_URL || DEFAULT_CMS_API_URL,
+})
+
+async function getClient(): Promise<CmsClient> {
   try {
     const { env } = await getCloudflareContext({ async: true })
-    if (env?.STUDIO) {
-      // Service bindings don't accept Next.js cache options — strip them;
-      // page-level `export const revalidate` handles caching.
-      const stripped = { ...(init ?? {}) } as Record<string, unknown>
-      delete stripped.next
-      return env.STUDIO.fetch(input, stripped as RequestInit)
+    if (env?.DB) {
+      return createD1CmsClient(env.DB)
     }
   } catch {
-    // No Cloudflare context (plain next dev) — fall through to HTTPS
+    // Plain `next dev` has no Cloudflare context.
   }
-  return fetch(input, init)
+  return httpCms
 }
 
-export const cms = createCmsClient({
-  baseUrl: process.env.CMS_API_URL || DEFAULT_CMS_API_URL,
-  fetcher: studioFetcher,
-})
+export const cms: CmsClient = {
+  getProjects: () => getClient().then((client) => client.getProjects()),
+  getPosts: () => getClient().then((client) => client.getPosts()),
+  getPostSlugs: () => getClient().then((client) => client.getPostSlugs()),
+  getPost: (slug) => getClient().then((client) => client.getPost(slug)),
+  getTools: () => getClient().then((client) => client.getTools()),
+  getServices: () => getClient().then((client) => client.getServices()),
+  getSiteSettings: () => getClient().then((client) => client.getSiteSettings()),
+}
+
+/** Use in page catch blocks so empty fallbacks are not stored in ISR. */
+export function skipCmsCache(error: unknown, message: string): void {
+  noStore()
+  console.warn(message, error)
+}

@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import SubpageShell from '@/components/SubpageShell';
-import { cms } from '@/lib/cms';
+import { cms, skipCmsCache } from '@/lib/cms';
 import { mediaUrl } from '@repo/cms/client';
 import type { Tool } from '@repo/cms/generated/payload-types';
 import styles from '../subpage.module.css';
 import pageStyles from './page.module.css';
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: 'Tools',
@@ -27,7 +27,7 @@ export default async function ToolsPage() {
   try {
     tools = await cms.getTools();
   } catch (error) {
-    console.warn('Could not load tools from studio CMS:', error);
+    skipCmsCache(error, 'Could not load tools from CMS:');
   }
 
   const grouped = tools.reduce<Record<string, Tool[]>>((acc, tool) => {

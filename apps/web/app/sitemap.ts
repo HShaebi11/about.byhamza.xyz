@@ -1,8 +1,8 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
-import { cms } from "@/lib/cms";
+import { cms, skipCmsCache } from "@/lib/cms";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [
@@ -54,8 +54,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         });
       }
     }
-  } catch {
-    // Studio unreachable — return static entries only
+  } catch (error) {
+    skipCmsCache(error, 'Could not load CMS URLs for sitemap:');
   }
 
   return entries;

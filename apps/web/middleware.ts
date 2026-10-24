@@ -3,26 +3,20 @@ import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
   const response = NextResponse.next()
+  const { pathname } = request.nextUrl
 
-  // Add cache headers for static assets
-  if (request.nextUrl.pathname.startsWith('/static/') ||
-      request.nextUrl.pathname.match(/\.(css|js|woff|woff2|ttf|otf|eot)$/)) {
+  if (
+    pathname.startsWith('/static/') ||
+    pathname.match(/\.(css|js|woff2?|ttf|otf|eot)$/)
+  ) {
     response.headers.set('Cache-Control', 'public, max-age=31536000, immutable')
   }
 
-  // Add cache headers for images
-  if (request.nextUrl.pathname.match(/\.(jpg|jpeg|png|gif|webp|avif|svg)$/)) {
-    response.headers.set('Cache-Control', 'public, max-age=86400, stale-while-revalidate=86400')
-  }
-
-  // Add cache headers for API GET requests (read-only)
-  if (request.nextUrl.pathname.startsWith('/api/') && request.method === 'GET') {
-    // Exclude webhooks from caching
-    if (!request.nextUrl.pathname.includes('/webhook')) {
-      response.headers.set('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=300')
-    } else {
-      response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate')
-    }
+  if (pathname.match(/\.(jpe?g|png|gif|webp|avif|svg)$/)) {
+    response.headers.set(
+      'Cache-Control',
+      'public, max-age=86400, stale-while-revalidate=86400',
+    )
   }
 
   return response
@@ -30,6 +24,20 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico).*)',
+    '/static/:path*',
+    '/:path*.css',
+    '/:path*.js',
+    '/:path*.woff',
+    '/:path*.woff2',
+    '/:path*.ttf',
+    '/:path*.otf',
+    '/:path*.eot',
+    '/:path*.jpg',
+    '/:path*.jpeg',
+    '/:path*.png',
+    '/:path*.gif',
+    '/:path*.webp',
+    '/:path*.avif',
+    '/:path*.svg',
   ],
 }

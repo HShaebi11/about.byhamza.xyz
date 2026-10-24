@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import SubpageShell from '@/components/SubpageShell';
-import { cms } from '@/lib/cms';
+import { cms, skipCmsCache } from '@/lib/cms';
 import type { Service, SiteSetting } from '@repo/cms/generated/payload-types';
 import styles from '../subpage.module.css';
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: 'Services',
@@ -17,7 +17,7 @@ export default async function ServicesPage() {
   try {
     [services, settings] = await Promise.all([cms.getServices(), cms.getSiteSettings()]);
   } catch (error) {
-    console.warn('Could not load services from studio CMS:', error);
+    skipCmsCache(error, 'Could not load services from CMS:');
   }
 
   const helloUrl = settings?.socials?.sayHello || 'https://hello.byhamza.xyz/';

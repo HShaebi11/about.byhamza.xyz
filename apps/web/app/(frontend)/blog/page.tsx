@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import SubpageShell from '@/components/SubpageShell';
-import { cms } from '@/lib/cms';
+import { cms, skipCmsCache } from '@/lib/cms';
 import type { Post } from '@repo/cms/generated/payload-types';
 import styles from '../subpage.module.css';
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: 'Writing',
@@ -26,7 +26,7 @@ export default async function BlogIndexPage() {
   try {
     posts = await cms.getPosts();
   } catch (error) {
-    console.warn('Could not load posts from studio CMS:', error);
+    skipCmsCache(error, 'Could not load posts from CMS:');
   }
 
   return (

@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { siteConfig } from "@/config/site";
-import { cms } from "@/lib/cms";
+import { cms, skipCmsCache } from "@/lib/cms";
 import "@/app/globals.css";
+
+export const revalidate = 86400;
 
 export const viewport: Viewport = {
   viewportFit: 'cover',
@@ -18,8 +20,8 @@ export async function generateMetadata(): Promise<Metadata> {
     const settings = await cms.getSiteSettings();
     if (settings?.name) name = settings.name;
     if (settings?.description) description = settings.description;
-  } catch {
-    // Studio unreachable — fall back to siteConfig defaults
+  } catch (error) {
+    skipCmsCache(error, 'Could not load site settings for metadata:');
   }
 
   return {

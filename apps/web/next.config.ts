@@ -27,6 +27,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'portfolio-studio.hamza-personal.workers.dev',
       },
+      {
+        protocol: 'https',
+        hostname: 'portfolio-web.hamza-personal.workers.dev',
+      },
+      {
+        protocol: 'https',
+        hostname: 'about.byhamza.xyz',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60,

@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { RichText } from '@payloadcms/richtext-lexical/react';
 import SubpageShell from '@/components/SubpageShell';
-import { cms } from '@/lib/cms';
+import { cms, skipCmsCache } from '@/lib/cms';
 import { mediaUrl } from '@repo/cms/client';
 import styles from './page.module.css';
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 interface Args {
   params: Promise<{ slug: string }>;
@@ -34,8 +34,8 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
         openGraph: coverUrl ? { images: [{ url: coverUrl }] } : undefined,
       };
     }
-  } catch {
-    // Fall through to default metadata
+  } catch (error) {
+    skipCmsCache(error, 'Could not load post metadata:');
   }
   return { title: 'Writing' };
 }
@@ -45,8 +45,8 @@ export default async function BlogPostPage({ params }: Args) {
   let post = null;
   try {
     post = await cms.getPost(slug);
-  } catch {
-    // fall through to notFound
+  } catch (error) {
+    skipCmsCache(error, 'Could not load post from CMS:');
   }
   if (!post) notFound();
 
