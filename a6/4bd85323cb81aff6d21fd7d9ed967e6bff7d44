@@ -1,0 +1,95 @@
+components/admin/editors/InvoiceTotal.tsx
+  s_e17054bd979963::t_5b83241c69e916 1-51
+components/admin/editors/ClientHeader.tsx
+  s_e17054bd979963::t_8c092caa547a5b 1-41
+collections/Clients.ts
+  s_e17054bd979963::t_bfcdbc9ed1d007 28,137-145
+  s_e17054bd979963::t_eecc03428a5f6f 80-87,89-104
+  s_e17054bd979963::t_cda9126544be1c 8-19
+  s_e17054bd979963::t_de531fdd195702 29-36
+components/admin/editors/SectionLabel.tsx
+  s_e17054bd979963::t_7682549dcb15ba 1-27
+components/admin/Nav.tsx
+  s_e17054bd979963::t_a6fafde6541028 7
+  s_e17054bd979963::t_809d3b43d34267 103
+  s_e17054bd979963::t_30043655cfdb5b 53-57
+  s_e17054bd979963::t_268972f8343299 104-113
+  s_e17054bd979963::t_a2ce3a73919df4 3-5,9-48,51-52,58-102,114-115
+  s_e17054bd979963::t_e6f271aa27cb8b 8
+components/admin/DashboardView.tsx
+  s_e17054bd979963::t_71ff54d4824b2a 2-4,7-43,46-50,54-88,92,98-106,108,111,113-118,120-122,124-125,127-128,131,133-146,148-152,155-181,183-186,189-204,206-226
+  s_e17054bd979963::t_7fb8ae53b9801b 5
+components/admin/lists/InvoicesListSummary.tsx
+  s_e17054bd979963::t_ddbad91ee11f05 1-33
+collections/Users.ts
+  s_e17054bd979963::t_2f3629dcb1fd78 7-8
+app/(payload)/admin/importMap.js
+  s_e17054bd979963::t_4d5a8acb870765 1-10,17,21-30
+  s_e17054bd979963::t_d5872c60e51ba9 36-37
+components/admin/HeaderNav.tsx
+  s_e17054bd979963::t_f5b57521c03104 5,43,46-47
+components/admin/editors/ClientInvoices.tsx
+  s_e17054bd979963::t_0e50582d4790d6 1-78
+components/admin/lists/ListSummary.tsx
+  s_e17054bd979963::t_da035f751e4064 1-22
+components/admin/editors/ProjectEditView.tsx
+  s_e17054bd979963::t_1528bb458b9505 1-14
+collections/Invoices.ts
+  s_e17054bd979963::t_6de3a929612695 140,180-185,187-205
+  s_e17054bd979963::t_030eeb20d95991 51-52
+  s_e17054bd979963::t_fb5a4bf783d822 1-25,32-43
+  s_e17054bd979963::t_70d0f633274c25 116,123,128-139
+  s_e17054bd979963::t_5ac420c655e472 53
+globals/SiteSettings.ts
+  s_e17054bd979963::t_69e154e720b92a 5-8
+components/admin/lists/ClientsListSummary.tsx
+  s_e17054bd979963::t_f63f75b113d8dd 1-23
+components/admin/Logo.tsx
+  s_e17054bd979963::t_7cd7e67ad99b42 55
+collections/Projects.ts
+  s_e17054bd979963::t_4cb588cbcb61c8 97-99,105-107,113-115,126-128
+  s_e17054bd979963::t_e70559d3faff27 141-143
+  s_e17054bd979963::t_184ce942b76dc9 64-76,81
+  s_e17054bd979963::t_0b2fccbf4b7a79 8-19
+  s_e17054bd979963::t_011d193502f924 26-37
+  s_e17054bd979963::t_4d4460a5452a1e 25
+  s_e17054bd979963::t_9121d04fbd14b8 63
+components/admin/formatMoney.ts
+  s_e17054bd979963::t_8a9eb6aca9d022 1-26
+collections/Inquiries.ts
+  s_e17054bd979963::t_de19ce06e9a1db 8-9
+components/admin/editors/ClientEditView.tsx
+  s_e17054bd979963::t_98f01812682337 1-14
+components/admin/editors/InvoiceEditView.tsx
+  s_e17054bd979963::t_14fc3dfe79f787 1-14
+collections/Media.ts
+  s_e17054bd979963::t_458d7c6d92fbfa 5-8
+app/(payload)/custom.scss
+  s_e17054bd979963::t_aa81a89e8c9f0f 434,436
+  s_e17054bd979963::t_58b417ac5bc7f4 196-198,202-205
+  s_e17054bd979963::t_1c1a5755c4d53c 257,261
+  s_e17054bd979963::t_78f1d11f938be7 1103-1488
+  s_e17054bd979963::t_98e5b1cdb11476 189-190
+  s_e17054bd979963::t_bd4afc2b53a7ab 307-433,435,437-443
+  s_e17054bd979963::t_97b9fe89c50d4e 172
+components/admin/lists/ProjectsListSummary.tsx
+  s_e17054bd979963::t_d92dd0eed2a8de 1-23
+payload-types.ts
+  s_e17054bd979963::t_d4e20e7c8b973d 133-134,162-163,171,185-186,224-225,280-281,316-317,343,482,632-633
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a64bd85323cb81aff6d21fd7d9ed967e6bff7d44",
+  "prompts": {},
+  "sessions": {
+    "s_e17054bd979963": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "41efe6a5-c7be-4dc0-9dc5-1f567a570cad",
+        "model": "grok-4.7"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
