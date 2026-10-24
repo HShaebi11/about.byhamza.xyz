@@ -1,0 +1,88 @@
+apps/web/middleware.ts
+  s_d5b9924d4d49ca::t_62b04f259c6dcb 6,8-11,15-19,27-41
+apps/web/app/sitemap.ts
+  s_d5b9924d4d49ca::t_c74adff7a56daa 57-58
+  s_d5b9924d4d49ca::t_b07120c2ce3cdc 3,5
+README.md
+  s_d5b9924d4d49ca::t_39213abceb20dc 57-58
+  s_d5b9924d4d49ca::t_f6acefa6cf4562 75-76
+  s_d5b9924d4d49ca::t_79feda6fbe26e3 19-31,34-47
+  s_d5b9924d4d49ca::t_588254940c8869 81-82
+  s_d5b9924d4d49ca::t_0989057b734184 115-116
+apps/web/app/(frontend)/services/page.tsx
+  s_d5b9924d4d49ca::t_e2c4f8bbf2abc4 20
+  s_d5b9924d4d49ca::t_52ad00cc94c939 7
+  s_d5b9924d4d49ca::t_d8bbb91dbf6d95 3
+apps/web/open-next.config.ts
+  s_d5b9924d4d49ca::t_0fabbf96ef8386 2-4,6-12
+apps/web/app/(frontend)/blog/page.tsx
+  s_d5b9924d4d49ca::t_847761c18de178 4
+  s_d5b9924d4d49ca::t_9efa4a987fbc78 8
+  s_d5b9924d4d49ca::t_9a1e887eace628 29
+packages/cms/client.ts
+  s_d5b9924d4d49ca::t_eed309a0768ede 58
+  s_d5b9924d4d49ca::t_5faa7330933c69 106
+  s_d5b9924d4d49ca::t_963997f6cfe561 117-126
+  s_d5b9924d4d49ca::t_fd41498c075321 17
+  s_d5b9924d4d49ca::t_6e9f849dcf34dc 19,23-30
+  s_d5b9924d4d49ca::t_732f8eaf269f63 40
+  s_d5b9924d4d49ca::t_2b7bef43fb4a0d 45
+  s_0992ce4d7d821d::t_7bf3b0ff5eea22 31-32
+packages/cms/package.json
+  s_d5b9924d4d49ca::t_bebc802c8578f5 8
+apps/web/app/(frontend)/tools/page.tsx
+  s_d5b9924d4d49ca::t_1f64f247cf7e61 3
+  s_d5b9924d4d49ca::t_48953ba779ba27 9
+  s_d5b9924d4d49ca::t_b74d9c231d6a1b 30
+apps/web/lib/cms.ts
+  s_d5b9924d4d49ca::t_cef5bf50618df0 1-3,6-10,13-14,17,19,22-36
+apps/web/app/(frontend)/blog/[slug]/page.tsx
+  s_d5b9924d4d49ca::t_aa87620c767354 5
+  s_d5b9924d4d49ca::t_4d8d59f461c612 9
+  s_d5b9924d4d49ca::t_f9d431afff5e16 37-38
+  s_d5b9924d4d49ca::t_c5f864e425361d 48-49
+apps/web/app/api/media/file/[filename]/route.ts
+  s_d5b9924d4d49ca::t_9c155c6a304b5c 1-46
+apps/web/app/(frontend)/layout.tsx
+  s_d5b9924d4d49ca::t_21db3e0e2e199b 23-24
+  s_d5b9924d4d49ca::t_8739ab648e5189 3
+  s_d5b9924d4d49ca::t_e89f6836c89978 6-7
+apps/web/next.config.ts
+  s_d5b9924d4d49ca::t_3699c644d76e77 30-37
+apps/web/public/_headers
+  s_d5b9924d4d49ca::t_58ffe861ee9ba3 1-2
+packages/cms/d1-reader.ts
+  s_d5b9924d4d49ca::t_be83747c4fa199 12-17,19
+  s_d5b9924d4d49ca::t_67cb9e376c9b01 1-11,18,20-446
+apps/web/wrangler.jsonc
+  s_0992ce4d7d821d::t_d231ee0e68e548 56
+  s_d5b9924d4d49ca::t_94b0d8cde928da 14-17,20,24-40,43-55,57-58
+apps/web/types/cloudflare.d.ts
+  s_d5b9924d4d49ca::t_c67a6a6c91917c 6-7,9-12
+apps/web/app/(frontend)/page.tsx
+  s_d5b9924d4d49ca::t_3a3be6ec2e0366 2,5,13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "35c5eb0dab9eb5c64b6546d20ff1e7bddce81d80",
+  "prompts": {},
+  "sessions": {
+    "s_0992ce4d7d821d": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "e72f1c23-cc16-44b2-8df8-9e97bbc5071b",
+        "model": "grok-4.6"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_d5b9924d4d49ca": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "837196b2-91e3-42fc-bf80-254ae36ac326",
+        "model": "grok-4.6"
+      },
+      "human_author": null
+    }
+  }
+}
