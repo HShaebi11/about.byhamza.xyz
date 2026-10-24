@@ -130,6 +130,8 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * People who can sign in to the control center.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -157,6 +159,8 @@ export interface User {
   collection: 'users';
 }
 /**
+ * Images used by projects and the live site.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
@@ -164,6 +168,7 @@ export interface Media {
   id: number;
   alt: string;
   caption?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -177,6 +182,8 @@ export interface Media {
   focalY?: number | null;
 }
 /**
+ * Case studies on the live portfolio.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projects".
  */
@@ -214,6 +221,8 @@ export interface Project {
   createdAt: string;
 }
 /**
+ * Leads sent from the live site.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "inquiries".
  */
@@ -268,6 +277,8 @@ export interface Inquiry {
   createdAt: string;
 }
 /**
+ * People and companies you invoice.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "clients".
  */
@@ -302,6 +313,8 @@ export interface Client {
   createdAt: string;
 }
 /**
+ * Drafts, sent invoices, and what has been paid.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "invoices".
  */
@@ -327,7 +340,7 @@ export interface Invoice {
     id?: string | null;
   }[];
   /**
-   * Total payable amount in selected currency
+   * Calculated from line items on save
    */
   totalAmount: number;
   /**
@@ -466,6 +479,7 @@ export interface UsersSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -615,6 +629,8 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
+ * Name, location, and links shown on the live site.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings".
  */

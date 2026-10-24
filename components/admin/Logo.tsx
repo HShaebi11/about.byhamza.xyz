@@ -49,22 +49,10 @@ export const Logo: React.FC = () => {
             fontFamily: "'PP Neue Montreal Mono', monospace",
             textTransform: 'uppercase',
             opacity: 0.65,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
             marginTop: '3px',
           }}
         >
-          <span
-            style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              background: '#10b981',
-              display: 'inline-block',
-            }}
-          />
-          CMS • Cloudflare D1
+          Control Center
         </span>
       </div>
     </div>

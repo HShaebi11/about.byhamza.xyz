@@ -1,279 +1,229 @@
-import React from 'react'
 import Link from 'next/link'
+import React from 'react'
+
+import { addAmount, formatMoney, formatTotals } from '@/components/admin/formatMoney'
+import type { Inquiry, Invoice, Project } from '@/payload-types'
 import type { AdminViewServerProps } from 'payload'
-import type { Project, SiteSetting } from '@/payload-types'
+
+const OPEN_INVOICE_STATUSES = ['draft', 'sent', 'viewed'] as const
+const ATTENTION_INQUIRY_STATUSES = ['new', 'reviewing'] as const
+
+const INQUIRY_STATUS: Record<string, string> = {
+  archived: 'Archived',
+  lost: 'Lost',
+  meeting_scheduled: 'Meeting scheduled',
+  new: 'New lead',
+  proposal_sent: 'Proposal sent',
+  qualified: 'Qualified',
+  reviewing: 'Under review',
+  won: 'Won',
+}
+
+const INVOICE_STATUS: Record<string, string> = {
+  draft: 'Draft',
+  overdue: 'Overdue',
+  paid: 'Paid',
+  sent: 'Sent',
+  viewed: 'Viewed',
+  void: 'Void',
+}
+
+function clientName(client: Invoice['client']): string {
+  if (client && typeof client === 'object') return client.company
+  return 'Client'
+}
+
+function pillClass(status: string | null | undefined): string {
+  if (status === 'paid' || status === 'Live' || status === 'won') return 'studio-home__pill studio-home__pill--good'
+  if (status === 'overdue' || status === 'lost') return 'studio-home__pill studio-home__pill--bad'
+  if (status === 'new' || status === 'reviewing' || status === 'sent' || status === 'viewed') {
+    return 'studio-home__pill studio-home__pill--attention'
+  }
+  return 'studio-home__pill'
+}
 
 export const DashboardView: React.FC<AdminViewServerProps> = async ({ payload }) => {
-  let projectsTotal = 0
-  let projectsPublished = 0
-  let mediaTotal = 0
-  let usersTotal = 0
-  let siteTitle = 'Hamza Shaebi'
+  let openTotals = new Map<string, number>()
+  let overdueTotals = new Map<string, number>()
+  let paidTotals = new Map<string, number>()
+  let leads: Inquiry[] = []
+  let unpaid: Invoice[] = []
   let recentProjects: Project[] = []
 
   try {
-    const [pCount, pPubCount, mCount, uCount, settings, recents] = await Promise.all([
-      payload.count({ collection: 'projects' }),
-      payload.count({
-        collection: 'projects',
-        where: { published: { equals: true } },
+    const [leadResult, unpaidResult, openResult, overdueResult, paidResult, projectResult] = await Promise.all([
+      payload.find({
+        collection: 'inquiries',
+        depth: 0,
+        limit: 5,
+        sort: '-createdAt',
+        where: { status: { in: [...ATTENTION_INQUIRY_STATUSES] } },
       }),
-      payload.count({ collection: 'media' }),
-      payload.count({ collection: 'users' }),
-      payload.findGlobal({ slug: 'site-settings' }).catch(() => null) as Promise<SiteSetting | null>,
+      payload.find({
+        collection: 'invoices',
+        depth: 1,
+        limit: 5,
+        sort: 'dueDate',
+        where: { status: { in: [...OPEN_INVOICE_STATUSES, 'overdue'] } },
+      }),
+      payload.find({
+        collection: 'invoices',
+        depth: 0,
+        limit: 500,
+        pagination: false,
+        where: { status: { in: [...OPEN_INVOICE_STATUSES] } },
+      }),
+      payload.find({
+        collection: 'invoices',
+        depth: 0,
+        limit: 500,
+        pagination: false,
+        where: { status: { equals: 'overdue' } },
+      }),
+      payload.find({
+        collection: 'invoices',
+        depth: 0,
+        limit: 500,
+        pagination: false,
+        where: { status: { equals: 'paid' } },
+      }),
       payload.find({
         collection: 'projects',
+        depth: 0,
         limit: 5,
         sort: '-updatedAt',
       }),
     ])
 
-    projectsTotal = pCount.totalDocs
-    projectsPublished = pPubCount.totalDocs
-    mediaTotal = mCount.totalDocs
-    usersTotal = uCount.totalDocs
-    if (settings?.name) {
-      siteTitle = settings.name
-    }
-    recentProjects = (recents.docs as Project[]) || []
+    leads = leadResult.docs
+    unpaid = unpaidResult.docs
+    recentProjects = projectResult.docs
+    openTotals = new Map()
+    overdueTotals = new Map()
+    paidTotals = new Map()
+    for (const invoice of openResult.docs) addAmount(openTotals, invoice.totalAmount, invoice.currency)
+    for (const invoice of overdueResult.docs) addAmount(overdueTotals, invoice.totalAmount, invoice.currency)
+    for (const invoice of paidResult.docs) addAmount(paidTotals, invoice.totalAmount, invoice.currency)
   } catch (err) {
-    payload.logger.error({ err }, 'Error loading DashboardView stats')
+    payload.logger.error({ err }, 'Error loading Control Center')
   }
 
+  const attentionEmpty = leads.length === 0 && unpaid.length === 0
+
   return (
-    <div className="control-center">
-      {/* 1. Header Banner & System Status */}
-      <div className="control-center__banner">
-        <div className="control-center__banner-left">
-          <div className="control-center__badge">
-            <span className="control-center__badge-dot" />
-            <span>System Operational • Cloudflare Native</span>
-          </div>
-          <h1 className="control-center__title">Portfolio Control Center</h1>
-          <p className="control-center__subtitle">
-            Minimalist studio for managing case studies, live assets, site configuration, and edge persistence powered by Cloudflare D1 & R2.
-          </p>
+    <div className="studio-home">
+      <header className="studio-home__header">
+        <div>
+          <h1 className="studio-home__title">Control Center</h1>
+          <p className="studio-home__subtitle">New leads, unpaid invoices, and the work on the live site.</p>
         </div>
-
-        <div className="control-center__banner-right">
-          <div className="control-center__status-card">
-            <span className="control-center__status-card-label">Database</span>
-            <span className="control-center__status-card-value">Cloudflare D1 (WEUR)</span>
-          </div>
-          <div className="control-center__status-card">
-            <span className="control-center__status-card-label">Storage</span>
-            <span className="control-center__status-card-value">Cloudflare R2 Bucket</span>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. Quick Action Shortcuts */}
-      <div className="control-center__shortcuts-bar">
-        <span className="control-center__shortcuts-label">Quick Actions:</span>
-        <div className="control-center__shortcuts-group">
-          <Link
-            href="/admin/collections/projects/create"
-            className="control-center__shortcut-btn control-center__shortcut-btn--primary"
-          >
-            <span>+ New Project</span>
+        <div className="studio-home__actions">
+          <Link className="studio-home__action studio-home__action--primary" href="/admin/collections/projects/create">
+            New project
           </Link>
-          <Link
-            href="/admin/collections/media/create"
-            className="control-center__shortcut-btn"
-          >
-            <span>+ Upload Media</span>
+          <Link className="studio-home__action" href="/admin/collections/invoices/create">
+            New invoice
           </Link>
-          <Link
-            href="/admin/globals/site-settings"
-            className="control-center__shortcut-btn"
-          >
-            <span>Edit Site Settings</span>
-          </Link>
-          <a
-            href="/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="control-center__shortcut-btn control-center__shortcut-btn--external"
-          >
-            <span>Live Portfolio</span>
-            <span className="control-center__shortcut-arrow">↗</span>
-          </a>
-        </div>
-      </div>
-
-      {/* 3. Minimalist Control Center Cards Grid */}
-      <div className="control-center__grid">
-        {/* Projects Card */}
-        <div className="control-center__card">
-          <div className="control-center__card-header">
-            <span className="control-center__card-label">Collection</span>
-            <span className="control-center__card-tag">{projectsPublished} Live</span>
-          </div>
-          <h2 className="control-center__card-title">Projects</h2>
-          <div className="control-center__card-metric">
-            <span className="control-center__card-number">{projectsTotal}</span>
-            <span className="control-center__card-subtext">Total Case Studies</span>
-          </div>
-          <div className="control-center__card-actions">
-            <Link
-              href="/admin/collections/projects"
-              className="control-center__card-link"
-            >
-              Manage Projects →
-            </Link>
-            <Link
-              href="/admin/collections/projects/create"
-              className="control-center__card-link control-center__card-link--accent"
-            >
-              + Add
-            </Link>
-          </div>
-        </div>
-
-        {/* Site Settings Card */}
-        <div className="control-center__card">
-          <div className="control-center__card-header">
-            <span className="control-center__card-label">Global Configuration</span>
-            <span className="control-center__card-tag">Active</span>
-          </div>
-          <h2 className="control-center__card-title">Site Settings</h2>
-          <div className="control-center__card-metric">
-            <span className="control-center__card-val-text">{siteTitle}</span>
-            <span className="control-center__card-subtext">Global Site Title & Profile</span>
-          </div>
-          <div className="control-center__card-actions">
-            <Link
-              href="/admin/globals/site-settings"
-              className="control-center__card-link"
-            >
-              Edit Global Config →
-            </Link>
-          </div>
-        </div>
-
-        {/* Media Library Card */}
-        <div className="control-center__card">
-          <div className="control-center__card-header">
-            <span className="control-center__card-label">Storage</span>
-            <span className="control-center__card-tag">Cloudflare R2</span>
-          </div>
-          <h2 className="control-center__card-title">Media Assets</h2>
-          <div className="control-center__card-metric">
-            <span className="control-center__card-number">{mediaTotal}</span>
-            <span className="control-center__card-subtext">Images & Video Files</span>
-          </div>
-          <div className="control-center__card-actions">
-            <Link
-              href="/admin/collections/media"
-              className="control-center__card-link"
-            >
-              Open Media Library →
-            </Link>
-            <Link
-              href="/admin/collections/media/create"
-              className="control-center__card-link control-center__card-link--accent"
-            >
-              + Upload
-            </Link>
-          </div>
-        </div>
-
-        {/* System & Access Card */}
-        <div className="control-center__card">
-          <div className="control-center__card-header">
-            <span className="control-center__card-label">Infrastructure</span>
-            <span className="control-center__card-tag">workerd</span>
-          </div>
-          <h2 className="control-center__card-title">Users & Edge</h2>
-          <div className="control-center__card-metric">
-            <span className="control-center__card-number">{usersTotal}</span>
-            <span className="control-center__card-subtext">Admin Accounts</span>
-          </div>
-          <div className="control-center__card-actions">
-            <Link
-              href="/admin/collections/users"
-              className="control-center__card-link"
-            >
-              Manage Users →
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* 4. Recent Case Studies / Projects Quick-Edit Table */}
-      <div className="control-center__section">
-        <div className="control-center__section-header">
-          <h2 className="control-center__section-title">Recent Case Studies & Projects</h2>
-          <Link
-            href="/admin/collections/projects"
-            className="control-center__section-link"
-          >
-            View All ({projectsTotal}) →
+          <Link className="studio-home__action" href="/admin/collections/clients/create">
+            New client
           </Link>
         </div>
+      </header>
 
-        {recentProjects.length === 0 ? (
-          <div className="control-center__empty-state">
-            <p>No projects created yet.</p>
-            <Link
-              href="/admin/collections/projects/create"
-              className="control-center__shortcut-btn control-center__shortcut-btn--primary"
-            >
-              + Create First Project
-            </Link>
+      <section className="studio-home__money" aria-label="Invoice totals">
+        <article className="studio-home__money-card">
+          <span className="studio-home__money-label">Open</span>
+          <strong className="studio-home__money-value">{formatTotals(openTotals)}</strong>
+        </article>
+        <article className="studio-home__money-card">
+          <span className="studio-home__money-label">Overdue</span>
+          <strong className="studio-home__money-value">{formatTotals(overdueTotals)}</strong>
+        </article>
+        <article className="studio-home__money-card">
+          <span className="studio-home__money-label">Paid</span>
+          <strong className="studio-home__money-value">{formatTotals(paidTotals)}</strong>
+        </article>
+      </section>
+
+      <div className="studio-home__columns">
+        <section className="studio-home__panel">
+          <div className="studio-home__panel-header">
+            <h2>Needs attention</h2>
+            <Link href="/admin/collections/inquiries">Inquiries</Link>
           </div>
-        ) : (
-          <div className="control-center__table-wrap">
-            <table className="control-center__table">
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>Title</th>
-                  <th>Role</th>
-                  <th>Year</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentProjects.map((proj) => (
-                  <tr key={proj.id}>
-                    <td className="control-center__table-no">
-                      {proj.projectNumber || '—'}
-                    </td>
-                    <td className="control-center__table-title">
-                      <Link
-                        href={`/admin/collections/projects/${proj.id}`}
-                        className="control-center__project-link"
-                      >
-                        {proj.title || 'Untitled Project'}
-                      </Link>
-                    </td>
-                    <td>{proj.role || '—'}</td>
-                    <td>{proj.year || '—'}</td>
-                    <td>
-                      <span
-                        className={`control-center__status-pill ${
-                          proj.published ? 'control-center__status-pill--live' : 'control-center__status-pill--draft'
-                        }`}
-                      >
-                        {proj.published ? 'Live' : 'Draft'}
-                      </span>
-                    </td>
-                    <td>
-                      <Link
-                        href={`/admin/collections/projects/${proj.id}`}
-                        className="control-center__table-action"
-                      >
-                        Edit →
-                      </Link>
-                    </td>
+
+          {attentionEmpty ? (
+            <p className="studio-home__empty">No new leads or unpaid invoices.</p>
+          ) : (
+            <ul className="studio-home__feed">
+              {leads.map((lead) => (
+                <li key={`inquiry-${lead.id}`}>
+                  <Link href={`/admin/collections/inquiries/${lead.id}`}>
+                    <span className="studio-home__feed-title">{lead.name}</span>
+                    <span className="studio-home__feed-meta">{lead.company || lead.email}</span>
+                  </Link>
+                  <span className={pillClass(lead.status)}>{INQUIRY_STATUS[lead.status || ''] || lead.status}</span>
+                </li>
+              ))}
+              {unpaid.map((invoice) => (
+                <li key={`invoice-${invoice.id}`}>
+                  <Link href={`/admin/collections/invoices/${invoice.id}`}>
+                    <span className="studio-home__feed-title">{invoice.invoiceNumber}</span>
+                    <span className="studio-home__feed-meta">
+                      {clientName(invoice.client)} · {formatMoney(invoice.totalAmount, invoice.currency || 'GBP')}
+                    </span>
+                  </Link>
+                  <span className={pillClass(invoice.status)}>{INVOICE_STATUS[invoice.status || ''] || invoice.status}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section className="studio-home__panel">
+          <div className="studio-home__panel-header">
+            <h2>Recent projects</h2>
+            <Link href="/admin/collections/projects">View all</Link>
+          </div>
+
+          {recentProjects.length === 0 ? (
+            <div className="studio-home__empty">
+              <p>No projects yet.</p>
+              <Link className="studio-home__action studio-home__action--primary" href="/admin/collections/projects/create">
+                New project
+              </Link>
+            </div>
+          ) : (
+            <div className="studio-home__table-wrap">
+              <table className="studio-home__table">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Title</th>
+                    <th>Year</th>
+                    <th>Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                </thead>
+                <tbody>
+                  {recentProjects.map((project) => (
+                    <tr key={project.id}>
+                      <td>{project.projectNumber || '—'}</td>
+                      <td>
+                        <Link href={`/admin/collections/projects/${project.id}`}>{project.title}</Link>
+                      </td>
+                      <td>{project.year || '—'}</td>
+                      <td>
+                        <span className={project.published ? 'studio-home__pill studio-home__pill--good' : 'studio-home__pill'}>
+                          {project.published ? 'Live' : 'Draft'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
       </div>
     </div>
   )

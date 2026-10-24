@@ -5,6 +5,8 @@ export const Inquiries: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'company', 'service', 'intentLabel', 'status', 'createdAt'],
+    group: 'Studio',
+    description: 'Leads sent from the live site.',
   },
   access: {
     // Anyone can submit an inquiry via public API/form
