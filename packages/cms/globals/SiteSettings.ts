@@ -2,6 +2,10 @@ import type { GlobalConfig } from 'payload'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
+  admin: {
+    group: 'Site',
+    description: 'Name, location, and links shown on the live site.',
+  },
   access: {
     read: () => true,
   },

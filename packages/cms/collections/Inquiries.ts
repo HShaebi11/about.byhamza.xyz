@@ -6,6 +6,8 @@ export const Inquiries: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'company', 'service', 'intentLabel', 'status', 'createdAt'],
+    group: 'Studio',
+    description: 'Leads sent from the live site.',
     components: {
       edit: {
         beforeDocumentControls: ['@/components/admin/ConvertToClientAction#ConvertToClientAction'],
